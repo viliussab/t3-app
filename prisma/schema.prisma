@@ -63,14 +63,41 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-model Map {
-    id String @id @default(cuid())
+model Area {
+    id                          String @id @default(cuid())
+    locationName                String
 
-    locationName String
+    northWestCorner_longitude   Float
+    northWestCorner_latitude    Float
 
-    northWestCorner_longitude Float
-    northWestCorner_latitude Float
+    southEastCorner_longitude   Float
+    southEastCorner_latitude    Float
 
-    southEastCorner_longitude Float
-    southEastCorner_latitude Float
+    areaBillboards                AreaBillboard[]
+}
+
+model AreaBillboard {
+    @@id([areaId, billboardId])
+
+    area       Area     @relation(fields: [areaId], references: [id], onDelete: Cascade)
+    areaId      String
+    billboard   Billboard @relation(fields: [billboardId], references: [id], onDelete: Cascade)
+    billboardId String
+}
+
+model Billboard {
+    id                  String  @id @default(cuid())
+    longitude           Float
+    latitude            Float
+
+    billboardInMaps     AreaBillboard[]
+    sides               BillboardSide[]
+}
+
+model BillboardSide {
+    id                  String  @id @default(cuid())
+    title           String
+
+    billboardId     String
+    billboard   Billboard @relation(fields: [billboardId], references: [id], onDelete: Cascade)
 }
