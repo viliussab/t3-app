@@ -16,7 +16,7 @@ type CreateContextOptions = {
 export const createContextInner = async (opts: CreateContextOptions) => {
   return {
     session: opts.session,
-    prisma,
+    prisma
   };
 };
 
@@ -33,7 +33,7 @@ export const createContext = async (
   const session = await getServerAuthSession({ req, res });
 
   return await createContextInner({
-    session,
+    session
   });
 };
 
@@ -44,7 +44,7 @@ export const createRouter = () => trpc.router<Context>();
 /**
  * Creates a tRPC router that asserts all queries and mutations are from an authorized user. Will throw an unauthorized error if a user is not signed in.
  **/
-export function createProtectedRouter() {
+export const createProtectedRouter = () => {
   return createRouter().middleware(({ ctx, next }) => {
     if (!ctx.session || !ctx.session.user) {
       throw new trpc.TRPCError({ code: "UNAUTHORIZED" });
@@ -53,8 +53,8 @@ export function createProtectedRouter() {
       ctx: {
         ...ctx,
         // infers that `session` is non-nullable to downstream resolvers
-        session: { ...ctx.session, user: ctx.session.user },
-      },
+        session: { ...ctx.session, user: ctx.session.user }
+      }
     });
   });
-}
+};

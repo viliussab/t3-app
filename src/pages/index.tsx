@@ -69,7 +69,7 @@ type TechnologyCardProps = {
 const TechnologyCard = ({
   name,
   description,
-  documentation,
+  documentation
 }: TechnologyCardProps) => {
   return (
     <section className="flex flex-col justify-center p-6 duration-500 border-2 border-gray-500 rounded shadow-xl motion-safe:hover:scale-105">

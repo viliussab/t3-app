@@ -11,7 +11,7 @@ import "../styles/globals.css";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
-  pageProps: { session, ...pageProps },
+  pageProps: { session, ...pageProps }
 }) => {
   return (
     <SessionProvider session={session}>
@@ -39,12 +39,12 @@ export default withTRPC<AppRouter>({
         loggerLink({
           enabled: (opts) =>
             process.env.NODE_ENV === "development" ||
-            (opts.direction === "down" && opts.result instanceof Error),
+            (opts.direction === "down" && opts.result instanceof Error)
         }),
-        httpBatchLink({ url }),
+        httpBatchLink({ url })
       ],
       url,
-      transformer: superjson,
+      transformer: superjson
       /**
        * @link https://react-query.tanstack.com/reference/QueryClient
        */
@@ -67,5 +67,5 @@ export default withTRPC<AppRouter>({
   /**
    * @link https://trpc.io/docs/ssr
    */
-  ssr: false,
+  ssr: false
 })(MyApp);
