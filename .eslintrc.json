@@ -13,7 +13,6 @@
     "no-debugger": [ 1 ],
     "indent": [ 1, 2, { "SwitchCase": 1 } ],
     "quotes": [ 1, "double" ],
-    "linebreak-style": [ 1, "unix" ],
     "semi": [ 1, "always" ],
     "semi-spacing": [ 1 ],
     "one-var": [ 1, { "initialized": "never" } ],

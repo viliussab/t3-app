@@ -8,6 +8,7 @@ import type { AppType } from "next/app";
 import type { AppRouter } from "../server/router";
 import type { Session } from "next-auth";
 import "../styles/globals.css";
+import Sidebar from "../components/Sidebar";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -15,7 +16,16 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <body className="h-screen w-screen bg-slate-100">
+
+
+        <div className="flex">
+          <div className="bg-slate-200 h-screen">
+            <Sidebar />
+          </div>
+          <Component {...pageProps} />
+        </div>
+      </body>
     </SessionProvider>
   );
 };

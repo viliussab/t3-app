@@ -1,10 +1,10 @@
 import { createRouter } from "./context";
-import { mapCreateSchema } from "../../types/maps.schema";
+import { areaCreateSchema } from "../../types/area.schema";
 import billboardService from "../domain/billboardService";
 
 export const mapsRouter = createRouter()
   .mutation("create", {
-    input: mapCreateSchema,
+    input: areaCreateSchema,
     async resolve({ ctx, input }) {
       const entity = await ctx.prisma.area.create({
         data: {...input}

@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const mapCreateSchema = z.object({
+export const areaCreateSchema = z.object({
   locationName: z.string(),
 
   northWestCorner_latitude: z.number().gte(-90).lte(90),
@@ -10,4 +10,4 @@ export const mapCreateSchema = z.object({
   southEastCorner_longitude: z.number().gte(-180).lte(180)
 });
 
-export type MapCreate = z.TypeOf<typeof mapCreateSchema>
+export type AreaCreate = z.TypeOf<typeof areaCreateSchema>
