@@ -3,40 +3,42 @@ import { trpc } from "../../../utils/trpc";
 import { useForm } from "react-hook-form";
 
 export default function Index() {
-  const { handleSubmit } = useForm<AreaCreate>();
+  const { handleSubmit, register } = useForm<AreaCreate>();
+
+  
 
   const { mutate } = trpc.useMutation(["area.create"]);
 
-  const onSubmit = async (values : AreaCreate) => {
+  const onSubmit = (values : AreaCreate) => {
     mutate(values);
   };
   
   return <>
     <form onSubmit={handleSubmit(onSubmit)}>
-      <label>
-            Location Name
-        <input type="text" name="locationName" />
-      </label>
+      Location Name
+      <input
+        {...register("locationName")}
+        type="text" />
     
-      <label>
-            nw_x
-        <input type="text" name="northWest_longitude" />
-      </label>
+      northEastLat
+      <input 
+        {...register("northEastLat", {valueAsNumber: true})}
+      />
 
-      <label>
-            nw_y
-        <input type="text" name="northWest_latitude" />
-      </label>
+      northEastLong
+      <input 
+        {...register("northEastLong", {valueAsNumber: true})}
+      />
+      
+      southWestLat
+      <input 
+        {...register("southWestLat", {valueAsNumber: true})}
+      />
         
-      <label>
-            se_x
-        <input type="text" name="southEast_longitude" />
-      </label>
-        
-      <label>
-            se_y
-        <input type="text" name="southEast_latitude" />
-      </label>
+      southWestLong
+      <input 
+        {...register("southWestLong", {valueAsNumber: true})}
+      />
     
       <button type="submit">Submit</button>
     </form>

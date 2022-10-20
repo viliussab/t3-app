@@ -64,40 +64,40 @@ model VerificationToken {
 }
 
 model Area {
-    id                          String @id @default(cuid())
-    locationName                String
+    id String @id @default(cuid())
+    locationName String
 
-    northWestCorner_longitude   Float
-    northWestCorner_latitude    Float
+    northEastLong Float
+    northEastLat Float
 
-    southEastCorner_longitude   Float
-    southEastCorner_latitude    Float
+    southWestLat Float
+    southWestLong Float
 
-    areaBillboards                AreaBillboard[]
+    areaBillboards AreaBillboard[]
 }
 
 model AreaBillboard {
     @@id([areaId, billboardId])
 
-    area       Area     @relation(fields: [areaId], references: [id], onDelete: Cascade)
-    areaId      String
-    billboard   Billboard @relation(fields: [billboardId], references: [id], onDelete: Cascade)
+    area Area     @relation(fields: [areaId], references: [id], onDelete: Cascade)
+    areaId String
+    billboard Billboard @relation(fields: [billboardId], references: [id], onDelete: Cascade)
     billboardId String
 }
 
 model Billboard {
-    id                  String  @id @default(cuid())
-    longitude           Float
-    latitude            Float
+    id String  @id @default(cuid())
+    longitude Float
+    latitude Float
 
-    billboardInMaps     AreaBillboard[]
-    sides               BillboardSide[]
+    billboardInMaps AreaBillboard[]
+    sides BillboardSide[]
 }
 
 model BillboardSide {
-    id                  String  @id @default(cuid())
-    title           String
+    id String  @id @default(cuid())
+    title String
 
-    billboardId     String
-    billboard   Billboard @relation(fields: [billboardId], references: [id], onDelete: Cascade)
+    billboardId String
+    billboard Billboard @relation(fields: [billboardId], references: [id], onDelete: Cascade)
 }

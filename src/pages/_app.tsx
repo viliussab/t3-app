@@ -7,8 +7,8 @@ import superjson from "superjson";
 import type { AppType } from "next/app";
 import type { AppRouter } from "../server/router";
 import type { Session } from "next-auth";
-import "../styles/globals.css";
-import Sidebar from "../components/Sidebar";
+import "../front/styles/globals.css";
+import Sidebar from "../front/components/Sidebar";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -16,16 +16,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <body className="h-screen w-screen bg-slate-100">
-
-
-        <div className="flex">
-          <div className="bg-slate-200 h-screen">
-            <Sidebar />
-          </div>
+      <div className="flex">
+        <nav className="h-screen w-48 shadow hover:shadow-lg bg-gray-0">
+          <Sidebar />
+        </nav>
+        <div className="w-[calc(100%_-_w-48)] h-screen overflow-y-auto">
           <Component {...pageProps} />
         </div>
-      </body>
+          
+      </div>
     </SessionProvider>
   );
 };
