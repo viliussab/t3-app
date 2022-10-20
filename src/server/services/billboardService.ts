@@ -1,7 +1,7 @@
 import {Area, Billboard, AreaBillboard} from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
 
-const populareAreaWithBillboardsAsync = async (
+const populateAreaWithBillboardsAsync = async (
   prisma: PrismaClient,
   area: Area) => {
 
@@ -24,7 +24,7 @@ const isBillboardInArea = (area: Area, billboard: Billboard) => (
 );
 
 const billboardService = {
-  populareAreaWithBillboardsAsync
+  populateAreaWithBillboardsAsync
 };
 
 export default billboardService;

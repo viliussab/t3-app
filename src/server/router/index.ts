@@ -1,4 +1,3 @@
-// src/server/router/index.ts
 import { createRouter } from "./context";
 import superjson from "superjson";
 
@@ -12,6 +11,4 @@ export const appRouter = createRouter()
   .merge("auth.", protectedExampleRouter)
   .merge("area.", mapsRouter);
   
-
-// export type definition of API
 export type AppRouter = typeof appRouter;
