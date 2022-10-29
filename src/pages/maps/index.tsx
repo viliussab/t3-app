@@ -7,26 +7,30 @@ const Index = () => {
 
   if (isLoading) return <>Loading</>;
 
-  return <div className="flex flex-wrap">
-    {data?.map(area => (
-      <div className="m-8" key={area.id}>
-        <AreaCard
-          area={area} />
+  return (
+    <Layout>
+      <div className="flex flex-wrap">
+        {data?.map(area => (
+          <div className="m-8" key={area.id}>
+            <AreaCard
+              area={area} />
+          </div>
+        ))}
+        {data?.map(area => (
+          <div className="m-8" key={area.id}>
+            <AreaCard
+              area={area} />
+          </div>
+        ))}
+        {data?.map(area => (
+          <div className="m-8" key={area.id}>
+            <AreaCard
+              area={area} />
+          </div>
+        ))}
       </div>
-    ))}
-    {data?.map(area => (
-      <div className="m-8" key={area.id}>
-        <AreaCard
-          area={area} />
-      </div>
-    ))}
-    {data?.map(area => (
-      <div className="m-8" key={area.id}>
-        <AreaCard
-          area={area} />
-      </div>
-    ))}
-  </div>;
+    </Layout>
+  );
 };
 
 type AreaCardProps = {
@@ -55,5 +59,6 @@ const AreaCard = (props : AreaCardProps) => {
 
 const MapNoSSR = dynamic(() => import("../../front/components/_dynamic/StaticAreaMap"), {ssr: false});
 import { Area } from "@prisma/client";
+import Layout from "./../../front/components/Layout";
 
 export default Index;

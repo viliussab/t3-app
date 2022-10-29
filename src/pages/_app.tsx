@@ -16,15 +16,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <div className="flex">
-        <nav className="h-screen w-48 shadow hover:shadow-lg bg-gray-0">
-          <Sidebar />
-        </nav>
-        <div className="w-[calc(100%_-_w-48)] h-screen overflow-y-auto">
-          <Component {...pageProps} />
-        </div>
-          
-      </div>
+      <Component {...pageProps} />
     </SessionProvider>
   );
 };
