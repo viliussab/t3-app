@@ -8,7 +8,6 @@ import type { AppType } from "next/app";
 import type { AppRouter } from "../server/api";
 import type { Session } from "next-auth";
 import "../front/styles/globals.css";
-import Sidebar from "../front/components/Sidebar";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

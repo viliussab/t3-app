@@ -16,18 +16,6 @@ const Index = () => {
               area={area} />
           </div>
         ))}
-        {data?.map(area => (
-          <div className="m-8" key={area.id}>
-            <AreaCard
-              area={area} />
-          </div>
-        ))}
-        {data?.map(area => (
-          <div className="m-8" key={area.id}>
-            <AreaCard
-              area={area} />
-          </div>
-        ))}
       </div>
     </Layout>
   );
