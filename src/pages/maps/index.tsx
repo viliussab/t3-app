@@ -1,6 +1,9 @@
-import Link from "next/link";
 import { trpc } from "../../utils/trpc";
 import dynamic from "next/dynamic";
+import { Area } from "@prisma/client";
+import Layout from "./../../front/components/Layout";
+
+const MapNoSSR = dynamic(() => import("../../front/components/_dynamic/StaticAreaMap"), {ssr: false});
 
 const Index = () => {
   const {data, isLoading} = trpc.useQuery(["area.getAll"]);
@@ -45,8 +48,6 @@ const AreaCard = (props : AreaCardProps) => {
   </div>;
 };
 
-const MapNoSSR = dynamic(() => import("../../front/components/_dynamic/StaticAreaMap"), {ssr: false});
-import { Area } from "@prisma/client";
-import Layout from "./../../front/components/Layout";
+
 
 export default Index;

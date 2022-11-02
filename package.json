@@ -16,9 +16,15 @@
     "mg:gen": "prisma generate && prisma migrate dev"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@hookform/resolvers": "^2.9.10",
+    "@mui/material": "^5.10.12",
     "@next-auth/prisma-adapter": "^1.0.4",
     "@prisma/client": "^4.4.0",
+    "@radix-ui/react-dialog": "^1.0.2",
     "@radix-ui/react-navigation-menu": "^1.1.1",
+    "@radix-ui/react-select": "^1.1.1",
     "@radix-ui/react-separator": "^1.0.1",
     "@trpc/client": "^9.27.2",
     "@trpc/next": "^9.27.2",

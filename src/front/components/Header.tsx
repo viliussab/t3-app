@@ -68,11 +68,11 @@ const Section = (props: Section) => {
   const {name, items} = props;
 
   return (
-    <Navigation.Item className="duration-500 ml-2 hover:bg-gray-200 rounded-2xl">
+    <Navigation.Item className="duration-500 ml-2 hover:bg-gray-200 rounded-2xl z-10">
       <Navigation.Trigger className="duration-500  hover:decoration-4 rounded-2xl text-lg pt-1 pb-1 pl-2 pr-2 w-full ">
         {name}
       </Navigation.Trigger>
-      <Navigation.Content className="mt-2">
+      <Navigation.Content className="mt-2 z-10">
         <div className="flex justify-center">
           <Separator.Root orientation="horizontal" className="bg-gray-300 w-full h-px mb-2 shadow-2xl"/>
         </div>

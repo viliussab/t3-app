@@ -1,6 +1,6 @@
 import { createRouter } from "./context";
 import { areaCreateSchema } from "../../types/area.schema";
-import billboardService from "../services/billboardService";
+import billboardService from "../s-services/billboardService";
 
 export const mapsRouter = createRouter()
   .mutation("create", {
