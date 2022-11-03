@@ -73,25 +73,27 @@ model Area {
     southWestLat Float
     southWestLong Float
 
-    areaBillboards AreaBillboard[]
+    billboards Billboard[]
 }
-
-model AreaBillboard {
-    @@id([areaId, billboardId])
-
-    area Area     @relation(fields: [areaId], references: [id], onDelete: Cascade)
-    areaId String
-    billboard Billboard @relation(fields: [billboardId], references: [id], onDelete: Cascade)
-    billboardId String
-}
-
 model Billboard {
     id String  @id @default(cuid())
     longitude Float
     latitude Float
 
-    billboardInMaps AreaBillboard[]
+    type BillboardType @relation(fields: [typeId], references: [id], onDelete: Cascade)
+    typeId String
+
+    area Area     @relation(fields: [areaId], references: [id], onDelete: Cascade)
+    areaId String
+
     sides BillboardSide[]
+}
+
+model BillboardType {
+    id String @id @default(cuid())
+    name String
+
+    billboards Billboard[]
 }
 
 model BillboardSide {

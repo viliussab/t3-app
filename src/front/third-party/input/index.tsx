@@ -6,7 +6,8 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  Checkbox
 } from "@mui/material";
 
 const Input = {
@@ -17,7 +18,8 @@ const Input = {
   FormControl,
   Select,
   Label: InputLabel,
-  SelectItem: MenuItem
+  SelectItem: MenuItem,
+  Checkbox
 };
 
 export default Input;
