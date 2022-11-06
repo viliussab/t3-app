@@ -1,19 +1,30 @@
 import Layout from "../../front/components/Layout";
 import type { NextPage } from "next";
 import { trpc } from "../../utils/trpc";
-import * as Select from "@radix-ui/react-select";
-import * as Dialog from "@radix-ui/react-dialog";
-import { Control, useForm, useWatch } from "react-hook-form";
+import { Control, useForm, UseFormReturn, useWatch } from "react-hook-form";
 import { BillboardCreate, billboardCreateSchema } from "../../types/billboard.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../../front/third-party/input/index";
-import { useEffect } from "react";
-import { getValue } from "@mui/system";
+import { useEffect, useCallback } from "react";
+import dynamic from "next/dynamic";
+import { Area } from "@prisma/client";
+import { useRouter } from "next/router";
+
+const MarkerMap = dynamic(() => import("../../front/components/_dynamic/CreateMarkerMap"), {ssr: false});
 
 const ObjectsCreate: NextPage = () => {
-
+  const router = useRouter();
   const areaQuery = trpc.useQuery(["area.getAll"]);
   const typesQuery = trpc.useQuery(["billboardType.getAll"]);
+
+  const billboardCreate = trpc.useMutation(
+    ["billboard.create"], 
+    {
+      onSuccess(data, variables, context) {
+        console.log("success!", data);
+        router.push("/billboards");
+      }
+    });
 
   const form = useForm<BillboardCreate>({
     resolver: zodResolver(billboardCreateSchema),
@@ -22,20 +33,9 @@ const ObjectsCreate: NextPage = () => {
     }
   });
 
-  const id = form.getValues("areaId");
-  const selectedArea = areaQuery?.data?.find(a => a.id === id);
-
-  useEffect(() => {
-    if (selectedArea) {
-      console.log("input changed!");
-    }
-  }, [selectedArea]);
-
   const submitBillboard = (values : BillboardCreate) => {
-    console.log("Submitting");
-    console.log(values, "values");
+    billboardCreate.mutate(values);
   };
-
 
   if (areaQuery.isLoading && typesQuery.isLoading) {
     return <div>Loading...</div>;
@@ -43,16 +43,12 @@ const ObjectsCreate: NextPage = () => {
 
   const { errors } = form.formState;
 
-  console.log(errors, "errors");
-
-  
-
   return (
     <Layout>
       <form onSubmit={(e) => { form.handleSubmit(submitBillboard)(e);
       }}>
         <div className="flex justify-center m-4">
-          <div className="w-52 pt-0 p-4 space-y-3">
+          <div className="w-52 pt-0 m-4 space-y-3">
             <Input.TextField
               label='Kodas'
               fullWidth
@@ -142,45 +138,93 @@ const ObjectsCreate: NextPage = () => {
               <button type="submit">Submit</button>
             </div>
           </div>
-          <div className="w-96 pt-0 p-4">
-            <div className="flex">
-              <div className="mr-4">
-                <Input.TextField
-                  label='Platuma'
-                  disabled={!selectedArea}
-                  fullWidth
-                  required
-                  variant="standard"
-                  error={!!errors["latitude"]}
-                  type="number"
-                  helperText={errors["latitude"] ? errors["latitude"].message : ""}
-                  {...form.register("latitude", {valueAsNumber: true})}
-                />
-              </div>
-              <div>
-                <Input.TextField
-                  label='Ilguma'
-                  disabled={!selectedArea}
-                  fullWidth
-                  required
-                  variant="standard"
-                  error={!!errors["longitude"]}
-                  type="number"
-                  helperText={errors["longitude"] ? errors["longitude"].message : ""}
-                  {...form.register("longitude", {valueAsNumber: true})}
-                />
-              </div>
-            </div>
-          </div>
-
+          <CoordinateFields form={form} areas={areaQuery.data}/>
         </div>
       </form>
     </Layout>
   );
 };
 
+type CoordinateFieldsProps = {
+  form: UseFormReturn<BillboardCreate>,
+  areas: Area[] | undefined,
+}
+
+const CoordinateFields = (props : CoordinateFieldsProps) => {
+
+  const {form, areas} = props;
+
+  const [areaId, latitude, longitude] = useWatch({
+    control: form.control,
+    name: ["areaId", "latitude", "longitude"]
+  });
+
+  const selectedArea = areas?.find(a => a.id === areaId);
+
+  const setCoordinates = useCallback((lat: number, long: number) => {
+    form.setValue("latitude", lat);
+    form.setValue("longitude", long);
+  }, [form]);
+
+  useEffect(() => {
+    if (selectedArea) {
+      const lat = (selectedArea.southWestLat + selectedArea.northEastLat) / 2;
+      const long = (selectedArea.southWestLong + selectedArea.northEastLong) / 2;
+      
+      setCoordinates(lat, long);
+    } 
+  }, [selectedArea, setCoordinates]);
+
+  const { errors } = form.formState;
+
+  return (
+    <div className="w-96 pt-0 m-4">
+      <div className="flex ">
+        <div className="pr-4">
+          <Input.TextField
+            label='Platuma'
+            disabled={!selectedArea}
+            fullWidth
+            required
+            variant="standard"
+            error={!!errors["latitude"]}
+            helperText={errors["latitude"] ? errors["latitude"].message : ""}
+            {...form.register("latitude", {valueAsNumber: true})}
+            InputLabelProps={{ shrink: !!(selectedArea || latitude) }}
+          />
+        </div>
+        <div className="pl-4">
+          <Input.TextField
+            label='Ilguma'
+            disabled={!selectedArea}
+            fullWidth
+            required
+            variant="standard"
+            error={!!errors["longitude"]}
+            helperText={errors["longitude"] ? errors["longitude"].message : ""}
+            {...form.register("longitude", {valueAsNumber: true})}
+            InputLabelProps={{ shrink: !!(selectedArea || longitude) }}
+          />
+        </div>
+      </div>
+      {selectedArea && (
+        <div className="mt-4 w-96 h-96">
+          <MarkerMap
+            mapSW={[selectedArea.southWestLat, selectedArea.southWestLong]}
+            mapNE={[selectedArea.northEastLat, selectedArea.northEastLong]}
+            marker={[latitude, longitude]}
+            onMarkerChange={(marker) => {setCoordinates(marker[0], marker[1]);}}
+            draggable
+          />
+        </div>
+
+      )}
+    </div>
+  );
+};
+
 type FullNameFieldProps = {
-  control: Control,
+  control: Control<BillboardCreate>,
 }
 
 const FullNameField = (props : FullNameFieldProps) => {

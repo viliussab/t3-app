@@ -8,11 +8,11 @@ const navigationSections : Array<Section> = [
     items: [
       {
         name: "Kurti objektą",
-        href: "/objects/add"
+        href: "/billboards/add"
       }, 
       {
         name: "Objektų sąrašas",
-        href: "/objects"
+        href: "/billboards"
       }
     ]
   },
@@ -33,7 +33,7 @@ const navigationSections : Array<Section> = [
       },
       {
         name: "Savaitinis registras",
-        href: "/objects/occupancy"
+        href: "/billboards/occupancy"
       },
       {
         name: "Klientai",
@@ -72,7 +72,7 @@ const Section = (props: Section) => {
       <Navigation.Trigger className="duration-500  hover:decoration-4 rounded-2xl text-lg pt-1 pb-1 pl-2 pr-2 w-full ">
         {name}
       </Navigation.Trigger>
-      <Navigation.Content className="mt-2 z-10">
+      <Navigation.Content className="mt-2 z-50">
         <div className="flex justify-center">
           <Separator.Root orientation="horizontal" className="bg-gray-300 w-full h-px mb-2 shadow-2xl"/>
         </div>

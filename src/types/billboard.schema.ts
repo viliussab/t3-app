@@ -1,5 +1,6 @@
 import z from "zod";
 import messages from "../services/validateMessage";
+import { Billboard } from "@prisma/client";
 
 export const billboardCreateSchema = z.object({
   areaId: z.string().min(1, "Pasirinkite miestą"),
@@ -21,5 +22,10 @@ export const billboardCreateSchema = z.object({
   isIlluminated: z.boolean(),
   isLicensed: z.boolean()
 });
+
+export type BillboardSelectedSideDto = Billboard & {
+  sideName: string
+  fullName: string
+} 
 
 export type BillboardCreate = z.TypeOf<typeof billboardCreateSchema>

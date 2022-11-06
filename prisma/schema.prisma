@@ -80,6 +80,12 @@ model Billboard {
     longitude Float
     latitude Float
 
+    name String
+    serialCode String
+
+    isIlluminated Boolean
+    isLicensed Boolean
+
     type BillboardType @relation(fields: [typeId], references: [id], onDelete: Cascade)
     typeId String
 
@@ -98,7 +104,7 @@ model BillboardType {
 
 model BillboardSide {
     id String  @id @default(cuid())
-    title String
+    name String
 
     billboardId String
     billboard Billboard @relation(fields: [billboardId], references: [id], onDelete: Cascade)

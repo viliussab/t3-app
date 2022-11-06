@@ -1,16 +1,16 @@
-import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
 import { LatLngTuple, Marker as MarkerType } from "leaflet";
-import React, { SetStateAction, useRef, useMemo, useCallback } from "react";
+import React, { useRef, useMemo } from "react";
 
 type Props = {
   mapSW: LatLngTuple,
   mapNE: LatLngTuple,
 
   marker: LatLngTuple,
-  setMarker: React.Dispatch<SetStateAction<LatLngTuple>>
+  onMarkerChange: (marker: LatLngTuple) => void,
 
   draggable: boolean,
 }
@@ -23,20 +23,17 @@ const CreateMarkerMap = (props : Props) => {
 
   return (
     <MapContainer
-      scrollWheelZoom={false}
       style={{height: "100%", width: "100%"}}
       attributionControl={false}
       bounds={[southWest, northEast]}
-      dragging={false}
-      zoomControl={false}
-      doubleClickZoom={false}
+      
     > 
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <DraggableMarker
         coordinates={props.marker}
-        setCoordinates={props.setMarker}
+        onCoordinateChange={props.onMarkerChange}
         draggable={props.draggable}
       />
     </MapContainer>
@@ -47,13 +44,19 @@ export default CreateMarkerMap;
 
 type MarkerProps = {
     coordinates: LatLngTuple,
-    setCoordinates: React.Dispatch<SetStateAction<LatLngTuple>>
+    onCoordinateChange: (coordinates: LatLngTuple) => void,
   
     draggable: boolean,
   }
 
 const DraggableMarker = (props: MarkerProps) => {
-  const {coordinates, setCoordinates, draggable} = props;
+  const {coordinates, onCoordinateChange, draggable} = props;
+
+  useMapEvents({
+    click (e) {
+      onCoordinateChange([e.latlng.lat, e.latlng.lng]);
+    }
+  });
 
   const markerRef = useRef<MarkerType>(null);
 
@@ -63,12 +66,16 @@ const DraggableMarker = (props: MarkerProps) => {
         const marker = markerRef.current;
         if (marker) {
           const coords = marker.getLatLng();
-          setCoordinates([coords.lat, coords.lng]);
+          onCoordinateChange([coords.lat, coords.lng]);
         }
       }
     }),
-    [setCoordinates],
+    [onCoordinateChange],
   );
+
+  if (!coordinates[0] || !coordinates[1]) {
+    return null;
+  }
 
   return (
     <Marker
