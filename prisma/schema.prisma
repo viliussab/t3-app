@@ -94,6 +94,42 @@ model Billboard {
     areaId String
 
     sides BillboardSide[]
+    billboardTags BillboardTag[]
+}
+
+model BillboardTag {
+    @@id([tagId, billboardId])
+
+    tagId String
+    tag Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+    billboardId String
+    billboard Billboard @relation(fields: [billboardId], references: [id], onDelete: Cascade)
+}
+
+model Customer {
+    id String  @id @default(cuid())
+
+    name String
+
+    campaigns Campaign[]
+}
+
+model Campaign {
+    id String  @id @default(cuid())
+
+    customerId String
+    customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+    name String
+    
+}
+
+model Tag {
+    id String  @id @default(cuid())
+    name String
+
+    billboardTags BillboardTag[]
 }
 
 model BillboardType {

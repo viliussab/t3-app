@@ -1,22 +1,22 @@
 import { NextPage } from "next";
 import Layout from "../../front/components/Layout";
 import { trpc } from "./../../utils/trpc";
-import { Billboard } from "@prisma/client";
 import { BillboardGetBySidesDto } from "../../types/billboard.schema";
+import Input from "../../front/third-party/input";
 
 const BillboardList: NextPage = () => {
 
   const billboardQuery = trpc.useQuery(["billboard.getAsSides"]);
 
   if (billboardQuery.isLoading) {
-    return "Loading...";
+    return <>Loading...</>;
   }
 
   console.log(billboardQuery.data, "data");
 
   return (
     <Layout>
-      <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+      <div className="mt-2 overflow-x-auto relative shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -92,10 +92,10 @@ const BillboardTableRow = (props: BillboardTableRowProps) => {
         {billboard.side.name}
       </td>
       <td className="py-4 px-6">
-        {billboard.isLicensed}
+        <Input.Checkbox checked={billboard.isLicensed} />
       </td>
       <td className="py-4 px-6">
-        {billboard.isIlluminated}
+        <Input.Checkbox checked={billboard.isIlluminated} />
       </td>
     </tr>
   );
