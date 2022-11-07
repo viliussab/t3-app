@@ -55,7 +55,9 @@ const Header = () => {
     <nav className="duration-300 w-screen h-12 shadow hover:shadow-lg bg-gray-0 flex align-middle justify-end">
       <Navigation.Root>
         <Navigation.List className="flex align-middle mt-1">
-          {navigationSections.map(Section)}
+          {navigationSections.map(section =>
+            <Section {...section} key={section.name} />
+          )}
         </Navigation.List>
       </Navigation.Root>
     </nav>
@@ -76,7 +78,7 @@ const Section = (props: Section) => {
         <div className="flex justify-center">
           <Separator.Root orientation="horizontal" className="bg-gray-300 w-full h-px mb-2 shadow-2xl"/>
         </div>
-        {items.map(SectionItem)}
+        {items.map(item => <SectionItem {...item} key={item.href} />)}
       </Navigation.Content>
     </Navigation.Item>
   );

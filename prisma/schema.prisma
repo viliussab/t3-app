@@ -79,6 +79,7 @@ model Billboard {
     id String  @id @default(cuid())
     longitude Float
     latitude Float
+    address String
 
     name String
     serialCode String

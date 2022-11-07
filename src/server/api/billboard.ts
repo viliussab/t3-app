@@ -1,19 +1,24 @@
 import { createRouter } from "./context";
-import { billboardCreateSchema, BillboardSelectedSideDto } from "../../types/billboard.schema";
+import { billboardCreateSchema, BillboardGetBySidesDto } from "../../types/billboard.schema";
 
 export const billboardRouter = createRouter()
   .query("getAsSides", {
     async resolve({ ctx }) {
+
       const sides = await ctx.prisma.billboardSide.findMany({
         include: {
-          billboard: true
+          billboard: {
+            include: {
+              type: true,
+              area: true
+            }
+          }
         }
       });
 
-      const billboardDto : Array<BillboardSelectedSideDto> = sides.map(side => ({
+      const billboardDto : Array<BillboardGetBySidesDto> = sides.map(side => ({
         ...side.billboard,
-        sideName: side.name,
-        fullName: side.billboard.name + " " + side.name
+        side
       }));
   
       return billboardDto;
@@ -30,6 +35,7 @@ export const billboardRouter = createRouter()
           serialCode: input.serialCode,
           isIlluminated: input.isIlluminated,
           isLicensed: input.isLicensed,
+          address: input.address,
             
           typeId: input.typeId,
           areaId: input.areaId
