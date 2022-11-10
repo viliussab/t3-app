@@ -27,7 +27,14 @@ async function main() {
     ]});
   }
 
-  console.debug("Seeding completed");
+  if (await prisma.customer.count() === 0)
+  {
+    await prisma.customer.createMany({data: [
+      {
+        name: "Maxima"
+      }
+    ]});
+  }
 }
 
 main()

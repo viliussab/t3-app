@@ -12,8 +12,6 @@ const BillboardList: NextPage = () => {
     return <>Loading...</>;
   }
 
-  console.log(billboardQuery.data, "data");
-
   return (
     <Layout>
       <div className="mt-2 overflow-x-auto relative shadow-md sm:rounded-lg">
@@ -21,28 +19,28 @@ const BillboardList: NextPage = () => {
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="py-3 px-6">
-                    Miestas
+                Miestas
               </th>
               <th scope="col" className="py-3 px-6">
-                    Kodas
+                Kodas
               </th>
               <th scope="col" className="py-3 px-6">
-                    Pavadinimas
+                Pavadinimas
               </th>
               <th scope="col" className="py-3 px-6">
-                    Adresas
+                Adresas
               </th>
               <th scope="col" className="py-3 px-6">
-                    Tipas
+                Tipas
               </th>
               <th scope="col" className="py-3 px-6">
-                    Pusė
+                Pusė
               </th>
               <th scope="col" className="py-3 px-6">
-                    Leidimas
+                Leidimas
               </th>
               <th scope="col" className="py-3 px-6">
-                    Apšvietimas
+                Apšvietimas
               </th>
             </tr>
           </thead>
@@ -70,9 +68,11 @@ const BillboardTableRow = (props: BillboardTableRowProps) => {
   const {billboard, index} = props;
         
   return (
-    <tr className={ (index + 1) % 2 ? 
-      "bg-white border-b dark:bg-gray-900 dark:border-gray-700" 
-      : "bg-gray-50 border-b dark:bg-gray-800 dark:border-gray-700" }>
+    <tr 
+      onClick={() => { console.log(billboard);}}
+      className={ 
+        `${index % 2 ? "bg-gray-50" : "bg-white"}
+        border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-blue-100 hover:cursor-pointer`} >
       <td className="py-4 px-6">
         {billboard.area.locationName}
       </td>

@@ -1,3 +1,4 @@
+import React from "react";
 import Layout from "../../front/components/Layout";
 import type { NextPage } from "next";
 import { trpc } from "../../utils/trpc";
@@ -20,7 +21,7 @@ const ObjectsCreate: NextPage = () => {
   const billboardCreate = trpc.useMutation(
     ["billboard.create"], 
     {
-      onSuccess(data, variables, context) {
+      onSuccess(data) {
         console.log("success!", data);
         router.push("/billboards");
       }
@@ -217,7 +218,6 @@ const CoordinateFields = (props : CoordinateFieldsProps) => {
             draggable
           />
         </div>
-
       )}
     </div>
   );

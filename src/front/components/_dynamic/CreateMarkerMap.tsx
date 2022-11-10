@@ -4,6 +4,7 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet-defaulticon-compatibility";
 import { LatLngTuple, Marker as MarkerType } from "leaflet";
 import React, { useRef, useMemo } from "react";
+import MapBoundsUpdater from "./MapBoundsUpdater";
 
 type Props = {
   mapSW: LatLngTuple,
@@ -30,6 +31,10 @@ const CreateMarkerMap = (props : Props) => {
     > 
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <MapBoundsUpdater
+        mapSW={southWest}
+        mapNE={northEast}
       />
       <DraggableMarker
         coordinates={props.marker}
