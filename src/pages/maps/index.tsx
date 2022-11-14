@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { Area } from "@prisma/client";
 import Layout from "./../../front/components/Layout";
 
-const MapNoSSR = dynamic(() => import("../../front/components/_dynamic/StaticAreaMap"), {ssr: false});
+const MapNoSSR = dynamic(() => import("../../front/components/no-ssr/StaticAreaMap"), {ssr: false});
 
 const Index = () => {
   const {data, isLoading} = trpc.useQuery(["area.getAll"]);

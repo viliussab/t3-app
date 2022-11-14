@@ -5,13 +5,13 @@ import { trpc } from "../../utils/trpc";
 import { Control, useForm, UseFormReturn, useWatch } from "react-hook-form";
 import { BillboardCreate, billboardCreateSchema } from "../../types/billboard.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "../../front/third-party/input/index";
+import Input from "../../front/third-party/Input";
 import { useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { Area } from "@prisma/client";
 import { useRouter } from "next/router";
 
-const MarkerMap = dynamic(() => import("../../front/components/_dynamic/CreateMarkerMap"), {ssr: false});
+const MarkerMap = dynamic(() => import("../../front/components/no-ssr/CreateMarkerMap"), {ssr: false});
 
 const ObjectsCreate: NextPage = () => {
   const router = useRouter();
@@ -48,8 +48,8 @@ const ObjectsCreate: NextPage = () => {
     <Layout>
       <form onSubmit={(e) => { form.handleSubmit(submitBillboard)(e);
       }}>
-        <div className="flex justify-center m-4">
-          <div className="w-52 pt-0 m-4 space-y-3">
+        <div className="flex justify-around m-4">
+          <div className="w-64 pt-0 m-4 space-y-3">
             <Input.TextField
               label='Kodas'
               fullWidth
