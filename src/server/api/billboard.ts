@@ -1,27 +1,35 @@
 import { createRouter } from "./context";
 import { billboardCreateSchema, BillboardGetBySidesDto } from "../../types/billboard.schema";
+import { BillboardSide } from "@prisma/client";
 
 export const billboardRouter = createRouter()
-  .query("getAsSides", {
+  .query("getAll", {
+    async resolve({ ctx }) {
+
+      const billboards = await ctx.prisma.billboard.findMany({
+        include: {
+          type: true,
+          area: true,
+          sides: true
+        }
+      });
+  
+      return billboards;
+    }
+  })
+  .query("getDistinctSideNames", {
     async resolve({ ctx }) {
 
       const sides = await ctx.prisma.billboardSide.findMany({
-        include: {
-          billboard: {
-            include: {
-              type: true,
-              area: true
-            }
-          }
-        }
+        where: {},
+        distinct: ["name"]
       });
 
-      const billboardDto : Array<BillboardGetBySidesDto> = sides.map(side => ({
-        ...side.billboard,
-        side
-      }));
+      const distinctNames = sides.map(side => side.name);
+
+      console.log("distinctNames", distinctNames);
   
-      return billboardDto;
+      return distinctNames;
     }
   })
   .mutation("create", {

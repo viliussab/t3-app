@@ -38,18 +38,18 @@ const CreateCampaign: NextPage = () => {
 
   return (
     <Layout>
-      <div className="flex justify-evenly m-4">
-        <div className="w-64 pt-0 m-4 mt-0 space-y-3">
+      <div className="flex justify-center m-4">
+        <div className="w-56 pt-0 m-4 mt-0 space-y-3">
           <Input.TextField
             label='Kodas'
             fullWidth
             required
-            variant="standard"
+            variant="filled"
             error={!!errors["campaignName"]}
             helperText={errors["campaignName"] ? errors["campaignName"].message : ""}
             {...form.register("campaignName")}
           />
-          <Input.FormControl variant="standard" fullWidth>
+          <Input.FormControl variant="filled" fullWidth>
             <Input.Label id="demo-simple-select-standard-label">Klientas</Input.Label>
             <Input.Select
               fullWidth
@@ -71,89 +71,52 @@ const CreateCampaign: NextPage = () => {
           <DateTo form={form} />
         </div>
         <div>
-          {!!selectedIds.length && (
+          {
             <>
-              <div className="font-semibold text-lg text-center">Pasirinktos stotelės</div>
-              <div className="mt-2 overflow-x-auto relative shadow-md sm:rounded-lg">
-                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                  <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                      <th scope="col" className="py-3 px-6">
-                      </th>
-                      <th scope="col" className="py-3 px-6">
-                Miestas
-                      </th>
-                      <th scope="col" className="py-3 px-6">
-                Kodas
-                      </th>
-                      <th scope="col" className="py-3 px-6">
-                Pavadinimas
-                      </th>
-                      <th scope="col" className="py-3 px-6">
-                Adresas
-                      </th>
-                      <th scope="col" className="py-3 px-6">
-                Pusė
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {billboardQuery.data?.map((billboard, index) => ( 
-                      <BillboardTableRow
-                        billboard={billboard}
-                        index={index}
-                        key={billboard.id}/>)
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </>)
+              <div className="font-semibold text-lg text-center">{`Pasirinktas stotelių kiekis: ${selectedIds.length}`}</div>
+              {!!selectedIds.length && (
+                <div className="mt-2 overflow-x-auto relative shadow-md sm:rounded-lg">
+                  <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                      <tr>
+                        <th scope="col" className="py-3 px-6">
+                        </th>
+                        <th scope="col" className="py-3 px-6">
+                          Miestas
+                        </th>
+                        <th scope="col" className="py-3 px-6">
+                          Kodas
+                        </th>
+                        <th scope="col" className="py-3 px-6">
+                          Pavadinimas
+                        </th>
+                        <th scope="col" className="py-3 px-6">
+                          Adresas
+                        </th>
+                        <th scope="col" className="py-3 px-6">
+                          Pusė
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {billboardQuery.data?.map((billboard, index) => ( 
+                        <BillboardTableRow
+                          billboard={billboard}
+                          index={index}
+                          key={billboard.id}/>)
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </>
           }
-
         </div>
       </div>
-
-      <div className="mt-2 overflow-x-auto relative shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-
-              <th scope="col" className="py-3 px-6">
-                Miestas
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Kodas
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Pavadinimas
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Adresas
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Tipas
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Pusė
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Leidimas
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Apšvietimas
-              </th>
-
-            </tr>
-          </thead>
-          <tbody>
-            {billboardQuery.data?.map((billboard, index) => ( 
-              <BillboardTableRow
-                billboard={billboard}
-                index={index}
-                key={billboard.id}/>)
-            )}
-          </tbody>
-        </table>
+      <div className="flex justify-center m-4">
+        <div className="w-64 h-64">
+          sds
+        </div>
       </div>
     </Layout>
   );
@@ -165,7 +128,31 @@ type BillboardTableRowProps = {
 };
 
 const BillboardTableRow = (props: BillboardTableRowProps) => {
+  const {billboard, index} = props;
 
+  <tr 
+    className={ 
+      `${index % 2 ? "bg-gray-50" : "bg-white"}
+    border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-blue-100 hover:cursor-pointer`} >
+    <td className="py-4 px-6">
+      {billboard.area.locationName}
+    </td>
+    <td className="py-4 px-6">
+      {billboard.serialCode}
+    </td>
+    <th className="py-4 px-6 text-gray-900 whitespace-nowrap dark:text-white">
+      {billboard.name + " " + billboard.side.name}
+    </th>
+    <td className="py-4 px-6">
+      {billboard.address}
+    </td>
+    <td className="py-4 px-6">
+      {billboard.type.name}
+    </td>
+    <td className="py-4 px-6">
+      {billboard.side.name}
+    </td>
+  </tr>;
 };
 
 type DatePickerProps = {
@@ -224,7 +211,7 @@ const DateFrom = (props : DatePickerProps) => {
               value: ToWeekText(periodStart),
               placeholder: undefined
             }}
-            variant="standard"
+            variant="filled"
             required
             fullWidth
             InputLabelProps={{ shrink: !!periodStart }}
@@ -259,7 +246,7 @@ const DateTo = (props : DatePickerProps) => {
           <Input.TextField 
             {...props}
             inputProps={{value: ToWeekText(periodEnd)}}
-            variant="standard"
+            variant="filled"
             required
             fullWidth
             InputLabelProps={{ shrink: !!periodEnd }}

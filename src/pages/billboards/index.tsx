@@ -1,19 +1,44 @@
 import { NextPage } from "next";
 import Layout from "../../front/components/Layout";
 import { trpc } from "./../../utils/trpc";
-import { BillboardGetBySidesDto } from "../../types/billboard.schema";
-import Input from "../../front/third-party/input";
+import { BillboardFiltersDto, BillboardGetBySidesDto } from "../../types/billboard.schema";
+import Input from "../../front/third-party/Input";
+import BillboardFilters from "./../../front/components/BillboardFilters";
+import React from "react";
 
 const BillboardList: NextPage = () => {
 
-  const billboardQuery = trpc.useQuery(["billboard.getAsSides"]);
+  const billboardQuery = trpc.useQuery(["billboard.getAll"]);
 
-  if (billboardQuery.isLoading) {
+  const sideNamesQuery = trpc.useQuery(["billboard.getDistinctSideNames"], {
+    onSuccess: (data) => {
+      setFilters({...filters, allowedSides: data});
+    }
+  });
+
+  const [filters, setFilters] = React.useState<BillboardFiltersDto>({
+    allowedSides: [],
+    illumination: "True And False",
+    license: "True And False"
+  });
+
+  const onFilterChange = (fieldName: keyof BillboardFiltersDto, newValue: BillboardFiltersDto[keyof BillboardFiltersDto]) => {
+    setFilters({...filters, [fieldName]: newValue });
+  };
+
+
+  if (billboardQuery.isLoading && sideNamesQuery.isLoading) {
     return <>Loading...</>;
   }
 
+
+
   return (
     <Layout>
+      <BillboardFilters
+        sideNames={sideNamesQuery.data}
+        filters={filters}
+        onFilterChange={onFilterChange}/>
       <div className="mt-2 overflow-x-auto relative shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -59,8 +84,8 @@ const BillboardList: NextPage = () => {
 };
 
 type BillboardTableRowProps = {
-        billboard: BillboardGetBySidesDto,
-        index: number,
+  billboard: BillboardGetBySidesDto,
+  index: number,
 };
 
 const BillboardTableRow = (props: BillboardTableRowProps) => {

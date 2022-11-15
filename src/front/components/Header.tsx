@@ -52,7 +52,7 @@ const navigationSections : Array<Section> = [
 
 const Header = () => {
   return (
-    <nav className="duration-300 w-screen h-12 shadow hover:shadow-lg bg-gray-0 flex align-middle justify-end">
+    <nav className="w-screen h-12 shadow hover:shadow-lg bg-gray-0 flex align-middle justify-end">
       <Navigation.Root>
         <Navigation.List className="flex align-middle mt-1">
           {navigationSections.map(section =>

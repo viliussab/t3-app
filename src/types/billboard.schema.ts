@@ -1,6 +1,7 @@
 import z from "zod";
 import messages from "../services/validateMessage";
 import { BillboardSide, Prisma } from "@prisma/client";
+import { booleanFilter } from "./filters.schema";
 
 export const billboardCreateSchema = z.object({
   areaId: z.string().min(1, "Pasirinkite miestą"),
@@ -23,6 +24,19 @@ export const billboardCreateSchema = z.object({
   isLicensed: z.boolean()
 });
 
+export type BillboardCreate = z.TypeOf<typeof billboardCreateSchema>
+
+export const billboardFiltersSchema = z.object({
+  nameSearch: z.string().nullish(),
+  allowedSides: z.array(z.string()),
+  codeSearch: z.string().nullish(),
+  addressSearch: z.string().nullish(),
+  illumination: booleanFilter,
+  license: booleanFilter
+});
+
+export type BillboardFiltersDto = z.TypeOf<typeof billboardFiltersSchema>
+
 export type BillboardGetBySidesDto = Prisma.BillboardGetPayload<{
   include: {
     area: true,
@@ -32,4 +46,4 @@ export type BillboardGetBySidesDto = Prisma.BillboardGetPayload<{
   side: BillboardSide
 }
 
-export type BillboardCreate = z.TypeOf<typeof billboardCreateSchema>
+
