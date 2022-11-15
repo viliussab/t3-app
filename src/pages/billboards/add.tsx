@@ -3,13 +3,15 @@ import Layout from "../../front/components/Layout";
 import type { NextPage } from "next";
 import { trpc } from "../../utils/trpc";
 import { Control, useForm, UseFormReturn, useWatch } from "react-hook-form";
-import { BillboardCreate, billboardCreateSchema } from "../../types/billboard.schema";
+import { BillboardCreate, billboardsFilterSchema } from "../../types/billboard.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../../front/third-party/Input";
 import { useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { Area } from "@prisma/client";
 import { useRouter } from "next/router";
+import ContentContainer from "../../front/components/ContentContainer";
+import SubmitButton from "../../front/components/SubmitButton";
 
 const MarkerMap = dynamic(() => import("../../front/components/no-ssr/CreateMarkerMap"), {ssr: false});
 
@@ -28,7 +30,7 @@ const ObjectsCreate: NextPage = () => {
     });
 
   const form = useForm<BillboardCreate>({
-    resolver: zodResolver(billboardCreateSchema),
+    resolver: zodResolver(billboardsFilterSchema),
     defaultValues: {
       areaId: ""
     }
@@ -46,102 +48,110 @@ const ObjectsCreate: NextPage = () => {
 
   return (
     <Layout>
-      <form onSubmit={(e) => { form.handleSubmit(submitBillboard)(e);
-      }}>
-        <div className="flex justify-around m-4">
-          <div className="w-64 pt-0 m-4 space-y-3">
-            <Input.TextField
-              label='Kodas'
-              fullWidth
-              required
-              variant="standard"
-              error={!!errors["serialCode"]}
-              helperText={errors["serialCode"] ? errors["serialCode"].message : ""}
-              {...form.register("serialCode")}
-            />
-            <Input.FormControl variant="standard" fullWidth>
-              <Input.Label id="demo-simple-select-standard-label">Miestas</Input.Label>
-              <Input.Select
-                fullWidth
-                required
-                defaultValue=""
-                labelId="demo-simple-select-standard-label"
-                id="demo-simple-select-standard"
-                {...form.register("areaId")}
-                value={form.watch("areaId")}
-              >
-                <Input.SelectItem value={""}>
-                  <em>Nepasirinkta</em>
-                </Input.SelectItem>
-                {areaQuery.data?.map(area => 
-                  <Input.SelectItem key={area.id} value={area.id}>{area.locationName}</Input.SelectItem>
-                )}
-              </Input.Select>
-            </Input.FormControl>
-            <Input.FormControl variant="standard" fullWidth>
-              <Input.Label id="demo-simple-select-standard-label">Tipas</Input.Label>
-              <Input.Select
-                fullWidth
-                required
-                defaultValue=""
-                labelId="demo-simple-select-standard-label"
-                id="demo-simple-select-standard"
-                {...form.register("typeId")}
-              >
-                <Input.SelectItem value={""}>
-                  <em>Nepasirinkta</em>
-                </Input.SelectItem>
-                {typesQuery.data?.map(type => 
-                  <Input.SelectItem key={type.id} value={type.id}>{type.name}</Input.SelectItem>
-                )}
-              </Input.Select>
-            </Input.FormControl>
-            <Input.TextField
-              label='Adresas'
-              fullWidth
-              required
-              variant="standard"
-              error={!!errors["address"]}
-              helperText={errors["address"] ? errors["address"].message : ""}
-              {...form.register("address")}
-            />
-            <Input.TextField
-              label='Pavadinimas'
-              fullWidth
-              required
-              variant="standard"
-              error={!!errors["name"]}
-              helperText={errors["name"] ? errors["name"].message : ""}
-              {...form.register("name")}
-            />
-            <Input.TextField
-              label='Pusė'
-              fullWidth
-              required
-              variant="standard"
-              error={!!errors["sideName"]}
-              helperText={errors["sideName"] ? errors["sideName"].message : ""}
-              {...form.register("sideName")}
-            />
-            <FullNameField control={form.control}/>
-            <Input.FormControlLabel
-              control={
-                <Input.Checkbox defaultChecked {...form.register("isLicensed")}/>
-              }
-              label="Licenzijuota" />
-            <Input.FormControlLabel
-              control={
-                <Input.Checkbox defaultChecked 
-                  {...form.register("isIlluminated")}/>
-              }
-              label="Apšvietimas" />
-            <div>
-              <button type="submit">Submit</button>
-            </div>
+      <div className="flex justify-center">
+        <ContentContainer className="m-4 p-4 bg-gray-50">
+          <div className="text-center text-xl font-semibold">
+              Kurti objektą
           </div>
-          <CoordinateFields form={form} areas={areaQuery.data}/>
-        </div>
-      </form>
+          <form onSubmit={(e) => { form.handleSubmit(submitBillboard)(e);
+          }}>
+
+            <div className="flex justify-center">
+              <div className="w-64 pt-0 m-4 space-y-3">
+                <Input.TextField
+                  label='Kodas'
+                  fullWidth
+                  required
+                  variant="filled"
+                  error={!!errors["serialCode"]}
+                  helperText={errors["serialCode"] ? errors["serialCode"].message : ""}
+                  {...form.register("serialCode")}
+                />
+                <Input.FormControl variant="filled" fullWidth>
+                  <Input.Label id="demo-simple-select-standard-label">Miestas</Input.Label>
+                  <Input.Select
+                    fullWidth
+                    required
+                    defaultValue=""
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    {...form.register("areaId")}
+                    value={form.watch("areaId")}
+                  >
+                    <Input.SelectItem value={""}>
+                      <em>Nepasirinkta</em>
+                    </Input.SelectItem>
+                    {areaQuery.data?.map(area => 
+                      <Input.SelectItem key={area.id} value={area.id}>{area.locationName}</Input.SelectItem>
+                    )}
+                  </Input.Select>
+                </Input.FormControl>
+                <Input.FormControl variant="filled" fullWidth>
+                  <Input.Label id="demo-simple-select-standard-label">Tipas</Input.Label>
+                  <Input.Select
+                    fullWidth
+                    required
+                    defaultValue=""
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    {...form.register("typeId")}
+                  >
+                    <Input.SelectItem value={""}>
+                      <em>Nepasirinkta</em>
+                    </Input.SelectItem>
+                    {typesQuery.data?.map(type => 
+                      <Input.SelectItem key={type.id} value={type.id}>{type.name}</Input.SelectItem>
+                    )}
+                  </Input.Select>
+                </Input.FormControl>
+                <Input.TextField
+                  label='Adresas'
+                  fullWidth
+                  required
+                  variant="filled"
+                  error={!!errors["address"]}
+                  helperText={errors["address"] ? errors["address"].message : ""}
+                  {...form.register("address")}
+                />
+                <Input.TextField
+                  label='Pavadinimas'
+                  fullWidth
+                  required
+                  variant="filled"
+                  error={!!errors["name"]}
+                  helperText={errors["name"] ? errors["name"].message : ""}
+                  {...form.register("name")}
+                />
+                <Input.TextField
+                  label='Pusė'
+                  fullWidth
+                  required
+                  variant="filled"
+                  error={!!errors["sideName"]}
+                  helperText={errors["sideName"] ? errors["sideName"].message : ""}
+                  {...form.register("sideName")}
+                />
+                <FullNameField control={form.control}/>
+                <Input.FormControlLabel
+                  control={
+                    <Input.Checkbox defaultChecked {...form.register("isLicensed")}/>
+                  }
+                  label="Licenzijuota" />
+                <Input.FormControlLabel
+                  control={
+                    <Input.Checkbox defaultChecked 
+                      {...form.register("isIlluminated")}/>
+                  }
+                  label="Apšvietimas" />
+              </div>
+              <CoordinateFields form={form} areas={areaQuery.data}/>
+            </div>
+            <div className="flex justify-center">
+              <SubmitButton isSubmitting={billboardCreate.isLoading}>Kurti naują</SubmitButton>
+            </div>
+          </form>
+        </ContentContainer>
+      </div>
     </Layout>
   );
 };
@@ -187,20 +197,20 @@ const CoordinateFields = (props : CoordinateFieldsProps) => {
             disabled={!selectedArea}
             fullWidth
             required
-            variant="standard"
+            variant="filled"
             error={!!errors["latitude"]}
             helperText={errors["latitude"] ? errors["latitude"].message : ""}
             {...form.register("latitude", {valueAsNumber: true})}
             InputLabelProps={{ shrink: !!(selectedArea || latitude) }}
           />
         </div>
-        <div className="pl-4">
+        <div className="">
           <Input.TextField
             label='Ilguma'
             disabled={!selectedArea}
             fullWidth
             required
-            variant="standard"
+            variant="filled"
             error={!!errors["longitude"]}
             helperText={errors["longitude"] ? errors["longitude"].message : ""}
             {...form.register("longitude", {valueAsNumber: true})}
@@ -208,17 +218,18 @@ const CoordinateFields = (props : CoordinateFieldsProps) => {
           />
         </div>
       </div>
-      {selectedArea && (
-        <div className="mt-4 w-96 h-96">
+
+      <div className="mt-4 w-96 h-96">
+        {selectedArea ? (
           <MarkerMap
             mapSW={[selectedArea.southWestLat, selectedArea.southWestLong]}
             mapNE={[selectedArea.northEastLat, selectedArea.northEastLong]}
             marker={[latitude, longitude]}
             onMarkerChange={(marker) => {setCoordinates(marker[0], marker[1]);}}
             draggable
-          />
-        </div>
-      )}
+          />)
+          : (<div className="bg-gray-200 w-full h-full"></div>)}
+      </div>
     </div>
   );
 };
@@ -234,7 +245,7 @@ const FullNameField = (props : FullNameFieldProps) => {
     label="Pilnas pavadinimas"
     disabled
     fullWidth
-    variant="standard"
+    variant="filled"
     value={(name || side)
       ? `${name} ${side}`
       : "" }
