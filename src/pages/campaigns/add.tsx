@@ -14,16 +14,20 @@ import * as dateFns from "date-fns";
 
 const CreateCampaign: NextPage = () => {
 
-  const billboardQuery = trpc.useQuery(["billboard.getAsSides"]);
+  const billboardQuery = trpc.useQuery(["billboard.getAll"]);
   const customersQuery = trpc.useQuery(["customer.getAll"]);
 
-  const now = dateFns.addDays(new Date(), 1);
+  const now = new Date();
+  const lastWeekDay = dateFns.lastDayOfWeek(now, {
+    weekStartsOn: 2
+  });
+  const nextWeekStart = dateFns.addDays(lastWeekDay, 1);
 
   const form = useForm<CampaignCreate>({
     resolver: zodResolver(campaignCreateSchema),
     defaultValues: {
-      periodStart: now,
-      periodEnd: now,
+      periodStart: nextWeekStart,
+      periodEnd: nextWeekStart,
       selectedBillboardIds: []
     }
   });
@@ -41,7 +45,7 @@ const CreateCampaign: NextPage = () => {
       <div className="flex justify-center m-4">
         <div className="w-56 pt-0 m-4 mt-0 space-y-3">
           <Input.TextField
-            label='Kodas'
+            label='Kampanijos pavadinimas'
             fullWidth
             required
             variant="filled"
@@ -115,7 +119,7 @@ const CreateCampaign: NextPage = () => {
       </div>
       <div className="flex justify-center m-4">
         <div className="w-64 h-64">
-          sds
+          
         </div>
       </div>
     </Layout>

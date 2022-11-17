@@ -26,7 +26,7 @@ export const billboardCreateSchema = z.object({
 
 export type BillboardCreate = z.TypeOf<typeof billboardCreateSchema>
 
-export const billboardFiltersSchema = z.object({
+export const billboardFilterObjSchema = z.object({
   nameSearch: z.string().nullish(),
   allowedSides: z.array(z.string()),
   codeSearch: z.string().nullish(),
@@ -35,7 +35,7 @@ export const billboardFiltersSchema = z.object({
   license: booleanFilter
 });
 
-export type BillboardFiltersDto = z.TypeOf<typeof billboardFiltersSchema>
+export type BillboardFilterObj = z.TypeOf<typeof billboardFilterObjSchema>
 
 export type BillboardGetBySidesDto = Prisma.BillboardGetPayload<{
   include: {

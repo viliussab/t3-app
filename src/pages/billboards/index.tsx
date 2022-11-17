@@ -1,10 +1,11 @@
 import { NextPage } from "next";
 import Layout from "../../front/components/Layout";
 import { trpc } from "./../../utils/trpc";
-import { BillboardFiltersDto, BillboardGetBySidesDto } from "../../types/billboard.schema";
+import { BillboardFilterObj } from "../../types/billboard.schema";
 import Input from "../../front/third-party/Input";
-import BillboardFilters from "./../../front/components/BillboardFilters";
 import React from "react";
+import { Area, Billboard, BillboardSide, BillboardType } from "@prisma/client";
+import BillboardFilters from "./../../front/components/BillboardFilters";
 
 const BillboardList: NextPage = () => {
 
@@ -16,29 +17,41 @@ const BillboardList: NextPage = () => {
     }
   });
 
-  const [filters, setFilters] = React.useState<BillboardFiltersDto>({
+  const [filters, setFilters] = React.useState<BillboardFilterObj>({
     allowedSides: [],
     illumination: "True And False",
     license: "True And False"
   });
 
-  const onFilterChange = (fieldName: keyof BillboardFiltersDto, newValue: BillboardFiltersDto[keyof BillboardFiltersDto]) => {
+  const onFilterChange = (fieldName: keyof BillboardFilterObj, newValue: BillboardFilterObj[keyof BillboardFilterObj]) => {
     setFilters({...filters, [fieldName]: newValue });
   };
-
 
   if (billboardQuery.isLoading && sideNamesQuery.isLoading) {
     return <>Loading...</>;
   }
 
-
+  const billboards = billboardQuery.data?.map(
+    billboard => billboard.sides.map(side => (
+      {
+        ...billboard,
+        side
+      }
+    ))
+  ).flat();
 
   return (
     <Layout>
-      <BillboardFilters
-        sideNames={sideNamesQuery.data}
-        filters={filters}
-        onFilterChange={onFilterChange}/>
+      {
+        sideNamesQuery.data && (
+          <BillboardFilters
+            sideNames={sideNamesQuery.data}
+            filters={filters}
+            onFilterChange={onFilterChange}
+          />
+        )
+      }
+
       <div className="mt-2 overflow-x-auto relative shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -70,7 +83,7 @@ const BillboardList: NextPage = () => {
             </tr>
           </thead>
           <tbody>
-            {billboardQuery.data?.map((billboard, index) => ( 
+            {billboards?.map((billboard, index) => ( 
               <BillboardTableRow
                 billboard={billboard}
                 index={index}
@@ -84,13 +97,17 @@ const BillboardList: NextPage = () => {
 };
 
 type BillboardTableRowProps = {
-  billboard: BillboardGetBySidesDto,
+  billboard: Billboard & {
+    type: BillboardType;
+    area: Area;
+    side: BillboardSide;
+},
   index: number,
 };
 
 const BillboardTableRow = (props: BillboardTableRowProps) => {
 
-  const {billboard, index} = props;
+  const {billboard: billboard, index} = props;
         
   return (
     <tr 
