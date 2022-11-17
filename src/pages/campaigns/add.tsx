@@ -134,29 +134,31 @@ type BillboardTableRowProps = {
 const BillboardTableRow = (props: BillboardTableRowProps) => {
   const {billboard, index} = props;
 
-  <tr 
-    className={ 
-      `${index % 2 ? "bg-gray-50" : "bg-white"}
+  return (
+    <tr 
+      className={ 
+        `${index % 2 ? "bg-gray-50" : "bg-white"}
     border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-blue-100 hover:cursor-pointer`} >
-    <td className="py-4 px-6">
-      {billboard.area.locationName}
-    </td>
-    <td className="py-4 px-6">
-      {billboard.serialCode}
-    </td>
-    <th className="py-4 px-6 text-gray-900 whitespace-nowrap dark:text-white">
-      {billboard.name + " " + billboard.side.name}
-    </th>
-    <td className="py-4 px-6">
-      {billboard.address}
-    </td>
-    <td className="py-4 px-6">
-      {billboard.type.name}
-    </td>
-    <td className="py-4 px-6">
-      {billboard.side.name}
-    </td>
-  </tr>;
+      <td className="py-4 px-6">
+        {billboard.area.locationName}
+      </td>
+      <td className="py-4 px-6">
+        {billboard.serialCode}
+      </td>
+      <th className="py-4 px-6 text-gray-900 whitespace-nowrap dark:text-white">
+        {billboard.name + " " + billboard.side.name}
+      </th>
+      <td className="py-4 px-6">
+        {billboard.address}
+      </td>
+      <td className="py-4 px-6">
+        {billboard.type.name}
+      </td>
+      <td className="py-4 px-6">
+        {billboard.side.name}
+      </td>
+    </tr>
+  );
 };
 
 type DatePickerProps = {

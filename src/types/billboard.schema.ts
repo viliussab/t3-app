@@ -27,10 +27,10 @@ export const billboardCreateSchema = z.object({
 export type BillboardCreate = z.TypeOf<typeof billboardCreateSchema>
 
 export const billboardFilterObjSchema = z.object({
-  nameSearch: z.string().nullish(),
+  nameSearch: z.string(),
   allowedSides: z.array(z.string()),
-  codeSearch: z.string().nullish(),
-  addressSearch: z.string().nullish(),
+  codeSearch: z.string(),
+  addressSearch: z.string(),
   illumination: booleanFilter,
   license: booleanFilter
 });

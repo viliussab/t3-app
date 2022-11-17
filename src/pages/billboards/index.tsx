@@ -20,7 +20,10 @@ const BillboardList: NextPage = () => {
   const [filters, setFilters] = React.useState<BillboardFilterObj>({
     allowedSides: [],
     illumination: "True And False",
-    license: "True And False"
+    license: "True And False",
+    nameSearch: "",
+    codeSearch: "",
+    addressSearch: ""
   });
 
   const onFilterChange = (fieldName: keyof BillboardFilterObj, newValue: BillboardFilterObj[keyof BillboardFilterObj]) => {
