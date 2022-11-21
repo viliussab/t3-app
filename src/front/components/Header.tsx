@@ -2,7 +2,7 @@ import React from "react";
 import * as Navigation from "@radix-ui/react-navigation-menu";
 import * as Separator from "@radix-ui/react-separator";
 
-const navigationSections : Array<Section> = [
+const navigationSections : Array<SectionProps> = [
   {
     name: "Objektai",
     items: [
@@ -66,7 +66,7 @@ const Header = () => {
 
 export default Header;
 
-const Section = (props: Section) => {
+const Section = (props: SectionProps) => {
   const {name, items} = props;
 
   return (
@@ -84,7 +84,7 @@ const Section = (props: Section) => {
   );
 };
 
-const SectionItem = (props: SectionItem) => {
+const SectionItem = (props: SectionItemProps) => {
   const { name, href } = props;
 
   return (
@@ -94,12 +94,12 @@ const SectionItem = (props: SectionItem) => {
   );
 };
 
-interface Section {
+interface SectionProps {
   name: string;
-  items: Array<SectionItem>
+  items: Array<SectionItemProps>
 }
 
-interface SectionItem {
+interface SectionItemProps {
   name: string;
   href: string;
 }

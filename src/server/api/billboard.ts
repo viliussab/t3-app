@@ -1,6 +1,5 @@
 import { createRouter } from "./context";
-import { billboardCreateSchema, BillboardGetBySidesDto } from "../../types/billboard.schema";
-import { BillboardSide } from "@prisma/client";
+import { billboardCreateSchema } from "../../types/billboard.schema";
 
 export const billboardRouter = createRouter()
   .query("getAll", {
@@ -26,15 +25,14 @@ export const billboardRouter = createRouter()
       });
 
       const distinctNames = sides.map(side => side.name);
-
-      console.log("distinctNames", distinctNames);
-  
+      
       return distinctNames;
     }
   })
   .mutation("create", {
     input: billboardCreateSchema,
     async resolve({ ctx, input }) {
+
       const billboard = await ctx.prisma.billboard.create({
         data: {
           longitude: input.longitude,

@@ -114,7 +114,6 @@ const BillboardTableRow = (props: BillboardTableRowProps) => {
         
   return (
     <tr 
-      onClick={() => { console.log(billboard);}}
       className={ 
         `${index % 2 ? "bg-gray-50" : "bg-white"}
         border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-blue-100 hover:cursor-pointer`} >

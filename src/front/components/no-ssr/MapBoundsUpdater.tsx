@@ -1,6 +1,5 @@
 import { useMap } from "react-leaflet";
 import { LatLngTuple } from "leaflet";
-import { useEffect } from "react";
 
 type Props = {
   mapSW: LatLngTuple,
