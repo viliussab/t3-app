@@ -3,7 +3,7 @@ import Layout from "../../front/components/Layout";
 import type { NextPage } from "next";
 import { trpc } from "../../utils/trpc";
 import { Control, useForm, UseFormReturn, useWatch } from "react-hook-form";
-import { BillboardCreate, billboardsFilterSchema } from "../../types/billboard.schema";
+import { BillboardCreate, billboardCreateSchema } from "../../types/billboard.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../../front/third-party/Input";
 import { useEffect, useCallback } from "react";
@@ -23,14 +23,13 @@ const ObjectsCreate: NextPage = () => {
   const billboardCreate = trpc.useMutation(
     ["billboard.create"], 
     {
-      onSuccess(data) {
-        console.log("success!", data);
+      onSuccess: () => {
         router.push("/billboards");
       }
     });
 
   const form = useForm<BillboardCreate>({
-    resolver: zodResolver(billboardsFilterSchema),
+    resolver: zodResolver(billboardCreateSchema),
     defaultValues: {
       areaId: ""
     }
@@ -53,7 +52,8 @@ const ObjectsCreate: NextPage = () => {
           <div className="text-center text-xl font-semibold">
               Kurti objektą
           </div>
-          <form onSubmit={(e) => { form.handleSubmit(submitBillboard)(e);
+          <form onSubmit={(e) => { 
+            form.handleSubmit(submitBillboard)(e);
           }}>
 
             <div className="flex justify-center">

@@ -127,8 +127,8 @@ const CreateCampaign: NextPage = () => {
 };
 
 type BillboardTableRowProps = {
-        billboard: BillboardGetBySidesDto,
-        index: number,
+  billboard: BillboardGetBySidesDto,
+  index: number,
 };
 
 const BillboardTableRow = (props: BillboardTableRowProps) => {

@@ -1,4 +1,3 @@
-import { Billboard, BillboardSide } from "@prisma/client";
 import React from "react";
 import { BillboardFilterObj } from "../../types/billboard.schema";
 
@@ -14,7 +13,7 @@ const BillboardFilters = (props : BillboardFiltersProps) => {
 
   return (
     <>
-
+    
     </>
   );
 };

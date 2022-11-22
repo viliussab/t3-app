@@ -4,10 +4,14 @@
     "project": "./tsconfig.json"
   },
   "plugins": ["@typescript-eslint"],
-  "extends": ["next/core-web-vitals",
-    "plugin:@typescript-eslint/recommended"
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "eslint:recommended",
+    "next",
+    "next/core-web-vitals"
   ],
   "rules": {
+    "@typescript-eslint/no-unused-vars": ["error"],
     "import/no-unresolved": 1,
     "no-console": [ 1 ],
     "no-debugger": [ 1 ],
@@ -39,8 +43,6 @@
     "no-lone-blocks": [ 1 ],
     "no-native-reassign": [ 1 ],
     "no-nested-ternary": [ 1 ],
-    "no-fallthrough": [ 1 ],
-    "no-undef": [ 1 ],
-    "no-unused-vars": [ 1 ]
+    "no-fallthrough": [ 1 ]
   }
 }
