@@ -45,5 +45,3 @@ export type BillboardGetBySidesDto = Prisma.BillboardGetPayload<{
 }> & {
   side: BillboardSide
 }
-
-

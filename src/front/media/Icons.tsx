@@ -1,4 +1,4 @@
-import {MdHome, MdMap, MdAdd, MdLabel, MdLocationOn, MdList } from "react-icons/md";
+import { MdHome, MdMap, MdAdd, MdLabel, MdLocationOn, MdList } from "react-icons/md";
 
 const Icons = {
   Home: MdHome,

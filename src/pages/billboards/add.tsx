@@ -11,9 +11,9 @@ import dynamic from "next/dynamic";
 import { Area } from "@prisma/client";
 import { useRouter } from "next/router";
 import ContentContainer from "../../front/components/ContentContainer";
-import SubmitButton from "../../front/components/SubmitButton";
+import SubmitButton from "../../front/components/form/SubmitButton";
 
-const MarkerMap = dynamic(() => import("../../front/components/no-ssr/CreateMarkerMap"), {ssr: false});
+const MarkerMap = dynamic(() => import("../../front/components/maps/CreateMarkerMap"), {ssr: false});
 
 const ObjectsCreate: NextPage = () => {
   const router = useRouter();

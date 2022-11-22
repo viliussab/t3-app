@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { Area } from "@prisma/client";
 import Layout from "./../../front/components/Layout";
 
-const MapNoSSR = dynamic(() => import("../../front/components/no-ssr/StaticAreaMap"), {ssr: false});
+const MapNoSSR = dynamic(() => import("../../front/components/maps/StaticAreaMap"), {ssr: false});
 
 const Index = () => {
   const {data, isLoading} = trpc.useQuery(["area.getAll"]);
@@ -32,7 +32,6 @@ const AreaCard = (props : AreaCardProps) => {
   const {
     area
   } = props;
-
 
   return <div className="rounded-2xl shadow-md hover:shadow-2xl ease-in-out duration-300 cursor-pointer ">
     <p className="text-xl text-center pt-4 pb-4">
