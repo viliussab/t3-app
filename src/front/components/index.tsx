@@ -2,14 +2,14 @@ import BillboardFilters from "./BillboardFilters";
 import SubmitButton from "./form/SubmitButton";
 import Header from "./Header";
 import Layout from "./Layout";
-import ContentContainer from "./ContentContainer";
+import Paper from "./Paper";
 
 const Components = {
   SubmitButton,
   BillboardFilters,
   Header,
   Layout,
-  ContentContainer
+  Paper
 };
 
 export default Components;

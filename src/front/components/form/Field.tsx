@@ -17,7 +17,6 @@ const Field = <T extends RHC.FieldValues, > (props: FieldProps<T>) => {
     <Mui.TextField
       label={label}
       fullWidth
-      required
       variant="filled"
       error={!!error}
       helperText={error ? error.message?.toString() : ""}

@@ -1,3 +1,4 @@
-export type StringDictionary = {
-    [key: string]: string;
+export type SelectOption = {
+    key: string,
+    displayValue: string | number
  }

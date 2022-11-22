@@ -1,11 +1,11 @@
 import React from "react";
 
-type ContentContainerProps = {
+type PaperProps = {
     children: React.ReactNode
     className: string
 }
 
-const ContentContainer = (props : ContentContainerProps) => {
+const Paper = (props : PaperProps) => {
   return (
     <>
       <div className={`shadow-md hover:shadow-lg ${props.className}`}>
@@ -16,4 +16,4 @@ const ContentContainer = (props : ContentContainerProps) => {
   );
 };
 
-export default ContentContainer;
+export default Paper;

@@ -1,13 +1,13 @@
 import React from "react";
 import * as RHC from "react-hook-form";
 import * as Mui from "@mui/material";
-import { StringDictionary } from "../../../types/common.schema";
+import { SelectOption } from "../../../types/common.schema";
 
 type SelectProps<T extends RHC.FieldValues> = {
     fieldName: RHC.Path<T>,
     form: RHC.UseFormReturn<T>,
     label: string,
-    options: StringDictionary
+    options: SelectOption[]
 }
 
 const Select = <T extends RHC.FieldValues, > (props: SelectProps<T>) => {
@@ -27,8 +27,8 @@ const Select = <T extends RHC.FieldValues, > (props: SelectProps<T>) => {
         <Mui.MenuItem value={""}>
           <em>Nepasirinkta</em>
         </Mui.MenuItem>
-        {Object.entries(options).map(([key, displayValue]) => 
-          <Mui.MenuItem key={key} value={key}>{displayValue}</Mui.MenuItem>
+        {options.map((option) => 
+          <Mui.MenuItem key={option.key} value={option.key}>{option.displayValue}</Mui.MenuItem>
         )}
       </Mui.Select>
     </Mui.FormControl>

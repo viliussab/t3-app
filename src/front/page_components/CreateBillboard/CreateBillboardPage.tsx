@@ -8,6 +8,8 @@ import * as NextRouter from "next/router";
 import Components from "../../components";
 import CoordinatesSection from "./CoordinatesSection";
 import * as Mui from "@mui/material";
+import Form from "../../components/form";
+import optionsService from "./../../../services/options";
 
 const CreateBillboardPage: NextPage = () => {
   const router = NextRouter.useRouter();
@@ -37,93 +39,53 @@ const CreateBillboardPage: NextPage = () => {
     return <div>Loading...</div>;
   }
 
-  const { errors } = form.formState;
-
   return (
     <Components.Layout>
       <div className="flex justify-center">
-        <Components.ContentContainer className="m-4 p-4 bg-gray-50">
+        <Components.Paper className="m-4 p-4 bg-gray-50">
           <div className="text-center text-xl font-semibold">
               Kurti objektą
           </div>
           <form onSubmit={(e) => { 
             form.handleSubmit(submitBillboard)(e);
           }}>
-
             <div className="flex justify-center">
               <div className="w-64 pt-0 m-4 space-y-3">
-                <Mui.TextField
+                <Form.Field
                   label='Kodas'
-                  fullWidth
-                  required
-                  variant="filled"
-                  error={!!errors["serialCode"]}
-                  helperText={errors["serialCode"] ? errors["serialCode"].message : ""}
-                  {...form.register("serialCode")}
+                  form={form}
+                  fieldName="serialCode"
+                  muiProps={{required: true}}
                 />
-                <Mui.FormControl variant="filled" fullWidth>
-                  <Mui.InputLabel id="demo-simple-select-standard-label">Miestas</Mui.InputLabel>
-                  <Mui.Select
-                    fullWidth
-                    required
-                    defaultValue=""
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    {...form.register("areaId")}
-                    value={form.watch("areaId")}
-                  >
-                    <Mui.MenuItem value={""}>
-                      <em>Nepasirinkta</em>
-                    </Mui.MenuItem>
-                    {areaQuery.data?.map(area => 
-                      <Mui.MenuItem key={area.id} value={area.id}>{area.locationName}</Mui.MenuItem>
-                    )}
-                  </Mui.Select>
-                </Mui.FormControl>
-                <Mui.FormControl variant="filled" fullWidth>
-                  <Mui.InputLabel id="demo-simple-select-standard-label">Tipas</Mui.InputLabel>
-                  <Mui.Select
-                    fullWidth
-                    required
-                    defaultValue=""
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    {...form.register("typeId")}
-                  >
-                    <Mui.MenuItem value={""}>
-                      <em>Nepasirinkta</em>
-                    </Mui.MenuItem>
-                    {typesQuery.data?.map(type => 
-                      <Mui.MenuItem key={type.id} value={type.id}>{type.name}</Mui.MenuItem>
-                    )}
-                  </Mui.Select>
-                </Mui.FormControl>
-                <Mui.TextField
+                <Form.Select
+                  form={form}
+                  label="Miestas"
+                  fieldName="areaId"
+                  options={optionsService.convert(areaQuery.data, "id", "locationName")}
+                />
+                <Form.Select
+                  form={form}
+                  label="Tipas"
+                  fieldName="typeId"
+                  options={optionsService.convert(typesQuery.data, "id", "name")}
+                />
+                <Form.Field
                   label='Adresas'
-                  fullWidth
-                  required
-                  variant="filled"
-                  error={!!errors["address"]}
-                  helperText={errors["address"] ? errors["address"].message : ""}
-                  {...form.register("address")}
+                  form={form}
+                  fieldName="address"
+                  muiProps={{required: true}}
                 />
-                <Mui.TextField
+                <Form.Field
                   label='Pavadinimas'
-                  fullWidth
-                  required
-                  variant="filled"
-                  error={!!errors["name"]}
-                  helperText={errors["name"] ? errors["name"].message : ""}
-                  {...form.register("name")}
+                  form={form}
+                  fieldName="name"
+                  muiProps={{required: true}}
                 />
-                <Mui.TextField
+                <Form.Field
                   label='Pusė'
-                  fullWidth
-                  required
-                  variant="filled"
-                  error={!!errors["sideName"]}
-                  helperText={errors["sideName"] ? errors["sideName"].message : ""}
-                  {...form.register("sideName")}
+                  form={form}
+                  fieldName="sideName"
+                  muiProps={{required: true}}
                 />
                 <FullNameField control={form.control}/>
                 <Mui.FormControlLabel
@@ -144,7 +106,7 @@ const CreateBillboardPage: NextPage = () => {
               <Components.SubmitButton isSubmitting={billboardCreate.isLoading}>Kurti naują</Components.SubmitButton>
             </div>
           </form>
-        </Components.ContentContainer>
+        </Components.Paper>
       </div>
     </Components.Layout>
   );
