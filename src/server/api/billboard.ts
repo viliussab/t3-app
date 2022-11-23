@@ -35,19 +35,9 @@ export const billboardRouter = createRouter()
 
       const billboard = await ctx.prisma.billboard.create({
         data: {
-          longitude: input.longitude,
-          latitude: input.latitude,
-          name: input.name,
-          serialCode: input.serialCode,
-          isIlluminated: input.isIlluminated,
-          isLicensed: input.isLicensed,
-          address: input.address,
-            
-          typeId: input.typeId,
-          areaId: input.areaId
+          ...input
         }
       });
-
       const side = await ctx.prisma.billboardSide.create({
         data: {
           billboardId: billboard.id,

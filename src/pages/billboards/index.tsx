@@ -2,10 +2,10 @@ import { NextPage } from "next";
 import Layout from "../../front/components/Layout";
 import { trpc } from "./../../utils/trpc";
 import { BillboardFilterObj } from "../../types/billboard.schema";
-import Input from "../../front/third-party/Input";
 import React from "react";
 import { Area, Billboard, BillboardSide, BillboardType } from "@prisma/client";
 import BillboardFilters from "./../../front/components/BillboardFilters";
+import * as Mui from "@mui/material";
 
 const BillboardList: NextPage = () => {
 
@@ -136,10 +136,10 @@ const BillboardTableRow = (props: BillboardTableRowProps) => {
         {billboard.side.name}
       </td>
       <td className="py-4 px-6">
-        <Input.Checkbox checked={billboard.isLicensed} />
+        <Mui.Checkbox checked={billboard.isLicensed} />
       </td>
       <td className="py-4 px-6">
-        <Input.Checkbox checked={billboard.isIlluminated} />
+        <Mui.Checkbox checked={billboard.isIlluminated} />
       </td>
     </tr>
   );
