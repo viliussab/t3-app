@@ -1,5 +1,6 @@
 import React from "react";
 import { BillboardFilterObj } from "../../types/billboard.schema";
+import Filters from "./filter";
 
 type BillboardFiltersProps = {
     sideNames: Array<string>
@@ -13,7 +14,11 @@ const BillboardFilters = (props : BillboardFiltersProps) => {
 
   return (
     <>
-    
+      <Filters.Search
+        label="dasdas"
+        value={filters.search}
+        onChange={(value) => onFilterChange("search", value)}
+      />
     </>
   );
 };
