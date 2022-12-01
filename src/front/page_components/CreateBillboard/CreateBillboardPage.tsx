@@ -6,7 +6,7 @@ import { BillboardCreate, billboardCreateSchema } from "../../../types/billboard
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as NextRouter from "next/router";
 import Components from "../../components";
-import CoordinatesSection from "./CoordinatesSection";
+import CoordinatesSection from "./CreateBillboardCoordinatesSection";
 import * as Mui from "@mui/material";
 import Form from "../../components/form";
 import optionsService from "./../../../services/options";
