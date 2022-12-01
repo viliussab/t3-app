@@ -1,12 +1,3 @@
-import type { NextPage } from "next";
-import Layout from "./../front/components/Layout";
-
-const Home: NextPage = () => {
-  return (
-    <Layout>
-      <div>Main page</div>
-    </Layout>
-  );
-};
+import Home from "../front/page_components/Home/Home";
 
 export default Home;
