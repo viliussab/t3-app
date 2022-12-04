@@ -1,6 +1,14 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { PrismaClient } from "@prisma/client";
+import arrayService from "../src/services/array";
+import stopsReader from "./seeds/stopsReader";
 
 const prisma = new PrismaClient();
+
+// eslint-disable-next-line func-style
+function throwExpression(errorMessage: string): never {
+  throw new Error(errorMessage);
+}
 
 // eslint-disable-next-line func-style
 async function main() {
@@ -34,6 +42,51 @@ async function main() {
         name: "Maxima"
       }
     ]});
+  }
+
+  if (await prisma.billboard.count() === 0)
+  {
+    const billboards = await stopsReader.readAsync();
+
+    if (!billboards) {
+      return;
+    }
+
+    const serialCodes = billboards.map(billboard => billboard.serialCode).filter(arrayService.isUnique);
+
+    serialCodes.forEach(async (code) => {
+      const billboardsByCode = billboards.filter(b => b.serialCode === code);
+
+      const billboardProto = billboardsByCode[0] ?? throwExpression("billboard null");
+      const area = await prisma.area.findFirst() ?? throwExpression("area null");
+      const type = await prisma.billboardType.findFirst() ?? throwExpression("type null");
+
+      const toRandomCoordinate = (from: number, to: number) => {
+        const delta = to - from;
+        return delta * Math.random() + from;
+      };
+
+      const billboard = await prisma.billboard.create({data: 
+        {
+          address: billboardProto.address,
+          name: billboardProto.name,
+          isIlluminated: true,
+          isLicensed: true,
+          areaId: area.id,
+          latitude: toRandomCoordinate(area.southWestLat, area.northEastLat),
+          longitude: toRandomCoordinate(area.southWestLong, area.southWestLong),
+          serialCode: billboardProto.serialCode,
+          typeId: type.id
+        }
+      });
+
+      await prisma.billboardSide.createMany({
+        data: billboardsByCode.map(b => ({
+          billboardId: billboard.id,
+          name: b.side
+        }))
+      });
+    });
   }
 }
 

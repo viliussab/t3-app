@@ -91,7 +91,7 @@ const BillboardListPage: NextPage = () => {
                 <BillboardTableRow
                   billboard={billboard}
                   index={index}
-                  key={billboard.id}/>)
+                  key={billboard.side.id}/>)
               )}
             </tbody>
           </table>
@@ -126,7 +126,7 @@ const BillboardTableRow = (props: BillboardTableRowProps) => {
         {billboard.serialCode}
       </td>
       <th className="py-4 px-6 text-gray-900 whitespace-nowrap">
-        {billboard.name + " " + billboard.side.name}
+        {billboard.name}
       </th>
       <td className="py-4 px-6">
         {billboard.address}
