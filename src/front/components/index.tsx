@@ -1,4 +1,4 @@
-import BillboardFilters from "./BillboardFilters";
+import BillboardFilters from "../multi-page-components/BillboardFilters";
 import SubmitButton from "./form/SubmitButton";
 import Header from "./Header";
 import Layout from "./Layout";

@@ -1,3 +1,3 @@
-import BillboardListPage from "../../front/page_components/BillboardList/BillboardListPage";
+import BillboardListPage from "../../front/page-components/BillboardList/BillboardListPage";
 
 export default BillboardListPage;

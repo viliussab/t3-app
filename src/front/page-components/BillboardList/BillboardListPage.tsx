@@ -4,7 +4,7 @@ import { trpc } from "../../../utils/trpc";
 import { BillboardFilterObj } from "../../../types/billboard.schema";
 import React from "react";
 import { Area, Billboard, BillboardSide, BillboardType } from "@prisma/client";
-import BillboardFilters from "../../components/BillboardFilters";
+import BillboardFilters from "../../multi-page-components/BillboardFilters";
 import * as Mui from "@mui/material";
 import { BooleanFilters } from "../../../types/filters.schema";
 

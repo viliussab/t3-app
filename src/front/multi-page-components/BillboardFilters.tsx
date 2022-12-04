@@ -1,7 +1,7 @@
 import React from "react";
 import { BillboardFilterObj } from "../../types/billboard.schema";
-import Filters from "./filter";
-import optionsService from "./../../services/options";
+import Filters from "../components/filter";
+import optionsService from "../../services/options";
 import { BooleanFilters } from "../../types/filters.schema";
 
 type BillboardFiltersProps = {

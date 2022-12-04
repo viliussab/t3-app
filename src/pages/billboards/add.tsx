@@ -1,3 +1,3 @@
-import CreateBillboardPage from "./../../front/page_components/CreateBillboard/CreateBillboardPage";
+import CreateBillboardPage from "./../../front/page-components/CreateBillboard/CreateBillboardPage";
   
 export default CreateBillboardPage;
