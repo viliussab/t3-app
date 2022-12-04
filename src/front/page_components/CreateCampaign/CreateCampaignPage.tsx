@@ -49,7 +49,7 @@ const CreateCampaignPage : NextPage = () => {
             label="Klientas"
             form={form}
             fieldName="customerId"
-            options={optionsService.convert(customersQuery.data, "id", "name")}
+            options={optionsService.convertByFields(customersQuery.data, "id", "name")}
           />
           <DateFrom form={form} />
           <DateTo form={form} />

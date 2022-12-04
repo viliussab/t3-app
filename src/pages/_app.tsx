@@ -6,7 +6,7 @@ import superjson from "superjson";
 import type { AppType } from "next/app";
 import type { AppRouter } from "../server/api";
 import type { Session } from "next-auth";
-import "../front/globals.css";
+import "../tailwind.css";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

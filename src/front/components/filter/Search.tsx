@@ -1,5 +1,6 @@
 import React from "react";
 import * as Mui from "@mui/material";
+import Icons from "../Icons";
 
 const REFRESH_TIME_MS = 1000;
 
@@ -36,8 +37,11 @@ export default function SearchFilter(props : SearchFilterProps) {
   
   return (
     <Mui.TextField
+      fullWidth
+      variant="outlined"
       label={label}
       value={searchTerm}
+      InputProps={{endAdornment: <Icons.Search size={28}/> }}
       onChange={(event) => setSearchTerm(event.target.value)}
       {...muiProps}
     />

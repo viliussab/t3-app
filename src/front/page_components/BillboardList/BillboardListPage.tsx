@@ -6,6 +6,7 @@ import React from "react";
 import { Area, Billboard, BillboardSide, BillboardType } from "@prisma/client";
 import BillboardFilters from "../../components/BillboardFilters";
 import * as Mui from "@mui/material";
+import { BooleanFilters } from "../../../types/filters.schema";
 
 const BillboardListPage: NextPage = () => {
 
@@ -19,8 +20,8 @@ const BillboardListPage: NextPage = () => {
 
   const [filters, setFilters] = React.useState<BillboardFilterObj>({
     allowedSides: [],
-    illumination: "True And False",
-    license: "True And False",
+    illumination: BooleanFilters.Both,
+    license: BooleanFilters.Both,
     search: ""
   });
 
@@ -43,55 +44,58 @@ const BillboardListPage: NextPage = () => {
 
   return (
     <Layout>
-      {
-        sideNamesQuery.data && (
-          <BillboardFilters
-            sideNames={sideNamesQuery.data}
-            filters={filters}
-            onFilterChange={onFilterChange}
-          />
-        )
-      }
-
-      <div className="mt-2 overflow-x-auto relative shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="py-3 px-6">
+      <div className="mt-4">
+        {
+          sideNamesQuery.data && (
+            <div className="flex justify-center">
+              <BillboardFilters
+                sideNames={sideNamesQuery.data}
+                filters={filters}
+                onFilterChange={onFilterChange}
+              />
+            </div>
+          )
+        }
+        <div className="mt-2 overflow-x-auto relative shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left text-gray-500">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th scope="col" className="py-3 px-6">
                 Miestas
-              </th>
-              <th scope="col" className="py-3 px-6">
+                </th>
+                <th scope="col" className="py-3 px-6">
                 Kodas
-              </th>
-              <th scope="col" className="py-3 px-6">
+                </th>
+                <th scope="col" className="py-3 px-6">
                 Pavadinimas
-              </th>
-              <th scope="col" className="py-3 px-6">
+                </th>
+                <th scope="col" className="py-3 px-6">
                 Adresas
-              </th>
-              <th scope="col" className="py-3 px-6">
+                </th>
+                <th scope="col" className="py-3 px-6">
                 Tipas
-              </th>
-              <th scope="col" className="py-3 px-6">
+                </th>
+                <th scope="col" className="py-3 px-6">
                 Pusė
-              </th>
-              <th scope="col" className="py-3 px-6">
+                </th>
+                <th scope="col" className="py-3 px-6">
                 Leidimas
-              </th>
-              <th scope="col" className="py-3 px-6">
+                </th>
+                <th scope="col" className="py-3 px-6">
                 Apšvietimas
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {billboards?.map((billboard, index) => ( 
-              <BillboardTableRow
-                billboard={billboard}
-                index={index}
-                key={billboard.id}/>)
-            )}
-          </tbody>
-        </table>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {billboards?.map((billboard, index) => ( 
+                <BillboardTableRow
+                  billboard={billboard}
+                  index={index}
+                  key={billboard.id}/>)
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </Layout>
   );
@@ -114,14 +118,14 @@ const BillboardTableRow = (props: BillboardTableRowProps) => {
     <tr 
       className={ 
         `${index % 2 ? "bg-gray-50" : "bg-white"}
-        border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-blue-100 hover:cursor-pointer`} >
+        border-b hover:bg-blue-100 hover:cursor-pointer`} >
       <td className="py-4 px-6">
         {billboard.area.locationName}
       </td>
       <td className="py-4 px-6">
         {billboard.serialCode}
       </td>
-      <th className="py-4 px-6 text-gray-900 whitespace-nowrap dark:text-white">
+      <th className="py-4 px-6 text-gray-900 whitespace-nowrap">
         {billboard.name + " " + billboard.side.name}
       </th>
       <td className="py-4 px-6">
