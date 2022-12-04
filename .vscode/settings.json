@@ -5,5 +5,12 @@
         },
     "editor.quickSuggestions": {
         "strings": true
-    }
+    },
+    "git.confirmSync": false,
+    "git.autofetch": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "files.autoSave": "onFocusChange",
+    "typescript.updateImportsOnFileMove.enabled": "always",
 }
