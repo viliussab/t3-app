@@ -1,19 +1,77 @@
 import { createRouter } from "./context";
-import { billboardCreateSchema } from "../../types/billboard.schema";
+import { billboardCreateSchema, billboardFilterObjSchema } from "../../types/billboard.schema";
+import prismaFactory from "../infrastructure/prismaFactory";
 
 export const billboardRouter = createRouter()
   .query("getAll", {
-    async resolve({ ctx }) {
+    input: billboardFilterObjSchema || undefined,
+    async resolve({ ctx, input }) {
 
-      const billboards = await ctx.prisma.billboard.findMany({
+      const queryResult = await ctx.prisma.billboard.findMany({
         include: {
           type: true,
           area: true,
-          sides: true
+          sides: !input.allowedSides.length ? true : {
+            where: {
+              name: {
+                in: input.allowedSides
+              }
+            }
+          }
+        },
+        where: {
+          isLicensed: prismaFactory.buildBoolFilterWhereClause(input.license),
+          isIlluminated: prismaFactory.buildBoolFilterWhereClause(input.illumination)
         }
       });
+
+      if (!input.search) {
+        return queryResult;
+      }
+
+      const getCaseInvariantWords = (str: string) => str.split(" ")
+        .filter(keyword => keyword !== "")
+        .map(keyword => keyword.toLocaleLowerCase());
+
+      const searchKeywords = getCaseInvariantWords(input.search);
+
+      const isInSearch = (field: string | undefined) => {
+        if (!field) {
+          return false;
+        }
+
+        const fieldWords = getCaseInvariantWords(field);
+
+        if (fieldWords.length < searchKeywords.length) {
+          return false;
+        }
+
+        if (searchKeywords.length === 1) {
+          const firstKeyword = [...searchKeywords].shift() || "";
+
+          return fieldWords.some(fieldWord => fieldWord.includes(firstKeyword));
+        }
+
+        const first = [...searchKeywords].shift() || "";
+        const last = [...searchKeywords].pop() || "";
+        const inBetween = [...searchKeywords].slice(1).slice(-1);
+
+        return fieldWords.some(fieldKeyWord => fieldKeyWord.endsWith(first))
+          && fieldWords.some(fieldKeyWord => fieldKeyWord.startsWith(last))
+          && (
+            inBetween.length
+            && inBetween.every((searchKeyword, i) => searchKeyword === fieldWords[i + 1])
+          );
+      };
+
+      const searchFilteredBillboards = queryResult.filter(billboard => 
+        isInSearch(billboard.address)
+        || isInSearch(billboard.name)
+        || isInSearch(billboard.area.locationName)
+        || isInSearch(billboard.type.name)
+      );
   
-      return billboards;
+      return searchFilteredBillboards;
     }
   })
   .query("getDistinctSideNames", {

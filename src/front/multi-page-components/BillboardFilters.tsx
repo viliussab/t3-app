@@ -14,7 +14,6 @@ const BillboardFilters = (props : BillboardFiltersProps) => {
   const {sideNames, filters, onFilterChange} = props;
 
   return (
-
     <div className="flex gap-2">
       <div className="w-64">
         <Filters.Search
