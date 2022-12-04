@@ -10,7 +10,12 @@ import { BooleanFilters } from "../../../types/filters.schema";
 
 const BillboardListPage: NextPage = () => {
 
-  const billboardQuery = trpc.useQuery(["billboard.getAll"]);
+  const [filters, setFilters] = React.useState<BillboardFilterObj>({
+    allowedSides: [],
+    illumination: BooleanFilters.Both,
+    license: BooleanFilters.Both,
+    search: ""
+  });
 
   const sideNamesQuery = trpc.useQuery(["billboard.getDistinctSideNames"], {
     onSuccess: (data) => {
@@ -18,12 +23,7 @@ const BillboardListPage: NextPage = () => {
     }
   });
 
-  const [filters, setFilters] = React.useState<BillboardFilterObj>({
-    allowedSides: [],
-    illumination: BooleanFilters.Both,
-    license: BooleanFilters.Both,
-    search: ""
-  });
+  const billboardQuery = trpc.useQuery(["billboard.getAll", {...filters}], {enabled: !sideNamesQuery.isLoading});
 
   const onFilterChange = (fieldName: keyof BillboardFilterObj, newValue: BillboardFilterObj[keyof BillboardFilterObj]) => {
     setFilters({...filters, [fieldName]: newValue });
