@@ -22,15 +22,16 @@ const MultiSelectFilter = (props: SelectProps) => {
   };
 
   return (
-    <Mui.FormControl variant="filled" fullWidth>
-      <Mui.InputLabel id="select-standard-label">{label}</Mui.InputLabel>
+    <Mui.FormControl variant="outlined" fullWidth>
+      <Mui.InputLabel id={`select-standard-label-${label}`}>{label}</Mui.InputLabel>
       <Mui.Select<string[]>
         fullWidth
         multiple
         value={selectedKeys}
         required
         renderValue={(selected) => selected.join(", ")}
-        labelId="select-standard-label"
+        input={<Mui.OutlinedInput label={label} />}
+        labelId={`select-standard-label-${label}`}
         id="select-standard"
         onChange={handleChange}
       >

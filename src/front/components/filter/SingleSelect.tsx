@@ -13,20 +13,18 @@ const SingleSelectFilter = (props: SelectProps) => {
   const {label, options, value} = props;
 
   return (
-    <Mui.FormControl variant="filled" fullWidth>
-      <Mui.InputLabel id="select-standard-label">{label}</Mui.InputLabel>
+    <Mui.FormControl variant="outlined" fullWidth>
+      <Mui.InputLabel id={`select-standard-label-${label}`}>{label}</Mui.InputLabel>
       <Mui.Select
         fullWidth
         value={value}
         required
         defaultValue=""
-        labelId="select-standard-label"
+        input={<Mui.OutlinedInput label={label} />}
+        labelId={`select-standard-label-${label}`}
         id="select-standard"
         onChange={(event) => props.onChange({key: event.target.value, displayValue: event.target.name})}
       >
-        <Mui.MenuItem value={""}>
-          <em>Nepasirinkta</em>
-        </Mui.MenuItem>
         {options?.map((option) => 
           <Mui.MenuItem key={option.key} value={option.key}>{option.displayValue}</Mui.MenuItem>
         )}

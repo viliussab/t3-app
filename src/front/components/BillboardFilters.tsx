@@ -11,26 +11,21 @@ type BillboardFiltersProps = {
 }
 
 const BillboardFilters = (props : BillboardFiltersProps) => {
-
-  console.log("filters", props.filters);
-
   const {sideNames, filters, onFilterChange} = props;
 
   return (
 
-    <div className="flex " >
-
-
-      <div className="w-64 pt-0 m-4 space-y-3">
+    <div className="flex gap-2">
+      <div className="w-64">
         <Filters.Search
           label="Paieška"
           value={filters.search}
           onChange={(value) => onFilterChange("search", value)}
         />
       </div>
-      <div className="w-64 pt-0 m-4 space-y-3">
+      <div className="w-64">
         <Filters.MultiSelect 
-          label="Sides"
+          label="Pusė"
           onChange={(values) => onFilterChange("allowedSides", values)}
           options={optionsService.convert({
             values: sideNames,
@@ -40,30 +35,32 @@ const BillboardFilters = (props : BillboardFiltersProps) => {
           selectedKeys={filters.allowedSides}
         />
       </div>
-
-
-      <Filters.SingleSelect
-        label="ADsa"
-        onChange={(value) => onFilterChange("license", value.key)}
-        value={filters.license}
-        options={
-          optionsService.convert({
-            values: Object.values(BooleanFilters),
-            extractKey: (value) => value,
-            extractDisplayValue: (value) => value
-          })}
-      />
-      <Filters.SingleSelect
-        label="ADsa"
-        onChange={(value) => onFilterChange("illumination", value.key)}
-        value={filters.illumination}
-        options={
-          optionsService.convert({
-            values: Object.values(BooleanFilters),
-            extractKey: (value) => value,
-            extractDisplayValue: (value) => value
-          })}
-      />
+      <div className="w-64">
+        <Filters.SingleSelect
+          label="Licenzija"
+          onChange={(value) => onFilterChange("license", value.key)}
+          value={filters.license}
+          options={
+            optionsService.convert({
+              values: Object.values(BooleanFilters),
+              extractKey: (value) => value,
+              extractDisplayValue: (value) => value
+            })}
+        />
+      </div>
+      <div className="w-64">
+        <Filters.SingleSelect
+          label="Apšvietimas"
+          onChange={(value) => onFilterChange("illumination", value.key)}
+          value={filters.illumination}
+          options={
+            optionsService.convert({
+              values: Object.values(BooleanFilters),
+              extractKey: (value) => value,
+              extractDisplayValue: (value) => value
+            })}
+        />
+      </div>
     </div>
   );
 };
