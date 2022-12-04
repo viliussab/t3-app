@@ -17,13 +17,13 @@ const BillboardListPage: NextPage = () => {
     search: ""
   });
 
-  const billboardQuery = trpc.useQuery(["billboard.getAll", {...filters}]);
-
   const sideNamesQuery = trpc.useQuery(["billboard.getDistinctSideNames"], {
     onSuccess: (data) => {
       setFilters({...filters, allowedSides: data});
     }
   });
+
+  const billboardQuery = trpc.useQuery(["billboard.getAll", {...filters}], {enabled: !sideNamesQuery.isLoading});
 
   const onFilterChange = (fieldName: keyof BillboardFilterObj, newValue: BillboardFilterObj[keyof BillboardFilterObj]) => {
     setFilters({...filters, [fieldName]: newValue });
