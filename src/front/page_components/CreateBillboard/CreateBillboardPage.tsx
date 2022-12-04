@@ -61,13 +61,13 @@ const CreateBillboardPage: NextPage = () => {
                   form={form}
                   label="Miestas"
                   fieldName="areaId"
-                  options={optionsService.convert(areaQuery.data, "id", "locationName")}
+                  options={optionsService.convertByFields(areaQuery.data, "id", "locationName")}
                 />
                 <Form.Select
                   form={form}
                   label="Tipas"
                   fieldName="typeId"
-                  options={optionsService.convert(typesQuery.data, "id", "name")}
+                  options={optionsService.convertByFields(typesQuery.data, "id", "name")}
                 />
                 <Form.Field
                   label='Adresas'

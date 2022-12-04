@@ -8,6 +8,7 @@ import { env } from "./src/env/server.mjs";
  * @param {T} config - A generic parameter that flows through to the return type
  * @constraint {{import('next').NextConfig}}
  */
+// eslint-disable-next-line func-style
 function defineNextConfig(config) {
   return config;
 }
@@ -18,6 +19,6 @@ export default defineNextConfig({
   // Next.js i18n docs: https://nextjs.org/docs/advanced-features/i18n-routing
   i18n: {
     locales: ["en"],
-    defaultLocale: "en",
-  },
+    defaultLocale: "en"
+  }
 });

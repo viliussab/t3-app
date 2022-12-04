@@ -1,6 +1,6 @@
 import { SelectOption } from "../types/common.schema";
 
-const convert = <T>(values: Array<T> | undefined, keyField: keyof T, displayField: keyof T) : Array<SelectOption> => {
+const convertByFields = <T>(values: Array<T> | undefined, keyField: keyof T, displayField: keyof T) : Array<SelectOption> => {
   if (!values) {
     return [];
   }
@@ -13,8 +13,30 @@ const convert = <T>(values: Array<T> | undefined, keyField: keyof T, displayFiel
   return options;
 };
 
+type convertProps<T> = {
+  values: Array<T> | undefined;
+  extractKey: (value: T) => string;
+  extractDisplayValue: (value: T) => string;
+}
+
+const convert = <T>(props: convertProps<T>) => {
+  const { values, extractKey, extractDisplayValue } = props;
+
+  if (!values) {
+    return [];
+  }
+
+  const options = values.map(value => ({
+    key: extractKey(value),
+    displayValue: extractDisplayValue(value)
+  }));
+
+  return options as SelectOption[];
+};
+
 const optionsService = {
-  convert
+  convert,
+  convertByFields
 };
 
 export default optionsService;

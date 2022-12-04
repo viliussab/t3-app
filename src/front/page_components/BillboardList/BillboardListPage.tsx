@@ -6,6 +6,7 @@ import React from "react";
 import { Area, Billboard, BillboardSide, BillboardType } from "@prisma/client";
 import BillboardFilters from "../../components/BillboardFilters";
 import * as Mui from "@mui/material";
+import { BooleanFilters } from "../../../types/filters.schema";
 
 const BillboardListPage: NextPage = () => {
 
@@ -19,8 +20,8 @@ const BillboardListPage: NextPage = () => {
 
   const [filters, setFilters] = React.useState<BillboardFilterObj>({
     allowedSides: [],
-    illumination: "True And False",
-    license: "True And False",
+    illumination: BooleanFilters.Both,
+    license: BooleanFilters.Both,
     search: ""
   });
 

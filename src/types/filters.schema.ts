@@ -1,5 +1,12 @@
 import { z } from "zod";
 
-export const booleanFilter = z.enum(["True", "False", "True And False"]);
+export enum BooleanFilters {
+    True = "True",
+    False = "False",
+    Both = "True And False",
+}
 
-export type BooleanFilter = z.infer<typeof booleanFilter>;
+export const booleanFilterSchema = z.nativeEnum(BooleanFilters);
+
+export type BooleanFilterEnum = z.infer<typeof booleanFilterSchema>;
+
