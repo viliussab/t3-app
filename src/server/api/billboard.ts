@@ -25,9 +25,6 @@ export const billboardRouter = createRouter()
         }
       });
 
-      if (!input.search) {
-        return queryResult;
-      }
 
       const getCaseInvariantWords = (str: string) => str.split(" ")
         .filter(keyword => keyword !== "")
@@ -35,41 +32,52 @@ export const billboardRouter = createRouter()
 
       const searchKeywords = getCaseInvariantWords(input.search);
 
-      const isInSearch = (field: string | undefined) => {
-        if (!field) {
+      if (!searchKeywords.length) {
+        return queryResult;
+      }
+
+      const fullfillsSearch = (text: string | undefined) => {
+        if (!text) {
           return false;
         }
 
-        const fieldWords = getCaseInvariantWords(field);
+        const words = getCaseInvariantWords(text);
 
-        if (fieldWords.length < searchKeywords.length) {
+        if (words.length < searchKeywords.length) {
           return false;
         }
 
         if (searchKeywords.length === 1) {
           const firstKeyword = [...searchKeywords].shift() || "";
 
-          return fieldWords.some(fieldWord => fieldWord.includes(firstKeyword));
+          return words.some(fieldWord => fieldWord.includes(firstKeyword));
         }
 
         const first = [...searchKeywords].shift() || "";
         const last = [...searchKeywords].pop() || "";
-        const inBetween = [...searchKeywords].slice(1).slice(-1);
+        const inBetween = [...searchKeywords].slice(1, searchKeywords.length - 1);
 
-        return fieldWords.some(fieldKeyWord => fieldKeyWord.endsWith(first))
-          && fieldWords.some(fieldKeyWord => fieldKeyWord.startsWith(last))
-          && (
-            inBetween.length
-            && inBetween.every((searchKeyword, i) => searchKeyword === fieldWords[i + 1])
+        return words.some(fieldKeyWord => fieldKeyWord.startsWith(first) || fieldKeyWord.endsWith(first))
+          && words.some(fieldKeyWord => fieldKeyWord.startsWith(last) || fieldKeyWord.endsWith(last))
+          && inBetween.every((searchWord) => 
+            words.some((fieldWord) => fieldWord === searchWord
+            )
           );
       };
 
-      const searchFilteredBillboards = queryResult.filter(billboard => 
-        isInSearch(billboard.address)
-        || isInSearch(billboard.name)
-        || isInSearch(billboard.area.locationName)
-        || isInSearch(billboard.type.name)
-      );
+      const searchFilteredBillboards = queryResult.filter(billboard => {
+        const searchFields = [
+          billboard.address,
+          billboard.name,
+          billboard.area.locationName,
+          billboard.type.name,
+          billboard.serialCode
+        ];
+
+        const text = searchFields.join(" ");
+
+        return fullfillsSearch(text);
+      });
   
       return searchFilteredBillboards;
     }
