@@ -17,8 +17,6 @@ const MultiSelectFilter = (props: SelectProps) => {
     const { value } = event.target;
 
     typeof value === "string" ? props.onChange([value]) : props.onChange(value);
-
-    console.log("value", value);
   };
 
   return (
