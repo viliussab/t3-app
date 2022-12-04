@@ -25,7 +25,6 @@ export const billboardRouter = createRouter()
         }
       });
 
-
       const getCaseInvariantWords = (str: string) => str.split(" ")
         .filter(keyword => keyword !== "")
         .map(keyword => keyword.toLocaleLowerCase());
