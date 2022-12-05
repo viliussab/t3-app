@@ -15,7 +15,6 @@ import dateService from "../../../services/dateService";
 
 const CreateCampaignPage : NextPage = () => {
 
-  const billboardQuery = trpc.useQuery(["billboard.getAll"]);
   const customersQuery = trpc.useQuery(["customer.getAll"]);
 
   const nextWeekStart = dateFns.addWeeks(dateService.getCurrentCampaignDay(), 1);
@@ -29,7 +28,7 @@ const CreateCampaignPage : NextPage = () => {
     }
   });
 
-  if (billboardQuery.isLoading && customersQuery.isLoading) {
+  if (customersQuery.isLoading) {
     return <>Loading...</>;
   }
 

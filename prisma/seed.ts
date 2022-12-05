@@ -74,7 +74,7 @@ async function main() {
           isLicensed: true,
           areaId: area.id,
           latitude: toRandomCoordinate(area.southWestLat, area.northEastLat),
-          longitude: toRandomCoordinate(area.southWestLong, area.southWestLong),
+          longitude: toRandomCoordinate(area.southWestLong, area.northEastLong),
           serialCode: billboardProto.serialCode,
           typeId: type.id
         }

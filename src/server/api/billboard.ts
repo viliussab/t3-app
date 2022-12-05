@@ -4,7 +4,7 @@ import prismaFactory from "../infrastructure/prismaFactory";
 
 export const billboardRouter = createRouter()
   .query("getAll", {
-    input: billboardFilterObjSchema || undefined,
+    input: billboardFilterObjSchema,
     async resolve({ ctx, input }) {
 
       const queryResult = await ctx.prisma.billboard.findMany({

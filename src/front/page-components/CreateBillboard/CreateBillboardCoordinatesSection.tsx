@@ -4,8 +4,7 @@ import { useEffect, useCallback } from "react";
 import { Area } from "@prisma/client";
 import { BillboardCreate } from "../../../types/billboard.schema";
 import Form from "../../components/form";
-
-const MarkerMap = dynamic(() => import("../../components/maps/CreateMarkerMap"), {ssr: false});
+const CreateMarkerMap = dynamic(() => import("../../components/geo/maps/CreateMarkerMap"), {ssr: false});
 
 type CoordinateFieldsProps = {
     form: UseFormReturn<BillboardCreate>,
@@ -66,7 +65,7 @@ const CoordinatesSection = (props : CoordinateFieldsProps) => {
   
       <div className="mt-4 w-96 h-96">
         {selectedArea ? (
-          <MarkerMap
+          <CreateMarkerMap
             mapSW={[selectedArea.southWestLat, selectedArea.southWestLong]}
             mapNE={[selectedArea.northEastLat, selectedArea.northEastLong]}
             marker={[latitude, longitude]}
