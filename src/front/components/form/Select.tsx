@@ -1,7 +1,7 @@
 import React from "react";
 import * as RHC from "react-hook-form";
 import * as Mui from "@mui/material";
-import { SelectOption } from "../../../types/common.schema";
+import { SelectOption } from "../../../types/props/selectOption.schema";
 
 type SelectProps<T extends RHC.FieldValues> = {
     fieldName: RHC.Path<T>,

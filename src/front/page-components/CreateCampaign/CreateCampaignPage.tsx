@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Layout from "../../components/Layout";
 import { trpc } from "../../../utils/trpc";
-import { CampaignCreate, campaignCreateSchema } from "../../../types/campaign.schema";
+import { CampaignCreate, campaignCreateSchema } from "../../../types/command/campaignCreate.schema";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LocalizationProvider } from "@mui/x-date-pickers";

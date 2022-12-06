@@ -1,12 +1,12 @@
 import { NextPage } from "next";
 import Layout from "../../components/Layout";
 import { trpc } from "../../../utils/trpc";
-import { BillboardFilterObj } from "../../../types/billboard.schema";
+import { BillboardFilterObj } from "../../../types/command/billboard.schema";
 import React from "react";
 import { Area, Billboard, BillboardSide, BillboardType } from "@prisma/client";
 import BillboardFilters from "../../multi-page-components/BillboardFilters";
 import * as Mui from "@mui/material";
-import { BooleanFilters } from "../../../types/filters.schema";
+import { BooleanFilters } from "../../../types/filters/booleanFilter.schema";
 
 const BillboardListPage: NextPage = () => {
 

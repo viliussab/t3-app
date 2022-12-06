@@ -1,4 +1,4 @@
-import { SelectOption } from "../types/common.schema";
+import { SelectOption } from "../types/props/selectOption.schema";
 
 const convertByFields = <T>(values: Array<T> | undefined, keyField: keyof T, displayField: keyof T) : Array<SelectOption> => {
   if (!values) {

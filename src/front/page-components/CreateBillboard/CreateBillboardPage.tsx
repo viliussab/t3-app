@@ -2,7 +2,7 @@ import React from "react";
 import type { NextPage } from "next";
 import { trpc } from "../../../utils/trpc";
 import * as RHF from "react-hook-form";
-import { BillboardCreate, billboardCreateSchema } from "../../../types/billboard.schema";
+import { BillboardCreate, billboardCreateSchema } from "../../../types/command/billboard.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as NextRouter from "next/router";
 import Components from "../../components";
