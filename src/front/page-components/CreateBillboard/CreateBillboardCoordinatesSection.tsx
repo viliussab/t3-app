@@ -2,9 +2,9 @@ import dynamic from "next/dynamic";
 import { UseFormReturn, useWatch } from "react-hook-form";
 import { useEffect, useCallback } from "react";
 import { Area } from "@prisma/client";
-import { BillboardCreate } from "../../../types/billboard.schema";
+import { BillboardCreate } from "../../../types/command/billboard.schema";
 import Form from "../../components/form";
-const CreateMarkerMap = dynamic(() => import("../../components/geo/maps/CreateMarkerMap"), {ssr: false});
+const CreateMarkerMap = dynamic(() => import("../../multi-page-components/geo/maps/CreateMarkerMap"), {ssr: false});
 
 type CoordinateFieldsProps = {
     form: UseFormReturn<BillboardCreate>,

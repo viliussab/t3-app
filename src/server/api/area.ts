@@ -1,5 +1,5 @@
 import { createRouter } from "./context";
-import { areaCreateSchema } from "../../types/area.schema";
+import { areaCreateSchema } from "../../types/command/areaCreate.schema";
 
 export const mapsRouter = createRouter()
   .mutation("create", {

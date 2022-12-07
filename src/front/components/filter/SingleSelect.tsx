@@ -1,4 +1,4 @@
-import { SelectOption } from "../../../types/common.schema";
+import { SelectOption } from "../../../types/props/selectOption.schema";
 import * as Mui from "@mui/material";
 
 type SelectProps = {

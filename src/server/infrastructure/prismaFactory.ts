@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { BooleanFilterEnum, BooleanFilters } from "../../types/filters.schema";
+import { BooleanFilterEnum, BooleanFilters } from "../../types/filters/booleanFilter.schema";
 
 const buildBoolFilterWhereClause = (boolFilter: BooleanFilterEnum) => {
   if (boolFilter === BooleanFilters.False) {

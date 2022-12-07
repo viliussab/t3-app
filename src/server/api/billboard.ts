@@ -1,5 +1,6 @@
 import { createRouter } from "./context";
-import { billboardCreateSchema, billboardFilterObjSchema } from "../../types/billboard.schema";
+import { billboardCreateSchema } from "../../types/command/billboard.schema";
+import { billboardFilterObjSchema } from "../../types/filters/billboardFilter.schema";
 import prismaFactory from "../infrastructure/prismaFactory";
 
 export const billboardRouter = createRouter()

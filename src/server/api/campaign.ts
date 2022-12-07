@@ -1,5 +1,5 @@
 import { createRouter } from "./context";
-import { campaignCreateSchema } from "./../../types/campaign.schema";
+import { campaignCreateSchema } from "../../types/command/campaignCreate.schema";
 
 export const campaignRouter = createRouter()
 
