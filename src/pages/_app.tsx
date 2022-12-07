@@ -7,6 +7,7 @@ import type { AppType } from "next/app";
 import type { AppRouter } from "../server/api";
 import type { Session } from "next-auth";
 import "../tailwind.css";
+import "../global.css";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

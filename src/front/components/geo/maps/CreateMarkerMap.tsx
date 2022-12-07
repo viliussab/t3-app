@@ -1,10 +1,10 @@
-import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
+import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";  
+import { LatLngTuple, Marker as MarkerType } from "leaflet";
+import React, { useRef, useMemo } from "react";
+import MapBoundsUpdater from "../providers/MapBoundsUpdater";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
-import { LatLngTuple, Marker as MarkerType } from "leaflet";
-import React, { useRef, useMemo } from "react";
-import MapBoundsUpdater from "./MapBoundsUpdater";
 
 type Props = {
   mapSW: LatLngTuple,

@@ -13,6 +13,10 @@ const navigationSections : Array<SectionProps> = [
       {
         name: "Objektų sąrašas",
         href: "/billboards"
+      },
+      {
+        name: "Objektų žemėlapis",
+        href: "/billboards/map"
       }
     ]
   },
@@ -45,7 +49,7 @@ const navigationSections : Array<SectionProps> = [
     name: "Ataskaitos",
     items: [ {
       name: "Kabinimo planas",
-      href: "/hangPlan"
+      href: "/plan"
     }]
   }
 ];
