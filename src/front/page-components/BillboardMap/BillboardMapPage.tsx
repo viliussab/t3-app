@@ -1,12 +1,13 @@
 import { NextPage } from "next";
 import Layout from "../../components/Layout";
 import { trpc } from "../../../utils/trpc";
-import { BillboardFilterObj } from "../../../types/billboard.schema";
+import { BillboardFilterObj } from "../../../types/filters/billboardFilter.schema";
 import React from "react";
 import BillboardFilters from "../../multi-page-components/BillboardFilters";
-import { BooleanFilters } from "../../../types/filters.schema";
+import { BooleanFilters } from "../../../types/filters/booleanFilter.schema";
 import dynamic from "next/dynamic";
-const BillboardsMap = dynamic(() => import("../../components/geo/maps/BillboardsMap"), {ssr: false});
+import styles from "./BillboardMapPage.module.css";
+const BillboardsMap = dynamic(() => import("../../multi-page-components/geo/maps/BillboardsMap"), {ssr: false});
 
 const BillboardMapPage: NextPage = () => {
   const [filters, setFilters] = React.useState<BillboardFilterObj>({
@@ -16,7 +17,6 @@ const BillboardMapPage: NextPage = () => {
     search: ""
   });
 
-  
   const sideNamesQuery = trpc.useQuery(["billboard.getDistinctSideNames"], {
     onSuccess: (data) => {
       setFilters({...filters, allowedSides: data});
@@ -51,10 +51,9 @@ const BillboardMapPage: NextPage = () => {
         )}
         {billboardQuery.data && kaunas && (
           <div className="flex justify-center">
-            <div className="map">
+            <div className={styles.map}>
               <BillboardsMap
-                mapNE={[kaunas.northEastLat, kaunas.northEastLong]}
-                mapSW={[kaunas.southWestLat, kaunas.southWestLong]}
+                area={kaunas}
                 billboards={billboardQuery.data}
               />
             </div>

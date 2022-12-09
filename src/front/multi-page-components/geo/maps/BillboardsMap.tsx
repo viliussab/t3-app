@@ -1,10 +1,8 @@
-import { MapContainer, TileLayer } from "react-leaflet";  
 import React from "react";
 import { Area, Billboard, BillboardSide, BillboardType } from "@prisma/client";
 import BillboardMarker from "../markers/BillboardMarker";
 import MapFrame from "./MapFrame";
 import geoMapper from "../../../mappers/geo";
-
 
 type MapProps = {
     area: Area,

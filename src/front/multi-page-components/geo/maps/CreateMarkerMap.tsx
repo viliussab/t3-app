@@ -1,4 +1,4 @@
-import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";  
+import { Marker, useMapEvents } from "react-leaflet";  
 import { LatLngTuple, Marker as MarkerType } from "leaflet";
 import React, { useRef, useMemo } from "react";
 import MapBoundsUpdater from "../operators/MapBoundsUpdater";
