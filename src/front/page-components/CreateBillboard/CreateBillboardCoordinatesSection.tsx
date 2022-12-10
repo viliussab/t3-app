@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import { UseFormReturn, useWatch } from "react-hook-form";
 import { useEffect, useCallback } from "react";
 import { Area } from "@prisma/client";
-import { BillboardCreate } from "../../../types/command/billboard.schema";
+import { BillboardCreate } from "../../../types/command/billboardCreate.schema";
 import Form from "../../components/form";
 const CreateMarkerMap = dynamic(() => import("../../multi-page-components/geo/maps/CreateMarkerMap"), {ssr: false});
 

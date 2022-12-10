@@ -1,13 +1,10 @@
-import { Billboard, BillboardSide, BillboardType } from "@prisma/client";
 import { Marker, Popup } from "react-leaflet";
-import BillboardCard from "../../BillboardCard";
+import BillboardCard from "../../billboard/BillboardCard";
 import React from "react";
+import { BillboardDto } from "../../../../types/dto/BillboardDtos.schema";
 
 type BillboardMarkerProps = {
-    billboard: Billboard & {
-        type: BillboardType;
-        sides: BillboardSide[];
-    },
+    billboard: BillboardDto,
   }
 
 const BillboardMarker = ({billboard}: BillboardMarkerProps) => {

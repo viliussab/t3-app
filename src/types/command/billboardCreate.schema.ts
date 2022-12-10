@@ -1,7 +1,5 @@
 import z from "zod";
 import messages from "../../services/validateMessage";
-import { BillboardSide, Prisma } from "@prisma/client";
-import { booleanFilterSchema } from "../filters/booleanFilter.schema";
 
 export const billboardCreateSchema = z.object({
   areaId: z.string().min(1, "Pasirinkite miestą"),

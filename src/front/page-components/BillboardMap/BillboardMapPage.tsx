@@ -3,7 +3,7 @@ import Layout from "../../components/Layout";
 import { trpc } from "../../../utils/trpc";
 import { BillboardFilterObj } from "../../../types/filters/billboardFilter.schema";
 import React from "react";
-import BillboardFilters from "../../multi-page-components/BillboardFilters";
+import BillboardFilters from "../../multi-page-components/billboard/BillboardFilters";
 import { BooleanFilters } from "../../../types/filters/booleanFilter.schema";
 import dynamic from "next/dynamic";
 import styles from "./BillboardMapPage.module.css";
@@ -24,7 +24,7 @@ const BillboardMapPage: NextPage = () => {
   });
   
   const areaQuery = trpc.useQuery(["area.getAll"]);
-  const billboardQuery = trpc.useQuery(["billboard.getAll", {...filters}], {enabled: !sideNamesQuery.isLoading});
+  const billboardQuery = trpc.useQuery(["billboard.getFiltered", {...filters}], {enabled: !sideNamesQuery.isLoading});
   
   const onFilterChange = (fieldName: keyof BillboardFilterObj, newValue: BillboardFilterObj[keyof BillboardFilterObj]) => {
     setFilters({...filters, [fieldName]: newValue });

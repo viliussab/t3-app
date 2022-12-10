@@ -1,10 +1,12 @@
 import { createRouter } from "./context";
-import { billboardCreateSchema } from "../../types/command/billboard.schema";
+import { billboardCreateSchema } from "../../types/command/billboardCreate.schema";
 import { billboardFilterObjSchema } from "../../types/filters/billboardFilter.schema";
 import prismaFactory from "../infrastructure/prismaFactory";
+import { billboardSideIds } from "../../types/filters/billboardSideIds.schema";
+import billboardMapper from "../../front/mappers/billboard";
 
 export const billboardRouter = createRouter()
-  .query("getAll", {
+  .query("getFiltered", {
     input: billboardFilterObjSchema,
     async resolve({ ctx, input }) {
 
@@ -85,6 +87,26 @@ export const billboardRouter = createRouter()
       return searchFilteredBillboards;
     }
   })
+  .query("getBySideIds", {
+    input: billboardSideIds,
+    async resolve({ ctx, input }) {
+
+      const queryResult = await ctx.prisma.billboard.findMany({
+        include: {
+          type: true,
+          area: true,
+          sides: {
+            where: { id: { in: input.sideIds }}
+          }
+        }
+      });
+
+      const billboardWithSides = queryResult.filter(billboard => billboard.sides.length > 0);
+
+      const billboardUniqueSides = billboardMapper.toUniqueSides(billboardWithSides);
+
+      return billboardUniqueSides;
+    }})
   .query("getDistinctSideNames", {
     async resolve({ ctx }) {
 

@@ -1,12 +1,13 @@
 import { NextPage } from "next";
 import Layout from "../../components/Layout";
 import { trpc } from "../../../utils/trpc";
-import { BillboardFilterObj } from "../../../types/command/billboard.schema";
+import { BillboardFilterObj } from "../../../types/filters/billboardFilter.schema";
 import React from "react";
-import { Area, Billboard, BillboardSide, BillboardType } from "@prisma/client";
-import BillboardFilters from "../../multi-page-components/BillboardFilters";
+import BillboardFilters from "../../multi-page-components/billboard/BillboardFilters";
 import * as Mui from "@mui/material";
 import { BooleanFilters } from "../../../types/filters/booleanFilter.schema";
+import { BillboardUniqueSideDto } from "../../../types/dto/BillboardDtos.schema";
+import billboardMapper from "../../mappers/billboard";
 
 const BillboardListPage: NextPage = () => {
 
@@ -23,7 +24,7 @@ const BillboardListPage: NextPage = () => {
     }
   });
 
-  const billboardQuery = trpc.useQuery(["billboard.getAll", {...filters}], {enabled: !sideNamesQuery.isLoading});
+  const billboardQuery = trpc.useQuery(["billboard.getFiltered", {...filters}], {enabled: !sideNamesQuery.isLoading});
 
   const onFilterChange = (fieldName: keyof BillboardFilterObj, newValue: BillboardFilterObj[keyof BillboardFilterObj]) => {
     setFilters({...filters, [fieldName]: newValue });
@@ -33,14 +34,7 @@ const BillboardListPage: NextPage = () => {
     return <>Loading...</>;
   }
 
-  const billboards = billboardQuery.data?.map(
-    billboard => billboard.sides.map(side => (
-      {
-        ...billboard,
-        side
-      }
-    ))
-  ).flat();
+  const billboardUniqueSides = billboardMapper.toUniqueSides(billboardQuery.data);
 
   return (
     <Layout>
@@ -56,8 +50,8 @@ const BillboardListPage: NextPage = () => {
             </div>
           )
         }
-        <div className="mt-2 overflow-x-auto relative shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500">
+        <div className="mt-4 overflow-x-auto relative shadow-md sm:rounded-lg flex justify-center">
+          <table className="text-sm text-left text-gray-500">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
                 <th scope="col" className="py-3 px-6">
@@ -87,7 +81,7 @@ const BillboardListPage: NextPage = () => {
               </tr>
             </thead>
             <tbody>
-              {billboards?.map((billboard, index) => ( 
+              {billboardUniqueSides?.map((billboard, index) => ( 
                 <BillboardTableRow
                   billboard={billboard}
                   index={index}
@@ -102,11 +96,7 @@ const BillboardListPage: NextPage = () => {
 };
 
 type BillboardTableRowProps = {
-  billboard: Billboard & {
-    type: BillboardType;
-    area: Area;
-    side: BillboardSide;
-},
+  billboard: BillboardUniqueSideDto,
   index: number,
 };
 
