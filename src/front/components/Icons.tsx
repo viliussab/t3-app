@@ -1,4 +1,13 @@
-import { MdHome, MdMap, MdAdd, MdLabel, MdLocationOn, MdList, MdSearch } from "react-icons/md";
+import { 
+  MdHome,
+  MdMap,
+  MdAdd,
+  MdLabel,
+  MdLocationOn,
+  MdList,
+  MdSearch,
+  MdPhotoCamera
+} from "react-icons/md";
 
 const Icons = {
   Home: MdHome,
@@ -7,7 +16,8 @@ const Icons = {
   Tag: MdLabel,
   Location: MdLocationOn,
   List: MdList,
-  Search: MdSearch
+  Search: MdSearch,
+  PhotoCamera: MdPhotoCamera
 };
 
 export default Icons;

@@ -26,6 +26,8 @@ export const billboardRouter = createRouter()
         }
       });
 
+      const billboardWithSides = queryResult.filter(billboard => billboard.sides.length > 0);
+
       const getCaseInvariantWords = (str: string) => str.split(" ")
         .filter(keyword => keyword !== "")
         .map(keyword => keyword.toLocaleLowerCase());
@@ -33,7 +35,7 @@ export const billboardRouter = createRouter()
       const searchKeywords = getCaseInvariantWords(input.search);
 
       if (!searchKeywords.length) {
-        return queryResult;
+        return billboardWithSides;
       }
 
       const fullfillsSearch = (text: string | undefined) => {
@@ -65,13 +67,14 @@ export const billboardRouter = createRouter()
           );
       };
 
-      const searchFilteredBillboards = queryResult.filter(billboard => {
+      const searchFilteredBillboards = billboardWithSides.filter(billboard => {
         const searchFields = [
           billboard.address,
           billboard.name,
           billboard.area.locationName,
           billboard.type.name,
-          billboard.serialCode
+          billboard.serialCode,
+          billboard.sides.map(s => s.name).join(" ")
         ];
 
         const text = searchFields.join(" ");

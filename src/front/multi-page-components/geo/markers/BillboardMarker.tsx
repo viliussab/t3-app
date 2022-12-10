@@ -1,8 +1,7 @@
 import { Billboard, BillboardSide, BillboardType } from "@prisma/client";
-import { Marker } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
-import "leaflet-defaulticon-compatibility";
+import { Marker, Popup } from "react-leaflet";
+import BillboardCard from "../../BillboardCard";
+import React from "react";
 
 type BillboardMarkerProps = {
     billboard: Billboard & {
@@ -15,8 +14,13 @@ const BillboardMarker = ({billboard}: BillboardMarkerProps) => {
 
   return (
     <Marker
-      draggable={false}
-      position={[billboard.latitude, billboard.longitude]} />
+      position={[billboard.latitude, billboard.longitude]} >
+      <Popup>
+        <BillboardCard 
+          billboard={billboard}
+        />
+      </Popup>
+    </Marker>
   );
 };
 
