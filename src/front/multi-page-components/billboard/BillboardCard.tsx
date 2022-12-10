@@ -1,12 +1,9 @@
 import React from "react";
-import { Billboard, BillboardSide, BillboardType } from "@prisma/client";
-import Icons from "../components/Icons";
+import Icons from "../../components/Icons";
+import { BillboardDto } from "../../../types/dto/BillboardDtos.schema";
 
 type BillboardCardProps = {
-    billboard: (Billboard & {
-        type: BillboardType;
-        sides: BillboardSide[];
-    }),
+    billboard: BillboardDto,
 }
 
 const BillboardCard = (props : BillboardCardProps) => {
@@ -24,7 +21,9 @@ const BillboardCard = (props : BillboardCardProps) => {
         {billboard.sides.map(side => (
           <div key={side.id} className="mt-4 gap-4 flex items-center justify-between">
             <span className="text-base">{`${side.name} pusė`}</span>
-            <a href="https://drive.google.com/file/d/1Nd4iSSP7esEMwp17z3nLsxBUv-wJ0Dtk/preview"><Icons.PhotoCamera size={22}/></a>
+            <a href="https://drive.google.com/file/d/1Nd4iSSP7esEMwp17z3nLsxBUv-wJ0Dtk/preview">
+              <Icons.PhotoCamera size={22}/>
+            </a>
           </div>
         ))}
       </div>

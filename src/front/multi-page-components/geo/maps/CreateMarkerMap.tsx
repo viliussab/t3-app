@@ -2,9 +2,6 @@ import { Marker, useMapEvents } from "react-leaflet";
 import { LatLngTuple, Marker as MarkerType } from "leaflet";
 import React, { useRef, useMemo } from "react";
 import MapBoundsUpdater from "../operators/MapBoundsUpdater";
-import "leaflet/dist/leaflet.css";
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
-import "leaflet-defaulticon-compatibility";
 import MapFrame from "./MapFrame";
 
 type Props = {

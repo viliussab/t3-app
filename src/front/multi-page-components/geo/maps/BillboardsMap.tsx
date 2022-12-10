@@ -1,15 +1,13 @@
 import React from "react";
-import { Area, Billboard, BillboardSide, BillboardType } from "@prisma/client";
+import { Area } from "@prisma/client";
 import BillboardMarker from "../markers/BillboardMarker";
 import MapFrame from "./MapFrame";
 import geoMapper from "../../../mappers/geo";
+import { BillboardDto } from "../../../../types/dto/BillboardDtos.schema";
 
 type MapProps = {
     area: Area,
-    billboards: (Billboard & {
-        type: BillboardType;
-        sides: BillboardSide[];
-    })[],
+    billboards: BillboardDto[],
 }
  
 const BillboardsMap = (props : MapProps) => {

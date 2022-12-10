@@ -12,10 +12,19 @@ import * as dateFns from "date-fns";
 import Form from "../../components/form";
 import optionsService from "../../../services/options";
 import dateService from "../../../services/dateService";
+import BillboardsSelected from "../../multi-page-components/billboard/BillboardsSelected";
+import { BillboardFilterObj } from "../../../types/filters/billboardFilter.schema";
+import React from "react";
+import { BooleanFilters } from "../../../types/filters/booleanFilter.schema";
+import ActionButton from "../../components/ActionButton";
 
 const CreateCampaignPage : NextPage = () => {
-
-  const customersQuery = trpc.useQuery(["customer.getAll"]);
+  const [filters, setFilters] = React.useState<BillboardFilterObj>({
+    allowedSides: [],
+    illumination: BooleanFilters.Both,
+    license: BooleanFilters.Both,
+    search: ""
+  });
 
   const nextWeekStart = dateFns.addWeeks(dateService.getCurrentCampaignDay(), 1);
 
@@ -28,7 +37,15 @@ const CreateCampaignPage : NextPage = () => {
     }
   });
 
-  if (customersQuery.isLoading) {
+  const selects = React.useMemo(
+    () => ({sideIds: form.watch("selectedBillboardIds")}),
+    [form]);
+
+  const customersQuery = trpc.useQuery(["customer.getAll"]);
+  const filteredQuery = trpc.useQuery(["billboard.getFiltered", filters]);
+  const selectedQuery = trpc.useQuery(["billboard.getBySideIds", selects]);
+
+  if (customersQuery.isLoading && filteredQuery.isLoading && selectedQuery.isLoading) {
     return <>Loading...</>;
   }
 
@@ -53,11 +70,19 @@ const CreateCampaignPage : NextPage = () => {
           <DateFrom form={form} />
           <DateTo form={form} />
         </div>
+        <BillboardsSelected selected={selectedQuery.data} />
       </div>
-      <div className="flex justify-center m-4">
-        <div className="w-64 h-64">
-          
-        </div>
+      <div className="flex justify-center">
+        <ActionButton
+          onClick={() => { console.log("click");}}
+        >
+          Pasirinkti žemėlapyje
+        </ActionButton>
+        <ActionButton
+          onClick={() => { console.log("click");}}
+        >
+          Pasirinkti sąraše
+        </ActionButton>
       </div>
     </Layout>
   );
