@@ -35,15 +35,6 @@ async function main() {
     ]});
   }
 
-  if (await prisma.customer.count() === 0)
-  {
-    await prisma.customer.createMany({data: [
-      {
-        name: "Maxima"
-      }
-    ]});
-  }
-
   if (await prisma.billboard.count() === 0)
   {
     const billboards = await stopsReader.readAsync();

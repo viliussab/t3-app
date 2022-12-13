@@ -41,7 +41,7 @@ const navigationSections : Array<SectionProps> = [
       },
       {
         name: "Klientai",
-        href: "/clients"
+        href: "/customers"
       }
     ]
   },
