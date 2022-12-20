@@ -91,42 +91,9 @@ const CustomerPage: NextPage = () => {
             )}
           </div>
         </div>
-
-        {/* <Table.Container>
-          <Table.Header columnNames={["Pavadinimas", "Adresas", "Telefonas", "Kontaktinis asmuo", "Paštas"]}/>
-          {customersQuery.data?.map((customer) => 
-            <CustomerTableRow customer={customer} />
-
-          )}
-        </Table.Container> */}
       </Components.Layout>
     </>
   );
 };
-
-// type CustomerTableRowProps = {
-//   customer : Customer,
-// }
-
-// const CustomerTableRow = ({customer} : CustomerTableRowProps) => {
-//   const [open, setOpen] = React.useState(false);
-
-//   return (
-//     <>
-//       <C
-
-//       <Table.Row
-//         onClick={() => setOpen((prev) => !prev)}
-//         key={customer.id}
-//         cells={[
-//           <>{customer.name}</>,
-//           <>{customer.address}</>,
-//           <>{customer.phone}</>,
-//           <>{customer.contactPerson}</>,
-//           <>{customer.email}</>
-//         ]}/>
-//     </>
-//   );
-// };
 
 export default CustomerPage;
