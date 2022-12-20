@@ -2,7 +2,6 @@ import z from "zod";
 
 export const customerCreateSchema = z.object({
   name: z.string(),
-
   companyCode: z.string(),
   VATCode: z.string(),
   address: z.string(),
