@@ -2,10 +2,10 @@ import { CustomerCreate, customerCreateSchema } from "../../../types/command/cus
 import * as RHF from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as NextRouter from "next/router";
-import Components from "../../components";
 import { trpc } from "../../../utils/trpc";
 import Form from "../../components/form";
 import { Dialog } from "@mui/material";
+import SubmitButton from "../../components/form/SubmitButton";
 
 type CustomerCreateDialogProps = {
   open: boolean,
@@ -93,7 +93,7 @@ const CustomerCreateDialog = ({open, onClose} : CustomerCreateDialogProps) => {
               </div>
             </div>
             <div className="flex justify-center">
-              <Components.SubmitButton isSubmitting={customerCreate.isLoading}>Kurti naują</Components.SubmitButton>
+              <SubmitButton isSubmitting={customerCreate.isLoading}>Kurti naują</SubmitButton>
             </div>
           </form>
         </div>
