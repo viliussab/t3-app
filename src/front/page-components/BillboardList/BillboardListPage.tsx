@@ -97,23 +97,6 @@ const BillboardListPage: NextPage = () => {
           keySelector={(billboard) => billboard.id}
           data={billboardUniqueSides}
         />
-        {/* <Table.Container>
-          <Table.Header columnNames={["Miestas", "Kodas", "Pavadinimas", "Adresas", "Tipas", "Pusė", "Leidimas", "Apšvietimas"]}/>
-          {billboardUniqueSides?.map((billboard) => 
-            <Table.Row 
-              key={billboard.id}
-              cells={[
-                <>{billboard.area.locationName}</>,
-                <>{billboard.serialCode}</>,
-                <>{billboard.name}</>,
-                <>{billboard.address}</>,
-                <>{billboard.type.name}</>,
-                <>{billboard.side.name}</>,
-                <Mui.Checkbox key={billboard.id} checked={billboard.isLicensed} disabled />,
-                <Mui.Checkbox key={billboard.id} checked={billboard.isIlluminated} disabled />
-              ]}/>
-          )}
-        </Table.Container> */}
       </div>
     </Layout>
   );
