@@ -10,6 +10,7 @@ import CoordinatesSection from "./CreateBillboardCoordinatesSection";
 import * as Mui from "@mui/material";
 import Form from "../../components/form";
 import optionsService from "./../../../services/options";
+import SubmitButton from "../../components/form/SubmitButton";
 
 const CreateBillboardPage: NextPage = () => {
   const router = NextRouter.useRouter();
@@ -103,7 +104,7 @@ const CreateBillboardPage: NextPage = () => {
               <CoordinatesSection form={form} areas={areaQuery.data}/>
             </div>
             <div className="flex justify-center">
-              <Components.SubmitButton isSubmitting={billboardCreate.isLoading}>Kurti naują</Components.SubmitButton>
+              <SubmitButton isSubmitting={billboardCreate.isLoading}>Kurti naują</SubmitButton>
             </div>
           </form>
         </Components.Paper>

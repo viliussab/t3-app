@@ -75,6 +75,7 @@ model Area {
 
     billboards Billboard[]
 }
+
 model Billboard {
     id String  @id @default(cuid())
     longitude Float
@@ -111,6 +112,12 @@ model Customer {
     id String  @id @default(cuid())
 
     name String
+    companyCode String
+    VATCode String
+    address String
+    phone String
+    contactPerson String
+    email String
 
     campaigns Campaign[]
 }

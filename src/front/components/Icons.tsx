@@ -6,7 +6,8 @@ import {
   MdLocationOn,
   MdList,
   MdSearch,
-  MdPhotoCamera
+  MdPhotoCamera,
+  MdEdit
 } from "react-icons/md";
 
 const Icons = {
@@ -17,7 +18,8 @@ const Icons = {
   Location: MdLocationOn,
   List: MdList,
   Search: MdSearch,
-  PhotoCamera: MdPhotoCamera
+  PhotoCamera: MdPhotoCamera,
+  Edit: MdEdit
 };
 
 export default Icons;
