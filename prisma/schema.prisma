@@ -125,11 +125,15 @@ model Customer {
 model Campaign {
     id String  @id @default(cuid())
 
+    name String
+    periodStart DateTime
+    periodEnd DateTime
+    sideAmount Int
+    requiresPrinting Boolean
+    discountPercent Int
+
     customerId String
     customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
-
-    name String
-    
 }
 
 model Tag {

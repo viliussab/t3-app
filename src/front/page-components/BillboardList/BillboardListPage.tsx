@@ -41,7 +41,7 @@ const BillboardListPage: NextPage = () => {
     {
       title: "Miestas",
       BodyComponent: (billboard) => <>{billboard.area.locationName}</>,
-      key: "City"
+      key: "city"
     },
     {
       title: "Kodas",
@@ -51,32 +51,32 @@ const BillboardListPage: NextPage = () => {
     {
       title: "Pavadinimas",
       BodyComponent: (billboard) => <>{billboard.name}</>,
-      key: "City"
+      key: "name"
     },
     {
       title: "Adresas",
       BodyComponent: (billboard) => <>{billboard.address}</>,
-      key: "City"
+      key: "address"
     }, 
     {
       title: "Tipas",
       BodyComponent: (billboard) => <>{billboard.type.name}</>,
-      key: "City"
+      key: "typeName"
     },
     {
       title: "Pusė",
       BodyComponent: (billboard) => <>{billboard.side.name}</>,
-      key: "City"
+      key: "sideName"
     }, 
     {
       title: "Leidimas",
       BodyComponent: (billboard) => <Mui.Checkbox key={billboard.id} checked={billboard.isLicensed} disabled />,
-      key: "City"
+      key: "isLicensed"
     },
     {
       title: "Apšvietimas",
       BodyComponent: (billboard) => <Mui.Checkbox key={billboard.id} checked={billboard.isIlluminated} disabled />,
-      key: "City"
+      key: "isIlluminated"
     }
   ];
 
@@ -94,7 +94,7 @@ const BillboardListPage: NextPage = () => {
         )}
         <Table
           columns={columns}
-          keySelector={(billboard) => billboard.id}
+          keySelector={(billboard) => billboard.side.id}
           data={billboardUniqueSides}
         />
       </div>

@@ -12,108 +12,77 @@ import * as dateFns from "date-fns";
 import Form from "../../components/form";
 import optionsService from "../../../services/options";
 import dateService from "../../../services/dateService";
+import BillboardsSelected from "../../multi-page-components/billboard/BillboardsSelected";
+import { BillboardFilterObj } from "../../../types/filters/billboardFilter.schema";
 import React from "react";
-import Paper from "../../components/Paper";
-import SubmitButton from "../../components/form/SubmitButton";
-import { useRouter } from "next/router";
+import { BooleanFilters } from "../../../types/filters/booleanFilter.schema";
+import ActionButton from "../../components/ActionButton";
 
-const CreateCampaignPage : NextPage = () => {
-  const router = useRouter();
+const CampaignDetalizationPage : NextPage = () => {
+  const [filters, setFilters] = React.useState<BillboardFilterObj>({
+    allowedSides: [],
+    illumination: BooleanFilters.Both,
+    license: BooleanFilters.Both,
+    search: ""
+  });
+
   const nextWeekStart = dateFns.addWeeks(dateService.getCurrentCampaignDay(), 1);
 
   const form = useForm<CampaignCreate>({
     resolver: zodResolver(campaignCreateSchema),
     defaultValues: {
       periodStart: nextWeekStart,
-      periodEnd: nextWeekStart
+      periodEnd: nextWeekStart,
+      selectedBillboardIds: []
     }
   });
 
-  const campaignCreateCommand = trpc.useMutation(
-    ["campaign.create"],
-    {
-      onSuccess: () => {
-        router.push("/billboards");
-      }
-    });
-
-  const onSubmit = (values: CampaignCreate) => {
-    campaignCreateCommand.mutateAsync(values);
-  };
+  const selects = React.useMemo(
+    () => ({sideIds: form.watch("selectedBillboardIds")}),
+    [form]);
 
   const customersQuery = trpc.useQuery(["customer.getAll"]);
+  const filteredQuery = trpc.useQuery(["billboard.getFiltered", filters]);
+  const selectedQuery = trpc.useQuery(["billboard.getBySideIds", selects]);
 
-  if (customersQuery.isLoading) {
+  if (customersQuery.isLoading && filteredQuery.isLoading && selectedQuery.isLoading) {
     return <>Loading...</>;
   }
 
   return (
     <Layout>
       <div className="flex justify-center m-4">
-        <Paper className="m-4 p-4 bg-gray-50">
-          <div className="text-center text-xl font-semibold">
-              Kurti kampaniją
-          </div>
-          <form onSubmit={(e) => { 
-            form.handleSubmit(onSubmit)(e);
-          }}>
-            <div className="flex justify-center">
-              <div className="w-64 pt-0 m-4 space-y-3">
-                <Form.Field
-                  label="Kampanijos pavadinimas"
-                  form={form}
-                  fieldName="name"
-                  muiProps={{
-                    required: true
-                  }}
-                />
-                <Form.Select 
-                  label="Klientas"
-                  form={form}
-                  fieldName="customerId"
-                  options={optionsService.convertByFields(customersQuery.data, "id", "name")}
-                />
-                <DateFrom form={form} />
-                <DateTo form={form} />
-                <Form.Field 
-                  label="Plokštumų kiekis"
-                  form={form}
-                  fieldName="sideAmount"
-                  muiProps={{
-                    required: true,
-                    type: "number"
-
-                  }}
-                  valueAsNumber
-                />
-                <Form.Field 
-                  label="Taikoma nuolaida"
-                  form={form}
-                  fieldName="discountPercent"
-                  muiProps={{
-                    required: true,
-                    type: "number",
-                    InputProps: {
-                      endAdornment: (
-                        <Mui.InputAdornment position="end">
-                          %
-                        </Mui.InputAdornment>
-                      )
-                    }
-                  }}
-                  valueAsNumber
-                />
-                <Mui.FormControlLabel
-                  control={
-                    <Mui.Checkbox defaultChecked 
-                      {...form.register("requiresPrinting")}/>
-                  }
-                  label="Apšvietimas" />
-                <SubmitButton isSubmitting={campaignCreateCommand.isLoading}>Kurti naują</SubmitButton>
-              </div>
-            </div>
-          </form>
-        </Paper>
+        <div className="w-56 pt-0 m-4 mt-0 space-y-3">
+          <Form.Field
+            label="Kampanijos pavadinimas"
+            form={form}
+            fieldName="campaignName"
+            muiProps={{
+              required: true
+            }}
+          />
+          <Form.Select 
+            label="Klientas"
+            form={form}
+            fieldName="customerId"
+            options={optionsService.convertByFields(customersQuery.data, "id", "name")}
+          />
+          <DateFrom form={form} />
+          <DateTo form={form} />
+        </div>
+        <BillboardsSelected selected={selectedQuery.data} />
+      </div>
+      <div className="flex justify-center">
+        <ActionButton
+          onClick={() => { console.log("click");}}
+        >
+          Pasirinkti žemėlapyje
+        </ActionButton>
+        <ActionButton
+          onClick={() => { console.log("click");}}
+        >
+          Pasirinkti sąraše
+        </ActionButton>
       </div>
     </Layout>
   );
@@ -201,4 +170,4 @@ const DateTo = (props : DatePickerProps) => {
   </LocalizationProvider>;
 };
 
-export default CreateCampaignPage;
+export default CampaignDetalizationPage;

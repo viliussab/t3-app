@@ -7,10 +7,11 @@ type FieldProps<T extends RHC.FieldValues> = {
     form: RHC.UseFormReturn<T>,
     label: string,
     muiProps: Mui.TextFieldProps | undefined,
+    valueAsNumber?: boolean,
 }
 
 const Field = <T extends RHC.FieldValues, > (props: FieldProps<T>) => {
-  const {fieldName, form, label, muiProps} = props; 
+  const {fieldName, form, label, muiProps, valueAsNumber} = props; 
   const error = form.formState.errors[fieldName];
 
   return (
@@ -20,7 +21,9 @@ const Field = <T extends RHC.FieldValues, > (props: FieldProps<T>) => {
       variant="filled"
       error={!!error}
       helperText={error ? error.message?.toString() : ""}
-      {...form.register(fieldName)}
+      {...form.register(fieldName, {
+        valueAsNumber
+      })}
       {...muiProps}
     />
   );
