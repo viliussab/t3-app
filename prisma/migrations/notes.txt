@@ -1,0 +1,20 @@
+lokacija turi regiona kuris nusirodys excelyje, lokacija priklauso vienam regionui
+Kliento nuolaida kampanijos kurime
+Kleintas
+Spade
+
+Clients (pavadinimas)
+Im kodas
+PVM kodas
+Adresas
+Kontaktinis asmuo
+Telefonas
+El. pastas
+
+Reklamos kampanijos pasiulyme turi byti:
+Data siandienos
+
+Statusai:
+Pasiulyta
+Laukia vietu
+Patvirtinta
