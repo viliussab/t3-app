@@ -22,32 +22,32 @@ const CustomerPage: NextPage = () => {
   const columns: ColumnConfig<Customer>[] = [
     {
       title: "Pavadinimas",
-      BodyComponent: (c) => <>{c.name}</>,
+      renderCell: (c) => <>{c.name}</>,
       key: "Title"
     },
     {
       title: "Adresas",
-      BodyComponent: (c) => <>{c.address}</>,
+      renderCell: (c) => <>{c.address}</>,
       key: "address"
     },
     {
       title: "Telefonas",
-      BodyComponent: (c) => <>{c.phone}</>,
+      renderCell: (c) => <>{c.phone}</>,
       key: "phone"
     },
     {
       title: "Kontaktinis asmuo",
-      BodyComponent: (c) => <>{c.contactPerson}</>,
+      renderCell: (c) => <>{c.contactPerson}</>,
       key: "contactPerson"
     }, 
     {
       title: "Paštas",
-      BodyComponent: (c) => <>{c.email}</>,
+      renderCell: (c) => <>{c.email}</>,
       key: "email"
     },
     {
       title: "Atnaujinti",
-      BodyComponent: (c) => {
+      renderCell: (c) => {
         const [open, setOpen] = React.useState(false);
 
         return <div className="flex justify-center align-center">

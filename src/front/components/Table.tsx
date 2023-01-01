@@ -2,8 +2,9 @@ import React from "react";
 
 export type ColumnConfig<T> = {
     title: string,
-    BodyComponent: (elem: T) => React.ReactNode,
+    renderCell: (elem: T) => React.ReactNode,
     key: string,
+    type?: "main"
 }
 
 type TableProps<T> = {
@@ -19,11 +20,13 @@ export default function Table<T>({columns, data, onClick, keySelector} : TablePr
   return (
 
     <table className="text-sm text-left text-gray-500">
-      <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+      <thead className="text-xs text-gray-700 uppercase bg-gray-100">
         <tr>
           {headers.map((columnName) => (
             <th scope="col" key={columnName} className="py-3 px-6">
-              {columnName}
+              <div className="text-sm flex align-middle justify-center">
+                {columnName}
+              </div>
             </th>
           ))}
         </tr>
@@ -33,11 +36,13 @@ export default function Table<T>({columns, data, onClick, keySelector} : TablePr
           <tr
             key={keySelector(elem)}
             onClick={() => onClick && onClick(elem)}
-            className={`nth border-b odd:bg-gray-50 even:bg-white hover:bg-blue-100
-                ${onClick && "hover:cursor-pointer"}`}>
+            className={`nth border-b even:bg-gray-50 odd:bg-white hover:bg-blue-100"
+                ${onClick ? "hover:cursor-pointer" : "" }`}>
             {columns.map(c => (
               <td key={c.key} className="py-4 px-6">
-                {c.BodyComponent(elem)}
+                <div className="flex align-middle justify-center">
+                  {c.renderCell(elem)}
+                </div>
               </td>))}
           </tr>
         ))}

@@ -8,7 +8,7 @@ import * as Mui from "@mui/material";
 import { BooleanFilters } from "../../../types/filters/booleanFilter.schema";
 import billboardMapper from "../../mappers/billboard";
 import Table, { ColumnConfig } from "../../components/table";
-import { BillboardUniqueSideDto } from "../../../types/dto/BillboardDtos.schema";
+import { BillboardUniqueSideDto } from "../../../types/dto/BillboardDtos";
 
 const BillboardListPage: NextPage = () => {
 
@@ -40,42 +40,42 @@ const BillboardListPage: NextPage = () => {
   const columns: ColumnConfig<BillboardUniqueSideDto>[] = [
     {
       title: "Miestas",
-      BodyComponent: (billboard) => <>{billboard.area.locationName}</>,
+      renderCell: (billboard) => <>{billboard.area.locationName}</>,
       key: "city"
     },
     {
       title: "Kodas",
-      BodyComponent: (billboard) => <>{billboard.serialCode}</>,
+      renderCell: (billboard) => <>{billboard.serialCode}</>,
       key: "serialCode"
     },
     {
       title: "Pavadinimas",
-      BodyComponent: (billboard) => <>{billboard.name}</>,
+      renderCell: (billboard) => <>{billboard.name}</>,
       key: "name"
     },
     {
       title: "Adresas",
-      BodyComponent: (billboard) => <>{billboard.address}</>,
+      renderCell: (billboard) => <>{billboard.address}</>,
       key: "address"
     }, 
     {
       title: "Tipas",
-      BodyComponent: (billboard) => <>{billboard.type.name}</>,
+      renderCell: (billboard) => <>{billboard.type.name}</>,
       key: "typeName"
     },
     {
       title: "Pusė",
-      BodyComponent: (billboard) => <>{billboard.side.name}</>,
+      renderCell: (billboard) => <>{billboard.side.name}</>,
       key: "sideName"
     }, 
     {
       title: "Leidimas",
-      BodyComponent: (billboard) => <Mui.Checkbox key={billboard.id} checked={billboard.isLicensed} disabled />,
+      renderCell: (billboard) => <Mui.Checkbox key={billboard.id} checked={billboard.isLicensed} disabled />,
       key: "isLicensed"
     },
     {
       title: "Apšvietimas",
-      BodyComponent: (billboard) => <Mui.Checkbox key={billboard.id} checked={billboard.isIlluminated} disabled />,
+      renderCell: (billboard) => <Mui.Checkbox key={billboard.id} checked={billboard.isIlluminated} disabled />,
       key: "isIlluminated"
     }
   ];
@@ -92,11 +92,13 @@ const BillboardListPage: NextPage = () => {
             />
           </div>
         )}
-        <Table
-          columns={columns}
-          keySelector={(billboard) => billboard.side.id}
-          data={billboardUniqueSides}
-        />
+        <div className="mt-4 flex justify-center">
+          <Table
+            columns={columns}
+            keySelector={(billboard) => billboard.side.id}
+            data={billboardUniqueSides}
+          />
+        </div>
       </div>
     </Layout>
   );

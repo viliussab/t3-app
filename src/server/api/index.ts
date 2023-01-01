@@ -1,10 +1,10 @@
 import { createRouter } from "./context";
 import superjson from "superjson";
 import { mapsRouter } from "./area";
-import { billboardTypesRouter } from "./billboardType";
-import { billboardRouter } from "./billboard";
-import { customerRouter } from "./customer";
-import { campaignRouter } from "./campaign";
+import { billboardTypesRouter } from "./billboardTypeApi";
+import { billboardRouter } from "./billboardApi";
+import { customerRouter } from "./customerApi";
+import { campaignRouter } from "./campaignApi";
 
 export const appRouter = createRouter()
   .transformer(superjson)
