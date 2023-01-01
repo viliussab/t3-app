@@ -14,4 +14,15 @@ export const campaignRouter = createRouter()
   
       return { campaign };
     }
+  })
+  .query("getAll", {
+    async resolve({ctx}) {
+      const campaigns = await ctx.prisma.campaign.findMany({
+        include: {
+          customer: true
+        }
+      });
+
+      return campaigns;
+    }
   });

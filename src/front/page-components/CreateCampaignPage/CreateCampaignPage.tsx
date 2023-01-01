@@ -108,7 +108,7 @@ const CreateCampaignPage : NextPage = () => {
                     <Mui.Checkbox defaultChecked 
                       {...form.register("requiresPrinting")}/>
                   }
-                  label="Apšvietimas" />
+                  label="Reikia spausdinti" />
                 <SubmitButton isSubmitting={campaignCreateCommand.isLoading}>Kurti naują</SubmitButton>
               </div>
             </div>

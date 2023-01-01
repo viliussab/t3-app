@@ -1,3 +1,3 @@
-import BillboardMapPage from "../../../front/page-components/BillboardMap/BillboardMapPage";
+import BillboardMapPage from "../../../front/page-components/BillboardMapPage/BillboardMapPage";
 
 export default BillboardMapPage;
