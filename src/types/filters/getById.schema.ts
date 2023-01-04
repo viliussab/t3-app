@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const customerById = z.object({
+export const getByIdSchema = z.object({
   id: z.string()
 });
   

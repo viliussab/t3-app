@@ -8,7 +8,8 @@ import {
   MdSearch,
   MdPhotoCamera,
   MdEdit,
-  MdDescription
+  MdDescription,
+  MdDelete
 } from "react-icons/md";
 
 const Icons = {
@@ -21,7 +22,8 @@ const Icons = {
   Search: MdSearch,
   PhotoCamera: MdPhotoCamera,
   Edit: MdEdit,
-  Pdf: MdDescription
+  Pdf: MdDescription,
+  Delete: MdDelete
 };
 
 export default Icons;

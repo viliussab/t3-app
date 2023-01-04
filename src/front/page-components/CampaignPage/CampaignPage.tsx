@@ -8,6 +8,7 @@ import dateService from "./../../../services/dateService";
 import CampaignStatusChip from "./components/CampaignStatusChip";
 import ActionButton from "./../../components/ActionButton";
 import Icons from "./../../components/Icons";
+import Link from "next/link";
 
 const CampaignPage : NextPage = () => {
 
@@ -44,20 +45,26 @@ const CampaignPage : NextPage = () => {
     },
     {
       title: "Veiksmai",
-      renderCell: () => <div className="flex gap-2">
-        <ActionButton onClick={() => {}} color="altAction">
-        Išrinkti stoteles
-        </ActionButton>
-        <ActionButton onClick={() => {}} color="pdf">
-          <div className="flex gap-2">
+      renderCell: (campaign) => (
+        <div className="flex gap-2">
+          <Link href={`/campaigns/select/${campaign.id}`}>
+            <ActionButton onClick={() => {}} color="altAction">
+          Išrinkti stoteles
+            </ActionButton>
+          </Link>
+          <ActionButton onClick={() => {}} color="pdf">
+            <div className="flex gap-2">
             Gauti sąskaitos faktūrą
-            <Icons.Pdf size={20}/>
-          </div>
-        </ActionButton>
-        <ActionButton onClick={() => {}} color="danger">
+              <Icons.Pdf size={20}/>
+            </div>
+          </ActionButton>
+
+
+          <ActionButton onClick={() => {}} color="danger">
           Atšaukti užsakymą
-        </ActionButton>
-      </div>,
+          </ActionButton>
+        </div>
+      ),
       key: "actions"
     }
   ];

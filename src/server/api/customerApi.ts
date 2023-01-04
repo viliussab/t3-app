@@ -1,6 +1,6 @@
 import { customerCreateSchema } from "../../types/command/customerCreate.schema";
 import { customerUpdateSchema } from "../../types/command/customerUpdate.schema";
-import { customerById } from "../../types/filters/customerById.schema";
+import { getByIdSchema } from "../../types/filters/getById.schema";
 import { createRouter } from "./context";
 
 export const customerRouter = createRouter()
@@ -12,7 +12,7 @@ export const customerRouter = createRouter()
     }
   })
   .query("getById", {
-    input: customerById,
+    input: getByIdSchema,
     async resolve({ ctx, input }) {
       const customer = await ctx.prisma.customer.findFirst({
         where: { id: input.id }
