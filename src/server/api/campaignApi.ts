@@ -1,5 +1,6 @@
 import { createRouter } from "./context";
 import { campaignCreateSchema } from "../../types/command/campaignCreate.schema";
+import { getByIdSchema } from "../../types/filters/getById.schema";
 
 export const campaignRouter = createRouter()
 
@@ -24,5 +25,17 @@ export const campaignRouter = createRouter()
       });
 
       return campaigns;
+    }
+  })
+  .query("getById", {
+    input: getByIdSchema,
+    async resolve({ctx, input}) {
+      const campaign = await ctx.prisma.campaign.findFirst({
+        where: {
+          id: input.id
+        }
+      });
+
+      return campaign;
     }
   });
