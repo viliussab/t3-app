@@ -11,16 +11,13 @@ const BillboardCard = (props : BillboardCardProps) => {
 
   return (
     <div className="min-w-48">
-      <span className="text-lg font-bold">
-        {billboard.name}
-      </span>
       <div className="text-lg text-gray-600">
         {` ${billboard.type.name}`}
       </div>
       <div className="">
         {billboard.sides.map(side => (
           <div key={side.id} className="mt-4 gap-4 flex items-center justify-between">
-            <span className="text-base">{`${side.name} pusė`}</span>
+            <span className="text-base">{`${side.sideType} pusė`}</span>
             <a href="https://drive.google.com/file/d/1Nd4iSSP7esEMwp17z3nLsxBUv-wJ0Dtk/preview">
               <Icons.PhotoCamera size={22}/>
             </a>

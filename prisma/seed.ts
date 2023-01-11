@@ -52,20 +52,16 @@ async function main() {
       const area = await prisma.area.findFirst() ?? throwExpression("area null");
       const type = await prisma.billboardType.findFirst() ?? throwExpression("type null");
 
-      const toRandomCoordinate = (from: number, to: number) => {
-        const delta = to - from;
-        return delta * Math.random() + from;
-      };
+      // console.log("proto", billboardProto);
 
       const billboard = await prisma.billboard.create({data: 
         {
           address: billboardProto.address,
-          name: billboardProto.name,
           isIlluminated: true,
           isLicensed: true,
           areaId: area.id,
-          latitude: toRandomCoordinate(area.southWestLat, area.northEastLat),
-          longitude: toRandomCoordinate(area.southWestLong, area.northEastLong),
+          latitude: billboardProto.latitude,
+          longitude: billboardProto.longitude,
           serialCode: billboardProto.serialCode,
           typeId: type.id
         }
@@ -74,7 +70,9 @@ async function main() {
       await prisma.billboardSide.createMany({
         data: billboardsByCode.map(b => ({
           billboardId: billboard.id,
-          name: b.side
+          sideType: b.side,
+          title: b.name,
+          googlePhotoUrl: b.googlePhotoUrl
         }))
       });
     });

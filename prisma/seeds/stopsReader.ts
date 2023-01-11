@@ -6,6 +6,9 @@ type BillboardExcel = {
     name: string,
     address: string,
     side: string,
+    googlePhotoUrl: string,
+    longitude: number,
+    latitude: number,
 }
 
 const readAsync = async () => {
@@ -23,10 +26,12 @@ const readAsync = async () => {
       serialCode: row.getCell(1).value?.toString(),
       name: row.getCell(2).value?.toString(),
       address: row.getCell(3).value?.toString(),
-      side: row.getCell(4).value?.toString()
+      side: row.getCell(4).value?.toString(),
+      googlePhotoUrl: row.getCell(5).value?.toString(),
+      longitude: Number(row.getCell(6).value?.toString()),
+      latitude: Number(row.getCell(7).value?.toString())
     } as BillboardExcel
   ));
-
 
   console.log("sheet", sheet?.rowCount);
 
