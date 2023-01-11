@@ -31,13 +31,13 @@ const BillboardsSelected = (props : BillboardsSelectedProps) => {
         {selected?.map((billboard) => ( 
           <tr key={billboard.side.id} >
             <td className="py-4 px-6">
-              {billboard.name}
+              {billboard.side.title}
             </td>
             <td className="py-4 px-6">
               {billboard.address}
             </td>
             <td className="py-4 px-6">
-              {billboard.side.name}
+              {billboard.side.sideType}
             </td>
           </tr>
         ))}

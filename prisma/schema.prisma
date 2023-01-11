@@ -82,7 +82,6 @@ model Billboard {
     latitude Float
     address String
 
-    name String
     serialCode String
 
     isIlluminated Boolean
@@ -152,7 +151,10 @@ model BillboardType {
 
 model BillboardSide {
     id String  @id @default(cuid())
-    name String
+    sideType String
+    title String
+
+    googlePhotoUrl String?
 
     billboardId String
     billboard Billboard @relation(fields: [billboardId], references: [id], onDelete: Cascade)

@@ -16,7 +16,7 @@ export const billboardRouter = createRouter()
           area: true,
           sides: !input.allowedSides.length ? true : {
             where: {
-              name: {
+              sideType: {
                 in: input.allowedSides
               }
             }
@@ -72,11 +72,11 @@ export const billboardRouter = createRouter()
       const searchFilteredBillboards = billboardWithSides.filter(billboard => {
         const searchFields = [
           billboard.address,
-          billboard.name,
+          billboard.sides.map(s => s.title),
           billboard.area.locationName,
           billboard.type.name,
           billboard.serialCode,
-          billboard.sides.map(s => s.name).join(" ")
+          billboard.sides.map(s => s.sideType).join(" ")
         ];
 
         const text = searchFields.join(" ");
@@ -107,15 +107,15 @@ export const billboardRouter = createRouter()
 
       return billboardUniqueSides;
     }})
-  .query("getDistinctSideNames", {
+  .query("getDistinctSideTypes", {
     async resolve({ ctx }) {
 
       const sides = await ctx.prisma.billboardSide.findMany({
         where: {},
-        distinct: ["name"]
+        distinct: ["sideType"]
       });
 
-      const distinctNames = sides.map(side => side.name);
+      const distinctNames = sides.map(side => side.sideType);
       
       return distinctNames;
     }
@@ -129,7 +129,6 @@ export const billboardRouter = createRouter()
           longitude: input.longitude,
           latitude: input.latitude,
           address: input.address,
-          name: input.name,
           serialCode: input.serialCode,
           isIlluminated: input.isIlluminated,
           isLicensed: input.isLicensed,
@@ -140,7 +139,8 @@ export const billboardRouter = createRouter()
       const side = await ctx.prisma.billboardSide.create({
         data: {
           billboardId: billboard.id,
-          name: input.sideName
+          sideType: input.sideName,
+          title: input.name
         }
       });
   

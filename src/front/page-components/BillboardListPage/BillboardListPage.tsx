@@ -7,7 +7,7 @@ import BillboardFilters from "../../multi-page-components/billboard/BillboardFil
 import * as Mui from "@mui/material";
 import { BooleanFilters } from "../../../types/filters/booleanFilter.schema";
 import billboardMapper from "../../mappers/billboard";
-import Table, { ColumnConfig } from "../../components/table";
+import Table, { ColumnConfig } from "../../components/Table";
 import { BillboardUniqueSideDto } from "../../../types/dto/BillboardDtos";
 
 const BillboardListPage: NextPage = () => {
@@ -19,7 +19,7 @@ const BillboardListPage: NextPage = () => {
     search: ""
   });
 
-  const sideNamesQuery = trpc.useQuery(["billboard.getDistinctSideNames"], {
+  const sideNamesQuery = trpc.useQuery(["billboard.getDistinctSideTypes"], {
     onSuccess: (data) => {
       setFilters({...filters, allowedSides: data});
     }
@@ -50,7 +50,7 @@ const BillboardListPage: NextPage = () => {
     },
     {
       title: "Pavadinimas",
-      renderCell: (billboard) => <>{billboard.name}</>,
+      renderCell: (billboard) => <>{billboard.side.title}</>,
       key: "name"
     },
     {
@@ -65,7 +65,7 @@ const BillboardListPage: NextPage = () => {
     },
     {
       title: "Pusė",
-      renderCell: (billboard) => <>{billboard.side.name}</>,
+      renderCell: (billboard) => <>{billboard.side.sideType}</>,
       key: "sideName"
     }, 
     {
