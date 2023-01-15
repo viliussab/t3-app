@@ -17,7 +17,7 @@ const BillboardMapPage: NextPage = () => {
     search: ""
   });
 
-  const sideNamesQuery = trpc.useQuery(["billboard.getDistinctSideNames"], {
+  const sideNamesQuery = trpc.useQuery(["billboard.getDistinctSideTypes"], {
     onSuccess: (data) => {
       setFilters({...filters, allowedSides: data});
     }

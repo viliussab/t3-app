@@ -28,8 +28,8 @@ const readAsync = async () => {
       address: row.getCell(3).value?.toString(),
       side: row.getCell(4).value?.toString(),
       googlePhotoUrl: row.getCell(5).value?.toString(),
-      longitude: Number(row.getCell(6).value?.toString()),
-      latitude: Number(row.getCell(7).value?.toString())
+      latitude: Number(row.getCell(6).value?.toString()),
+      longitude: Number(row.getCell(7).value?.toString())
     } as BillboardExcel
   ));
 
