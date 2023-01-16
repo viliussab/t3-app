@@ -24,7 +24,7 @@ const BillboardMarker = ({billboard, renderDialog}: BillboardMarkerProps) => {
         }}>
         <Popup className={styles.Popup}>
           <div className="text-lg">
-            {billboard.address}
+            {`${billboard.serialCode} ${billboard.address}`}
           </div>
           <div className="text-gray-500 mb-2">
             {`${billboard.sides.length} stotelės`}

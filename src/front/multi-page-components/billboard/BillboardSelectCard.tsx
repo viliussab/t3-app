@@ -2,6 +2,8 @@ import React from "react";
 import { BillboardDto, BillboardUniqueSideDto } from "../../../types/dto/BillboardDtos";
 import { Divider } from "@mui/material";
 import ActionButton from "../../components/ActionButton";
+import { match } from "assert";
+import Image from "next/image";
 
 type ComponentProps = {
     billboard: BillboardDto,
@@ -16,20 +18,50 @@ const BillboardSelectCard = (props : ComponentProps) => {
     selectedKeys
   } = props;
 
-  const googleDriveToImageSource = (value: string) => {
 
-    console.log("value", value, value.lastIndexOf("/"));
+  const getImageIdWithNoise = (value: string) => {
+    const driveOpenLink = /^https:\/\/drive.google.com\/open\?id=(.*)$/;
+    const driveFileLink = /^https:\/\/drive.google.com\/file\/d\/(.*)$/;
 
-    const a = value.substring(0, value.lastIndexOf("/")) + "/preview";
+    const matchOpen = value.match(driveOpenLink);
+    const matchFile = value.match(driveFileLink);
 
-    console.log("res", a);
-    return a;
+    if (matchOpen) {
+      return matchOpen[1];
+    }
+
+    if (matchFile) {
+      return matchFile[1];
+    }
+
+    return null;
+  };
+
+  const getImageId = (value: string) => {
+    const inpureId = getImageIdWithNoise(value);
+
+    if (inpureId) {
+      const indexToStop = inpureId.lastIndexOf("/view");
+
+      if (indexToStop === -1) {
+        return inpureId;
+      }
+
+      const id = inpureId.substring(0, indexToStop);
+
+      return id;
+    }
+  };
+
+  const toGoogleDriveToImageSource = (value: string) => {
+    const url = `https://drive.google.com/uc?export=view&id=${getImageId(value)}`;
+    return url;
   };
 
   return (
-    <div className="">
+    <div className="pb-2">
       <div className="m-2 text-xl text-center">
-        {billboard.address}
+        {`${billboard.serialCode}. ${billboard.address}`}
       </div> 
       {billboard.sides.map(side => (
         <>
@@ -51,14 +83,18 @@ const BillboardSelectCard = (props : ComponentProps) => {
                     </ActionButton>
                   )
                 }
-
               </div>
             </div>
-  
             {side.googlePhotoUrl && (
               <a href={side.googlePhotoUrl}>
                 <div style={{width: "200px", height: "150px"}}>
-                  <iframe src={googleDriveToImageSource(side.googlePhotoUrl)} allow="autoplay" width="200" height="150"/>
+                  <Image 
+                    src={toGoogleDriveToImageSource(side.googlePhotoUrl)}
+                    alt="Neveikianti plokštumos nuotrauka"
+                    width={200}
+                    height={150}
+                    style={{objectFit: "cover"}} />
+                  {/* <iframe src={googleDriveToImageSource(side.googlePhotoUrl)} allow="autoplay" width="200" height="150"/> */}
                 </div>
               </a>
             )}

@@ -23,7 +23,7 @@ const BillboardEditCard = (props : BillboardCardProps) => {
   return (
     <div className="">
       <div className="m-2 text-xl text-center">
-        {billboard.address}
+        {`${billboard.serialCode}. ${billboard.address}`}
       </div>
       <div className="flex justify-end mb-2">
         <ActionButton onClick={() => {}}>
