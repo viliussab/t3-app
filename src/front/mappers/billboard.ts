@@ -1,4 +1,4 @@
-import { BillboardDto, BillboardUniqueSideDto } from "../../types/dto/BillboardDtos.schema";
+import { BillboardDto, BillboardUniqueSideDto } from "../../types/dto/BillboardDtos";
 
 const toUniqueSides = (billboards: BillboardDto[] | undefined) => {
   if (!billboards) {

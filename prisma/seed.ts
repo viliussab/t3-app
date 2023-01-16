@@ -52,8 +52,6 @@ async function main() {
       const area = await prisma.area.findFirst() ?? throwExpression("area null");
       const type = await prisma.billboardType.findFirst() ?? throwExpression("type null");
 
-      // console.log("proto", billboardProto);
-
       const billboard = await prisma.billboard.create({data: 
         {
           address: billboardProto.address,

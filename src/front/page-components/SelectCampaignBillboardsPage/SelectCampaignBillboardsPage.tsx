@@ -18,6 +18,7 @@ import Table, { ColumnConfig } from "../../components/Table";
 import Icons from "./../../components/Icons";
 import BillboardFilters from "../../multi-page-components/billboard/BillboardFilters";
 import dynamic from "next/dynamic";
+import BillboardSelectCard from "../../multi-page-components/billboard/BillboardSelectCard";
 
 const BillboardsMap = dynamic(() => import("../../multi-page-components/geo/maps/BillboardsMap"), {ssr: false});
 
@@ -47,7 +48,7 @@ const SelectCampaignBillboardsPage : NextPage = () => {
     search: ""
   });
 
-  const sideNamesQuery = trpc.useQuery(["billboard.getDistinctSideNames"], {
+  const sideNamesQuery = trpc.useQuery(["billboard.getDistinctSideTypes"], {
     onSuccess: (data) => {
       setFilters({...filters, allowedSides: data});
     }
@@ -94,7 +95,7 @@ const SelectCampaignBillboardsPage : NextPage = () => {
     },
     {
       title: "Pavadinimas",
-      renderCell: (billboard) => <>{billboard.name}</>,
+      renderCell: (billboard) => <>{billboard.side.title}</>,
       key: "name"
     },
     {
@@ -109,7 +110,7 @@ const SelectCampaignBillboardsPage : NextPage = () => {
     },
     {
       title: "Pusė",
-      renderCell: (billboard) => <>{billboard.side.name}</>,
+      renderCell: (billboard) => <>{billboard.side.sideType}</>,
       key: "sideName"
     }, 
     {
@@ -127,7 +128,7 @@ const SelectCampaignBillboardsPage : NextPage = () => {
   const selectedColumns: ColumnConfig<BillboardUniqueSideDto>[] = [
     {
       title: "Pavadinimas",
-      renderCell: (billboard) => <>{billboard.name}</>,
+      renderCell: (billboard) => <>{billboard.side.title}</>,
       key: "name"
     },
     {
@@ -142,7 +143,7 @@ const SelectCampaignBillboardsPage : NextPage = () => {
     },
     {
       title: "Pusė",
-      renderCell: (billboard) => <>{billboard.side.name}</>,
+      renderCell: (billboard) => <>{billboard.side.sideType}</>,
       key: "sideName"
     },
     {
@@ -211,6 +212,13 @@ const SelectCampaignBillboardsPage : NextPage = () => {
                       <BillboardsMap
                         area={kaunas}
                         billboards={filteredQuery.data}
+                        renderDialog={(billboard) => (
+                          <BillboardSelectCard
+                            billboard={billboard}
+                            onSideSelect={selectOrDeselect}
+                            selectedKeys={selected.map((x) => x.side.id)}
+                          />
+                        )}
                       />
                     </div>
                   </div>

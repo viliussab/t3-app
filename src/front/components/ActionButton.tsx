@@ -3,7 +3,7 @@ import React from "react";
 type ActionButtonProps = {
     children: React.ReactNode,
     onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
-    color?: "default" | "pdf" | "altAction" | "danger"
+    color?: "default" | "pdf" | "altAction" | "danger" | "positive"
 }
 
 const ActionButton = (props : ActionButtonProps) => {
@@ -13,6 +13,10 @@ const ActionButton = (props : ActionButtonProps) => {
   const getColorClasses = () => {
     if (color === "pdf") {
       return "bg-purple-500 hover:bg-purple-600 text-gray-100 border-purple-400 hover:text-white";
+    }
+
+    if (color === "positive") {
+      return "bg-green-500 hover:bg-green-600 text-gray-100 border-green-500 hover:text-white";
     }
 
     if (color === "altAction") {
