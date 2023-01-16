@@ -13,9 +13,6 @@ const BillboardMarker = ({billboard}: BillboardMarkerProps) => {
 
   const [open, setOpen] = React.useState(false);
 
-  console.log("open", open);
-
-
   return (
     <>
       <Marker
