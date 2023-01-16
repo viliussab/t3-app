@@ -2,8 +2,8 @@ import React from "react";
 import { BillboardDto, BillboardUniqueSideDto } from "../../../types/dto/BillboardDtos";
 import { Divider } from "@mui/material";
 import ActionButton from "../../components/ActionButton";
-import { match } from "assert";
-import Image from "next/image";
+import GoogleSideImage from "../../components/GoogleSideImage";
+import { BillboardSide } from "@prisma/client";
 
 type ComponentProps = {
     billboard: BillboardDto,
@@ -18,45 +18,7 @@ const BillboardSelectCard = (props : ComponentProps) => {
     selectedKeys
   } = props;
 
-
-  const getImageIdWithNoise = (value: string) => {
-    const driveOpenLink = /^https:\/\/drive.google.com\/open\?id=(.*)$/;
-    const driveFileLink = /^https:\/\/drive.google.com\/file\/d\/(.*)$/;
-
-    const matchOpen = value.match(driveOpenLink);
-    const matchFile = value.match(driveFileLink);
-
-    if (matchOpen) {
-      return matchOpen[1];
-    }
-
-    if (matchFile) {
-      return matchFile[1];
-    }
-
-    return null;
-  };
-
-  const getImageId = (value: string) => {
-    const inpureId = getImageIdWithNoise(value);
-
-    if (inpureId) {
-      const indexToStop = inpureId.lastIndexOf("/view");
-
-      if (indexToStop === -1) {
-        return inpureId;
-      }
-
-      const id = inpureId.substring(0, indexToStop);
-
-      return id;
-    }
-  };
-
-  const toGoogleDriveToImageSource = (value: string) => {
-    const url = `https://drive.google.com/uc?export=view&id=${getImageId(value)}`;
-    return url;
-  };
+  const getIsSelected = (side : BillboardSide) => selectedKeys.some(k => k === side.id);
 
   return (
     <div className="pb-2">
@@ -66,14 +28,17 @@ const BillboardSelectCard = (props : ComponentProps) => {
       {billboard.sides.map(side => (
         <>
           <div key={side.id} className="flex gap-2">
-            <div className="p-4 pt-1 flex justify-between flex-col" style={{width: "200px"}}>
+            <div className="p-4 pt-1 flex justify-between flex-col" style={{width: "300px"}}>
               <div>
                 <div className="text-lg">{`${side.title}`}</div>
                 <div className="text-base text-gray-600 text-bold">{`${side.sideType} pusė`}</div>
+                {getIsSelected(side) && (
+                  <div className="text-green-500 italic text-bold">Pasirinkta</div>
+                )}
               </div>
               <div>
                 {
-                  selectedKeys.some(k => k === side.id) ? (
+                  getIsSelected(side) ? (
                     <ActionButton onClick={() => onSideSelect({...billboard, side})} color="danger">
                         Atmesti stotelę
                     </ActionButton>
@@ -85,19 +50,11 @@ const BillboardSelectCard = (props : ComponentProps) => {
                 }
               </div>
             </div>
-            {side.googlePhotoUrl && (
-              <a href={side.googlePhotoUrl}>
-                <div style={{width: "200px", height: "150px"}}>
-                  <Image 
-                    src={toGoogleDriveToImageSource(side.googlePhotoUrl)}
-                    alt="Neveikianti plokštumos nuotrauka"
-                    width={200}
-                    height={150}
-                    style={{objectFit: "cover"}} />
-                  {/* <iframe src={googleDriveToImageSource(side.googlePhotoUrl)} allow="autoplay" width="200" height="150"/> */}
-                </div>
-              </a>
-            )}
+            <GoogleSideImage
+              width={200}
+              height={150}
+              googleDriveUrl={side.googlePhotoUrl}
+            />
           </div>
           <Divider />
         </>

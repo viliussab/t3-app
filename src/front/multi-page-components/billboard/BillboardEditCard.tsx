@@ -2,6 +2,7 @@ import React from "react";
 import { BillboardDto } from "../../../types/dto/BillboardDtos";
 import { Divider } from "@mui/material";
 import ActionButton from "../../components/ActionButton";
+import GoogleSideImage from "./../../components/GoogleSideImage";
 
 type BillboardCardProps = {
     billboard: BillboardDto,
@@ -10,18 +11,8 @@ type BillboardCardProps = {
 const BillboardEditCard = (props : BillboardCardProps) => {
   const { billboard } = props;
 
-  const googleDriveToImageSource = (value: string) => {
-
-    console.log("value", value, value.lastIndexOf("/"));
-
-    const a = value.substring(0, value.lastIndexOf("/")) + "/preview";
-
-    console.log("res", a);
-    return a;
-  };
-
   return (
-    <div className="">
+    <div className="mb-2">
       <div className="m-2 text-xl text-center">
         {`${billboard.serialCode}. ${billboard.address}`}
       </div>
@@ -33,7 +24,7 @@ const BillboardEditCard = (props : BillboardCardProps) => {
       {billboard.sides.map(side => (
         <>
           <div key={side.id} className="flex gap-2">
-            <div className="p-4 pt-1 flex justify-between flex-col" style={{width: "200px"}}>
+            <div className="p-4 pt-1 flex justify-between flex-col" style={{width: "300px"}}>
               <div>
                 <div className="text-lg">{`${side.title}`}</div>
                 <div className="text-base text-gray-600 text-bold">{`${side.sideType} pusė`}</div>
@@ -44,14 +35,11 @@ const BillboardEditCard = (props : BillboardCardProps) => {
                 </ActionButton>
               </div>
             </div>
-  
-            {side.googlePhotoUrl && (
-              <a href={side.googlePhotoUrl}>
-                <div style={{width: "200px", height: "150px"}}>
-                  <iframe src={googleDriveToImageSource(side.googlePhotoUrl)} allow="autoplay" width="200" height="150"/>
-                </div>
-              </a>
-            )}
+            <GoogleSideImage
+              width={200}
+              height={150}
+              googleDriveUrl={side.googlePhotoUrl}
+            />
           </div>
           <Divider />
         </>
