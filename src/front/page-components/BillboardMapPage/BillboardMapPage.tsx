@@ -7,6 +7,8 @@ import BillboardFilters from "../../multi-page-components/billboard/BillboardFil
 import { BooleanFilters } from "../../../types/filters/booleanFilter.schema";
 import dynamic from "next/dynamic";
 import styles from "./BillboardMapPage.module.css";
+import BillboardEditCard from "../../multi-page-components/billboard/BillboardEditCard";
+
 const BillboardsMap = dynamic(() => import("../../multi-page-components/geo/maps/BillboardsMap"), {ssr: false});
 
 const BillboardMapPage: NextPage = () => {
@@ -55,6 +57,11 @@ const BillboardMapPage: NextPage = () => {
               <BillboardsMap
                 area={kaunas}
                 billboards={billboardQuery.data}
+                renderDialog={(billboard) => (
+                  <BillboardEditCard 
+                    billboard={billboard}
+                  />
+                )}
               />
             </div>
           </div>

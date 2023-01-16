@@ -1,5 +1,5 @@
 import { Marker, Popup } from "react-leaflet";
-import BillboardCard from "../../billboard/BillboardCard";
+import BillboardEditCard from "../../billboard/BillboardEditCard";
 import React from "react";
 import { BillboardDto } from "../../../../types/dto/BillboardDtos";
 import * as Mui from "@mui/material";
@@ -7,9 +7,10 @@ import styles from "./BillboardMarker.module.css";
 
 type BillboardMarkerProps = {
     billboard: BillboardDto,
+    renderDialog: (billboard: BillboardDto) => React.ReactNode,
   }
 
-const BillboardMarker = ({billboard}: BillboardMarkerProps) => {
+const BillboardMarker = ({billboard, renderDialog}: BillboardMarkerProps) => {
 
   const [open, setOpen] = React.useState(false);
 
@@ -36,9 +37,7 @@ const BillboardMarker = ({billboard}: BillboardMarkerProps) => {
         </Popup>
       </Marker>
       <Mui.Dialog open={open} onClose={() => setOpen(false)}>
-        <BillboardCard 
-          billboard={billboard}
-        />
+        {renderDialog(billboard)}
       </Mui.Dialog>
     </>
   );

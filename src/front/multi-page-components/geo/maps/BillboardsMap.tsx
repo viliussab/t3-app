@@ -8,12 +8,14 @@ import { BillboardDto } from "../../../../types/dto/BillboardDtos.schema";
 type MapProps = {
     area: Area,
     billboards: BillboardDto[],
+    renderDialog: (billboard: BillboardDto) => React.ReactNode,
 }
  
 const BillboardsMap = (props : MapProps) => {
   const {
     area,
-    billboards
+    billboards,
+    renderDialog
   } = props;
 
   return (
@@ -23,7 +25,9 @@ const BillboardsMap = (props : MapProps) => {
       {billboards.map(billboard => (
         <BillboardMarker
           billboard={billboard}
-          key={billboard.id} />
+          key={billboard.id} 
+          renderDialog={renderDialog}
+        />
       ))}
     </MapFrame>
   );
