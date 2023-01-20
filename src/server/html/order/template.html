@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    </head>
+    <style>
+        * {
+            font-family: 'Roboto';
+            line-height: 1.5em;
+        }
+        table, td, th {
+            border-collapse: collapse;
+        }
+        td {
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+        th {
+            border-top: 1px solid;
+            border-bottom: 1px solid;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            font-weight: 400;
+            color:#232323;
+        }
+        td, th {
+            text-align: center;
+        }
+        .emptyTd {
+            all: none;
+        }
+        td > div {
+            white-space: nowrap;
+        }
+        .supportingText {
+            text-align: right;
+        }
+
+    </style>
+<body>
+    <div >
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="width: 240px; margin-top: 20px">
+                <img src="http://localhost:3333/logo.png" style="width: 100%"/>
+            </div>
+            <div>
+
+
+            <div style="padding-right: 1em; padding-left: 1em; font-weight: 300; font-size:x-large; text-transform: uppercase; text-align: center;">
+                Reklamos paslaugų teikimo pasiūlymas
+            </div>
+        </div>
+            <div style="text-align: center;">
+                <div style="font-weight: bold;">
+                    Data
+                </div>
+                ((DateNow))
+            </div>
+        </div>
+        <hr class="solid" style="color:gray">
+        <br/>
+        <div style="display: flex; justify-content: space-between;">
+            <div>
+                <div style="font-weight: bold;">
+                    Pasiūlymą parengė
+                </div>
+                <div style="font-size: 0.8rem;">
+             
+                    <div>
+                        Justina Kavaliūnė
+                    </div>
+                    <div>
+                        Reklamos pardavimų vadovė
+                    </div>
+                    <div>
+                        El. p. justina@reklamosarka.lt
+                    </div>
+                    <div>
+                        Tel. +370 639 34853
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: right;">
+    
+                    <div style="font-weight:bold">
+                        Užsakovas
+                    </div>
+                    <div style="font-size:0.8rem; ">
+                        <div>
+                            ((CustomerName))
+                        </div>
+                        <div>
+                            Įmonės kodas ((CustomerCompanyCode))
+                        </div>
+                        <div>
+                            PVM kodas ((CustomerVatCode))
+                        </div>
+                        <div>
+                            Adresas ((CustomerAddress))
+                        </div>
+                        <div>
+                            ((CampaignName)) Kampanija
+                        </div>
+                        <div>
+                            Kontaktinis asmuo ((CustomerContactPerson))
+                        </div>
+                        <div>
+                            Tel. ((CustomerPhone))
+                        </div>
+
+                        <div>
+                            El. p. ((CustomerEmail))
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br/>
+        <br/>
+        <div>
+            <table style="width: 100%; font-size: small;">
+                <tr>
+                    <th>Nr.</th>
+                    <th>Produktas</th>
+                    <th>Periodas imtinai</th>
+                    <th>Periodas (savaitėmis)</th>
+                    <th>Kiekis</th>
+                    <th>Vieneto kaina €</th>
+                    <th>Suma Gross €</th>
+                    <th>Taikoma nuolaida</th>
+                    <th>Vieneto kaina su nuolaida</th>
+                    <th>Suma Nett €</th>
+                </tr>
+                <tr>
+                    <td>1.</td>
+                    <td>Reklamos plokštuma</td>
+                    <td>
+                        <div>nuo ((StartDate))</div>
+                        <div>iki ((EndDate))</div>
+                    </td>
+                    <td>((DatePeriod))</td>
+                    <td>((PlaneAmount))</td>
+                    <td>((PlanePrice))€</td>
+                    <td>((PlaneSumRaw))€</td>
+                    <td>((PlaneDiscount))</td>
+                    <td>((DiscountedPlanePrice))€</td>
+                    <td>((DiscountedPlaneSum))€</td>
+                </tr>
+                <tr>
+                    <td>2.</td>
+                    <td>Spauda</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>((PressAmount))*</td>
+                    <td>8€</td>
+                    <td>((PlaneSum))€</td>
+                    <td>-</td>
+                    <td>8€</td>
+                    <td>((PlaneSum))€</td>
+                </tr>
+            </table>
+            <br />
+            <div style="margin-top: 6px; display: flex; justify-content:space-between; gap:10px">
+                <div>
+                    *Užsakomų plakatų skaičius 10% didesnis nei nuomojamų plokštumų
+                </div>
+                <div style="width: 200px">
+                    <div style="display: flex; justify-content:space-between; gap: 10px">
+                        <div>Suma be PVM:</div>
+                        <div>((TotalSumNoVat))€</div>
+                    </div>
+                    <div style="display: flex; justify-content:space-between; gap: 10px">
+                        <div>PVM:</div>
+                        <div>21%</div>
+                    </div>
+                    <div style="display: flex; justify-content:space-between; gap: 10px; font-weight: bold;">
+                        <div>Suma su PVM:</div>
+                        <div>((TotalSumVat))€</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <div style="float:right; width:300px">
+            <hr class="solid" style="color:gray">
+            <div style="margin-top: -6px; text-align: center; font-size: small;">
+                <div>
+                    Patvirtinto kliento atstovas
+                </div>
+                <div style="font-style:italic">(Vardas, Pavardė, pareigos, parašas)</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
