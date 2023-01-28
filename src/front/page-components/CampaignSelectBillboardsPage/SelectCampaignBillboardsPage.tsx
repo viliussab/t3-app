@@ -4,43 +4,45 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { CampaignBillboardSelect, campaignSelectBillboardsSchema } from "../../../types/command/campaignSelectBillboards.schema";
-import Layout from "./../../components/Layout";
-import { trpc } from "./../../../utils/trpc";
+import Layout from "../../components/Layout";
+import { trpc } from "../../../utils/trpc";
 import React from "react";
 import { BillboardFilterObj } from "../../../types/filters/billboardFilter.schema";
 import { BooleanFilters } from "../../../types/filters/booleanFilter.schema";
 import { BillboardUniqueSideDto } from "../../../types/dto/BillboardDtos";
-import billboardMapper from "./../../mappers/billboard";
+import billboardMapper from "../../mappers/billboard";
 import Paper from "../../components/Paper";
-import ActionButton from "./../../components/ActionButton";
+import ActionButton from "../../components/ActionButton";
 import * as Mui from "@mui/material";
 import Table, { ColumnConfig } from "../../components/Table";
-import Icons from "./../../components/Icons";
+import Icons from "../../components/Icons";
 import BillboardFilters from "../../multi-page-components/billboard/BillboardFilters";
 import dynamic from "next/dynamic";
 import BillboardSelectCard from "../../multi-page-components/billboard/BillboardSelectCard";
+import SubmitButton from "../../components/form/SubmitButton";
 
 const BillboardsMap = dynamic(() => import("../../multi-page-components/geo/maps/BillboardsMap"), {ssr: false});
 
-const SelectCampaignBillboardsPage : NextPage = () => {
+const CampaignSelectBillboardsPage : NextPage = () => {
 
   const router = useRouter();
   const { id } = router.query;
 
   const campaignQuery = trpc.useQuery(["campaign.getById", {id: id as string}]);
+  const campaignBillboardsUpdate = trpc.useMutation(["campaign.updateBillboards"], {onSuccess: () => {router.push("campaigns")}});
 
   const form = useForm<CampaignBillboardSelect>({
     resolver: zodResolver(campaignSelectBillboardsSchema),
     defaultValues: {
-      ids: []
+      sideIds: [],
+      id: id as string,
     }
   });
 
+
   const [openMap, setOpenMap] = React.useState(false);
   const [openList, setOpenList] = React.useState(false);
-
   const [selected, setSelected] = React.useState<BillboardUniqueSideDto[]>([]); 
-
   const [filters, setFilters] = React.useState<BillboardFilterObj>({
     allowedSides: [],
     illumination: BooleanFilters.Both,
@@ -53,7 +55,6 @@ const SelectCampaignBillboardsPage : NextPage = () => {
       setFilters({...filters, allowedSides: data});
     }
   });
-
   const filteredQuery = trpc.useQuery(["billboard.getFiltered", filters]);
   const areaQuery = trpc.useQuery(["area.getAll"]);
 
@@ -62,7 +63,7 @@ const SelectCampaignBillboardsPage : NextPage = () => {
   };
 
   React.useEffect(() => {
-    form.setValue("ids", selected.map(x => x.id));
+    form.setValue("sideIds", selected.map(x => x.side.id));
   }, [form, selected]);
 
   if (campaignQuery.isLoading || sideNamesQuery.isLoading || areaQuery.isLoading) {
@@ -78,6 +79,8 @@ const SelectCampaignBillboardsPage : NextPage = () => {
     : [];
 
   const campaign = campaignQuery.data;
+
+  const isAllSelected = campaign.sideAmount === selected.length;
 
   // TODO: add select to decide which city
   const kaunas = areaQuery.data?.find(area => area.locationName === "Kaunas");
@@ -166,6 +169,28 @@ const SelectCampaignBillboardsPage : NextPage = () => {
     setSelected((prev) => [...prev, billboard]);
   };
 
+  const renderLeftToSelect = () => {
+    if (isAllSelected) {
+      return (
+        <div className="mt-4 text-center text-xl text-green-600">
+          Stotelių kiekis tinkamas
+        </div>
+      );
+    }
+
+    if (selected.length > campaign.sideAmount) {
+      return (
+        <div className="mt-4 text-center text-xl text-red-600">
+          {`Pasirinkta ${selected.length - campaign.sideAmount} stotelėmis per daug`}
+        </div>
+      );
+    }
+
+    return <div className="mt-4 text-center text-xl italic">
+    {`Dar liko pasirinkti ${campaign.sideAmount - selected.length} stoteles`}
+  </div>
+  }
+
   return (
     <Layout>
       <div className="flex justify-center m-4">
@@ -173,11 +198,8 @@ const SelectCampaignBillboardsPage : NextPage = () => {
           <div className="text-center text-xl font-semibold">
             {`Pasirinkti kampanijos "${campaign.name}" stoteles`}
           </div>
-          <div className="mt-4 text-center text-xl italic">
-            {`Dar liko pasirinkti ${campaign.sideAmount - selected.length} stoteles`}
-          </div>
-          {selected.length
-            ? (
+          {renderLeftToSelect()}
+          {selected.length ? (
               <div className="flex justify-center mt-2 mb-2">
                 <Table 
                   columns={selectedColumns}
@@ -195,10 +217,8 @@ const SelectCampaignBillboardsPage : NextPage = () => {
                 Pasirinkti iš sąrašo
             </ActionButton>
             <Mui.Dialog open={openMap} maxWidth="xl" onClose={() => setOpenMap(false)}>
-              <div className="mt-4 text-center text-xl italic mb-4 sticky top-0 h-6">
-                {`Dar liko pasirinkti ${campaign.sideAmount - selected.length} stoteles`}
-              </div>
-              <div className="flex justify-center mb-4">
+                {renderLeftToSelect()}
+              <div className="flex justify-center mt-4 mb-4">
                 <BillboardFilters
                   sideNames={sideNamesQuery.data || []}
                   filters={filters}
@@ -230,16 +250,17 @@ const SelectCampaignBillboardsPage : NextPage = () => {
               }
             </Mui.Dialog>
             <Mui.Dialog open={openList} maxWidth="xl" onClose={() => setOpenList(false)}>
-              <div className="mt-4 text-center text-xl italic mb-4 sticky top-0 h-6">
-                {`Dar liko pasirinkti ${campaign.sideAmount - selected.length} stoteles`}
-              </div>
-              <div className="flex justify-center mb-4">
+              <div className="mt-4 sticky top-0 z-10 bg-white">
+                {renderLeftToSelect()}
+                <div className="flex justify-center mt-4">
                 <BillboardFilters
                   sideNames={sideNamesQuery.data || []}
                   filters={filters}
                   onFilterChange={onFilterChange}
                 />
               </div>
+              </div>
+              <div className="mb-4"/>
               {
                 !filteredQuery.isLoading ? (
                   <Table
@@ -257,10 +278,20 @@ const SelectCampaignBillboardsPage : NextPage = () => {
               }
             </Mui.Dialog>
           </div>
+          <form onSubmit={(e) => { 
+            form.handleSubmit((values) => campaignBillboardsUpdate.mutateAsync(values))(e);
+          }}>
+
+
+          <SubmitButton isSubmitting={campaignBillboardsUpdate.isLoading}
+          buttonProps={{
+            disabled: !isAllSelected,
+          }}>Kurti naują</SubmitButton>
+                    </form>
         </Paper>
       </div>
     </Layout>
   );
 };
 
-export default SelectCampaignBillboardsPage;
+export default CampaignSelectBillboardsPage;

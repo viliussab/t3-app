@@ -33,7 +33,7 @@ const navigationSections : Array<SectionProps> = [
       },
       {
         name: "Kampanijų suvestinė",
-        href: "/campaigns/occupancy"
+        href: "/campaigns/summary"
       },
       {
         name: "Savaitinis registras",

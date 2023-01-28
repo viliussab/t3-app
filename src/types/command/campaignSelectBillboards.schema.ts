@@ -1,7 +1,8 @@
 import z from "zod";
 
 export const campaignSelectBillboardsSchema = z.object({
-  ids: z.array(z.string())
+  sideIds: z.array(z.string()),
+  id: z.string()
 });
 
 export type CampaignBillboardSelect = z.TypeOf<typeof campaignSelectBillboardsSchema>;

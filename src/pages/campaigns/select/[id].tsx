@@ -1,3 +1,3 @@
-import SelectCampaignBillboardsPage from "../../../front/page-components/SelectCampaignBillboardsPage/SelectCampaignBillboardsPage";
+import CampaignSelectBillboardsPage from "../../../front/page-components/CampaignSelectBillboardsPage/SelectCampaignBillboardsPage";
 
-export default SelectCampaignBillboardsPage;
+export default CampaignSelectBillboardsPage;

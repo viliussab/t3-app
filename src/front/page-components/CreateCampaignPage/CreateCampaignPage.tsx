@@ -16,7 +16,7 @@ import React from "react";
 import Paper from "../../components/Paper";
 import SubmitButton from "../../components/form/SubmitButton";
 import { useRouter } from "next/router";
-import CONSTANTS from "../../../constants";
+import campaignMapper from "../../mappers/campaignMapper";
 
 const CreateCampaignPage : NextPage = () => {
   const router = useRouter();
@@ -30,59 +30,12 @@ const CreateCampaignPage : NextPage = () => {
     }
   });
 
-
-
-  const derivatives = (() => {
-    const val = form.watch();
-
-    const weekPeriod = (!!val.periodStart && !!val.periodEnd)
-      ? dateService.formatPeriodShort(val.periodStart, val.periodEnd)
-      : "-";
-
-    const weekCount = (!!val.periodStart && !!val.periodEnd)
-      ? dateFns.differenceInWeeks(val.periodEnd, val.periodStart) + 1
-      : 0;
-
-    const stopPriceDiscounted = (val.discountPercent)
-      ? CONSTANTS.SIDE_PRICE * ((100 - val.discountPercent) / 100)
-      : CONSTANTS.SIDE_PRICE;
-
-    const pressUnits = (!!val.sideAmount && !!val.requiresPrinting)
-      ? Math.round(val.sideAmount * CONSTANTS.PRESS_RATIO)
-      : 0;
-
-    const pressUnitsPrice = pressUnits * CONSTANTS.PRESS_PRICE;
-
-    const unplannedPrice = (!!val.sideAmount 
-      && dateService.isNotCampaignDay(val.periodStart))
-      ? CONSTANTS.UNPLANNED_COST_PER_SIDE * val.sideAmount
-      : 0;
-
-    const sideTotalPrice = (val.sideAmount || 0) * weekCount * stopPriceDiscounted;
-
-    const totalPriceNoVat = pressUnitsPrice + unplannedPrice + sideTotalPrice;
-    
-    const totalPriceVat = totalPriceNoVat * (1 + CONSTANTS.VAT);
-
-    return {
-      weekCount,
-      weekPeriod,
-      isUnplanned: dateService.isNotCampaignDay(val.periodStart),
-      stopPriceDiscounted: stopPriceDiscounted.toFixed(2),
-      sideTotalPrice: sideTotalPrice.toFixed(2),
-      pressUnitsPrice: pressUnitsPrice.toFixed(2),
-      pressUnits,
-      unplannedPrice: unplannedPrice.toFixed(2),
-      totalPriceNoVat: totalPriceNoVat.toFixed(2),
-      totalPriceVat: totalPriceVat.toFixed(2)
-    };
-  })();
+  const calculated = campaignMapper.calculateDerivatives(form.watch());
 
   const campaignCreateCommand = trpc.useMutation(
-    ["campaign.create"],
-    {
+    ["campaign.create"], {
       onSuccess: () => {
-        router.push("/billboards");
+        router.push("/campaigns"); 
       }
     });
 
@@ -144,11 +97,8 @@ const CreateCampaignPage : NextPage = () => {
                       muiProps={{
                         required: true,
                         type: "number",
-                        InputProps: {
-                          endAdornment: (
-                            <Mui.InputAdornment position="end">
-                          %
-                            </Mui.InputAdornment>
+                        InputProps: { endAdornment: (
+                            <Mui.InputAdornment position="end">%</Mui.InputAdornment>
                           )
                         }
                       }}
@@ -171,36 +121,34 @@ const CreateCampaignPage : NextPage = () => {
                 Apskaičiuota sąmata
               </div>
               <div className="flex flex-col justify-end gap-1">
-              
                 <EstimatePart
                   title="Spaudos kiekis"
-                  value={`${derivatives.pressUnits} vnt.`}/>
+                  value={`${calculated.pressUnits} vnt.`}/>
                 <EstimatePart
                   title="Savaičių kiekis"
-                  value={`${derivatives.weekCount}`}/>
+                  value={`${calculated.weekCount}`}/>
                 <EstimatePart
                   title="Periodas (savaitėms)"
-                  value={derivatives.weekPeriod}/>
+                  value={calculated.weekPeriod}/>
                 <EstimatePart
                   title="Plokštumos kaina su nuolaida"
-                  value={`${derivatives.stopPriceDiscounted} €`}/>
-
+                  value={`${calculated.stopPriceDiscounted} €`}/>
                 <EstimatePart
                   title="Reklamos paslaugos"
-                  value={`${derivatives.sideTotalPrice} €`}/>
+                  value={`${calculated.sideTotalPrice} €`}/>
                 <EstimatePart
                   title="Spaudos kaina"
-                  value={`${derivatives.pressUnitsPrice} €`}/>
+                  value={`${calculated.pressUnitsPrice} €`}/>
                 <EstimatePart
                   title="Neplaninio nukabinimo kaina"
-                  value={`${derivatives.unplannedPrice} €`}/>
+                  value={`${calculated.unplannedPrice} €`}/>
                 <EstimatePart
                   title="Suma"
-                  value={`${derivatives.totalPriceNoVat} €`}/>
+                  value={`${calculated.totalPriceNoVat} €`}/>
                 <div className="font-bold">
                   <EstimatePart
                     title="Suma su PVM"
-                    value={`${derivatives.totalPriceVat} €`}/>
+                    value={`${calculated.totalPriceVat} €`}/>
                 </div>
               </div>
             </div>

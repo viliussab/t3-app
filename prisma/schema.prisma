@@ -133,6 +133,18 @@ model Campaign {
 
     customerId String
     customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+    campaignBillboardSides BillboardSideInCampaign[]
+}
+
+model BillboardSideInCampaign {
+    @@id([campaignId, billboardSideId])
+
+    campaignId String
+    campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+    billboardSideId String
+    billboardSide BillboardSide @relation(fields: [billboardSideId], references: [id], onDelete: Cascade)
 }
 
 model Tag {
@@ -158,4 +170,6 @@ model BillboardSide {
 
     billboardId String
     billboard Billboard @relation(fields: [billboardId], references: [id], onDelete: Cascade)
+
+    billboardSideInCampaigns BillboardSideInCampaign[]
 }

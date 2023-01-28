@@ -14,9 +14,10 @@ type TableProps<T> = {
     keySelector: (elem: T) => string,
     selectedKeys?: string[],
     hideHeader?: boolean,
+    topOffset?: number,
 }
   
-export default function Table<T>({columns, data, onClick, keySelector, selectedKeys, hideHeader} : TableProps<T>) {
+export default function Table<T>({columns, data, onClick, keySelector, selectedKeys, hideHeader, topOffset = 0} : TableProps<T>) {
   const headers = columns.map(c => c.title);
 
   return (
@@ -25,7 +26,7 @@ export default function Table<T>({columns, data, onClick, keySelector, selectedK
         <thead className="text-xs text-gray-700 uppercase bg-gray-100">
           <tr>
             {headers.map((columnName) => (
-              <th scope="col" key={columnName} className="py-3 px-6 sticky top-0 bg-gray-100">
+              <th scope="col" key={columnName} className={`py-3 px-6 sticky bg-gray-100 top-${topOffset.toString()}`}>
                 <div className="text-sm flex align-middle justify-center">
                   {columnName}
                 </div>

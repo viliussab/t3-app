@@ -5,12 +5,50 @@ import stopsReader from "./seeds/stopsReader";
 
 const prisma = new PrismaClient();
 
-// eslint-disable-next-line func-style
 function throwExpression(errorMessage: string): never {
   throw new Error(errorMessage);
 }
 
-// eslint-disable-next-line func-style
+async function seedBillboardsAsync() {
+  const billboards = await stopsReader.readAsync();
+
+  if (!billboards) {
+    return;
+  }
+
+  const serialCodes = billboards.map(billboard => billboard.serialCode).filter(arrayService.isUnique);
+
+  serialCodes.forEach(async (code) => {
+    const billboardsByCode = billboards.filter(b => b.serialCode === code);
+
+    const billboardRequest = billboardsByCode[0] ?? throwExpression("billboard null");
+    const area = await prisma.area.findFirst() ?? throwExpression("area null");
+    const type = await prisma.billboardType.findFirst() ?? throwExpression("type null");
+
+    const billboard = await prisma.billboard.create({data: 
+      {
+        address: billboardRequest.address,
+        isIlluminated: true,
+        isLicensed: true,
+        areaId: area.id,
+        latitude: billboardRequest.latitude,
+        longitude: billboardRequest.longitude,
+        serialCode: billboardRequest.serialCode,
+        typeId: type.id
+      }
+    });
+
+    await prisma.billboardSide.createMany({
+      data: billboardsByCode.map(b => ({
+        billboardId: billboard.id,
+        sideType: b.side,
+        title: b.name,
+        googlePhotoUrl: b.googlePhotoUrl
+      }))
+    });
+  });
+}
+
 async function main() {
 
   if (await prisma.area.count() === 0)
@@ -37,43 +75,7 @@ async function main() {
 
   if (await prisma.billboard.count() === 0)
   {
-    const billboards = await stopsReader.readAsync();
-
-    if (!billboards) {
-      return;
-    }
-
-    const serialCodes = billboards.map(billboard => billboard.serialCode).filter(arrayService.isUnique);
-
-    serialCodes.forEach(async (code) => {
-      const billboardsByCode = billboards.filter(b => b.serialCode === code);
-
-      const billboardProto = billboardsByCode[0] ?? throwExpression("billboard null");
-      const area = await prisma.area.findFirst() ?? throwExpression("area null");
-      const type = await prisma.billboardType.findFirst() ?? throwExpression("type null");
-
-      const billboard = await prisma.billboard.create({data: 
-        {
-          address: billboardProto.address,
-          isIlluminated: true,
-          isLicensed: true,
-          areaId: area.id,
-          latitude: billboardProto.latitude,
-          longitude: billboardProto.longitude,
-          serialCode: billboardProto.serialCode,
-          typeId: type.id
-        }
-      });
-
-      await prisma.billboardSide.createMany({
-        data: billboardsByCode.map(b => ({
-          billboardId: billboard.id,
-          sideType: b.side,
-          title: b.name,
-          googlePhotoUrl: b.googlePhotoUrl
-        }))
-      });
-    });
+    await seedBillboardsAsync();
   }
 }
 
