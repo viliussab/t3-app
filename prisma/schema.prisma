@@ -131,10 +131,19 @@ model Campaign {
     requiresPrinting Boolean
     discountPercent Int
 
+    status CampaignStatus @default(PREPARED)
+
     customerId String
     customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
-    campaignBillboardSides BillboardSideInCampaign[]
+    billboardSideInCampaigns BillboardSideInCampaign[]
+}
+
+enum CampaignStatus {
+    PREPARED
+    SELECTED
+    CONFIRMED
+    FULLFILED
 }
 
 model BillboardSideInCampaign {

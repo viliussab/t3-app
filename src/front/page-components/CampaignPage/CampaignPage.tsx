@@ -1,20 +1,20 @@
 import { NextPage } from "next/types";
 import React from "react";
-import { CampaignDto } from "../../../types/dto/CampaignDtos";
+import { CampaignDto, CampaignListDto } from "../../../types/dto/campaignDtos";
 import Layout from "../../components/Layout";
 import Table, { ColumnConfig } from "../../components/Table";
 import { trpc } from "./../../../utils/trpc";
 import dateService from "./../../../services/dateService";
-import CampaignStatusChip from "./components/CampaignStatusChip";
 import ActionButton from "./../../components/ActionButton";
 import Icons from "./../../components/Icons";
 import Link from "next/link";
+import CampaignStatusChip from "../../multi-page-components/campaign/CampaignStatusChip";
 
 const CampaignPage : NextPage = () => {
 
   const campaignsQuery = trpc.useQuery(["campaign.getAll"]);
 
-  const columns: ColumnConfig<CampaignDto>[] = [
+  const columns: ColumnConfig<CampaignListDto>[] = [
     {
       title: "Kampanijos pavadinimas",
       renderCell: (campaign) => <>{campaign.name}</>,
@@ -40,7 +40,7 @@ const CampaignPage : NextPage = () => {
     },
     {
       title: "Būsėna",
-      renderCell: () => <CampaignStatusChip status={"Laukiama patvirtinimo"} />,
+      renderCell: (campaign) => <CampaignStatusChip status={campaign.status} />,
       key: "status"
     },
     {

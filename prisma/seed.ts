@@ -2,11 +2,39 @@
 import { PrismaClient } from "@prisma/client";
 import arrayService from "../src/services/array";
 import stopsReader from "./seeds/stopsReader";
+import demoSeeder from './seeds/demoSeeder';
 
 const prisma = new PrismaClient();
 
-function throwExpression(errorMessage: string): never {
-  throw new Error(errorMessage);
+async function main() {
+
+  await deleteDatabaseAsync();
+
+  if (await prisma.area.count() === 0) {
+    await prisma.area.createMany({data: [
+      {
+        locationName: "Kaunas",
+        northEastLat: 54.936803,
+        northEastLong: 23.971769,
+        southWestLat: 54.857355,
+        southWestLong: 23.829046
+      }
+    ]});
+  }
+
+  if (await prisma.billboardType.count() === 0) {
+    await prisma.billboardType.createMany({data: [
+      {
+        name: "Stotelė"
+      }
+    ]});
+  }
+
+  if (await prisma.billboard.count() === 0) {
+    await seedBillboardsAsync();
+  }
+
+  await demoSeeder.seedAsync(prisma);
 }
 
 async function seedBillboardsAsync() {
@@ -49,34 +77,18 @@ async function seedBillboardsAsync() {
   });
 }
 
-async function main() {
+const deleteDatabaseAsync = async () => {
+  await prisma.area.deleteMany();
+  await prisma.billboardType.deleteMany();
+  await prisma.billboard.deleteMany();
+  await prisma.billboardSide.deleteMany();
+  await prisma.customer.deleteMany();
+  await prisma.campaign.deleteMany();
+  await prisma.billboardSideInCampaign.deleteMany();
+}
 
-  if (await prisma.area.count() === 0)
-  {
-    await prisma.area.createMany({data: [
-      {
-        locationName: "Kaunas",
-        northEastLat: 54.936803,
-        northEastLong: 23.971769,
-        southWestLat: 54.857355,
-        southWestLong: 23.829046
-      }
-    ]});
-  }
-
-  if (await prisma.billboardType.count() === 0)
-  {
-    await prisma.billboardType.createMany({data: [
-      {
-        name: "Stotelė"
-      }
-    ]});
-  }
-
-  if (await prisma.billboard.count() === 0)
-  {
-    await seedBillboardsAsync();
-  }
+function throwExpression(errorMessage: string): never {
+  throw new Error(errorMessage);
 }
 
 main()

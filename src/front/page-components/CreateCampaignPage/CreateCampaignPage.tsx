@@ -98,8 +98,8 @@ const CreateCampaignPage : NextPage = () => {
                         required: true,
                         type: "number",
                         InputProps: { endAdornment: (
-                            <Mui.InputAdornment position="end">%</Mui.InputAdornment>
-                          )
+                          <Mui.InputAdornment position="end">%</Mui.InputAdornment>
+                        )
                         }
                       }}
                       valueAsNumber

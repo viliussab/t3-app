@@ -16,8 +16,15 @@ const getCurrentCampaignDay = () => {
   return campaignDayOfWeek;
 };
 
-const formatPeriodShort = (dateFrom: Date, dateTo: Date) => {
+const formatRangeMonthly = (dateFrom: Date, dateTo: Date) => {
+  const MONTH_DAY_FORMAT = "MM-dd";
 
+  const formattedString = `nuo ${dateFns.format(dateFrom, MONTH_DAY_FORMAT)} iki ${dateFns.format(dateTo, MONTH_DAY_FORMAT)}`;
+
+  return formattedString;
+}
+
+const formatPeriodShort = (dateFrom: Date, dateTo: Date) => {
   const weekFrom = dateFns.getWeek(dateFrom, {
     weekStartsOn: campaignStartWeekDay
   });
@@ -56,6 +63,7 @@ const dateService = {
   getCurrentCampaignDay,
   formatToYearWeek,
   formatPeriodShort,
+  formatRangeMonthly,
   isCampaignWeekday
 };
 

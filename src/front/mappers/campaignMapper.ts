@@ -1,6 +1,7 @@
 import dateService from "../../services/dateService";
 import dateFns from "../imports/dateFns";
 import CONSTANTS from "../../constants";
+import { CampaignDto, CustomerCampaignDto } from "../../types/dto/campaignDtos";
 
 type DerivativeProps = {
     periodStart: Date,
@@ -8,6 +9,20 @@ type DerivativeProps = {
     discountPercent: number,
     sideAmount: number,
     requiresPrinting: boolean,
+}
+
+const flattenSides = (campaigns: CampaignDto[]) => {
+  return campaigns.map((campaign) => ({
+    ...campaign,
+    billboardSides: campaign.billboardSideInCampaigns.map((joinTable) => joinTable.billboardSide),
+  }));
+}
+
+const customerFlattenSides = (customers: CustomerCampaignDto[]) => {
+  return customers.map((customer) => ({
+    ...customer,
+    campaigns: flattenSides(customer.campaigns),
+  }))
 }
 
 const calculateDerivatives = (val: DerivativeProps) => {
@@ -56,6 +71,7 @@ const calculateDerivatives = (val: DerivativeProps) => {
 
 const campaignMapper = {
     calculateDerivatives,
+    customerFlattenSides,
 }
 
 export default campaignMapper;

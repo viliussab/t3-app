@@ -2,6 +2,7 @@ import { createRouter } from "./context";
 import { campaignCreateSchema } from "../../types/command/campaignCreate.schema";
 import { getByIdSchema } from "../../types/filters/getById.schema";
 import { campaignSelectBillboardsSchema } from "../../types/command/campaignSelectBillboards.schema";
+import dateService from "../../services/dateService";
 
 export const campaignRouter = createRouter()
 
@@ -43,10 +44,32 @@ export const campaignRouter = createRouter()
       const campaigns = await ctx.prisma.campaign.findMany({
         include: {
           customer: true
-        }
-      });
-
+      }});
       return campaigns;
+    }
+  })
+  .query("getAllByCustomer", {
+    async resolve({ctx}) {
+      const campaignDate = new Date();
+
+      const customerCampaigns = await ctx.prisma.customer.findMany({
+        include: {
+          campaigns: {
+            where: {
+              periodEnd: {
+                gte: campaignDate
+              }
+            },
+            include: {
+              billboardSideInCampaigns: {
+                include: {
+                  billboardSide: true
+            }}},
+      }}});
+
+      const customersWithCampaigns = customerCampaigns.filter(customer => customer.campaigns.length > 0);
+
+      return customersWithCampaigns;
     }
   })
   .query("getById", {

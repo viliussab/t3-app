@@ -11,80 +11,99 @@ import Table, { ColumnConfig } from "../../components/Table";
 import { BillboardUniqueSideDto } from "../../../types/dto/BillboardDtos";
 
 const BillboardListPage: NextPage = () => {
-
   const [filters, setFilters] = React.useState<BillboardFilterObj>({
     allowedSides: [],
     illumination: BooleanFilters.Both,
     license: BooleanFilters.Both,
-    search: ""
+    search: "",
   });
 
   const sideNamesQuery = trpc.useQuery(["billboard.getDistinctSideTypes"], {
     onSuccess: (data) => {
-      setFilters({...filters, allowedSides: data});
-    }
+      setFilters({ ...filters, allowedSides: data });
+    },
   });
 
-  const billboardQuery = trpc.useQuery(["billboard.getFiltered", {...filters}], {enabled: !sideNamesQuery.isLoading});
+  const billboardQuery = trpc.useQuery(
+    ["billboard.getFiltered", { ...filters }],
+    { enabled: !sideNamesQuery.isLoading }
+  );
 
-  const onFilterChange = (fieldName: keyof BillboardFilterObj, newValue: BillboardFilterObj[keyof BillboardFilterObj]) => {
-    setFilters({...filters, [fieldName]: newValue });
+  const onFilterChange = (
+    fieldName: keyof BillboardFilterObj,
+    newValue: BillboardFilterObj[keyof BillboardFilterObj]
+  ) => {
+    setFilters({ ...filters, [fieldName]: newValue });
   };
 
   if (billboardQuery.isLoading && sideNamesQuery.isLoading) {
     return <>Loading...</>;
   }
 
-  const billboardUniqueSides = billboardMapper.toUniqueSides(billboardQuery.data);
+  const billboardUniqueSides = billboardMapper.toUniqueSides(
+    billboardQuery.data
+  );
 
   const columns: ColumnConfig<BillboardUniqueSideDto>[] = [
     {
       title: "Miestas",
       renderCell: (billboard) => <>{billboard.area.locationName}</>,
-      key: "city"
+      key: "city",
     },
     {
       title: "Kodas",
       renderCell: (billboard) => <>{billboard.serialCode}</>,
-      key: "serialCode"
+      key: "serialCode",
     },
     {
       title: "Pavadinimas",
       renderCell: (billboard) => <>{billboard.side.title}</>,
-      key: "name"
+      key: "name",
     },
     {
       title: "Adresas",
       renderCell: (billboard) => <>{billboard.address}</>,
-      key: "address"
-    }, 
+      key: "address",
+    },
     {
       title: "Tipas",
       renderCell: (billboard) => <>{billboard.type.name}</>,
-      key: "typeName"
+      key: "typeName",
     },
     {
       title: "Pusė",
       renderCell: (billboard) => <>{billboard.side.sideType}</>,
-      key: "sideName"
-    }, 
+      key: "sideName",
+    },
     {
       title: "Leidimas",
-      renderCell: (billboard) => <Mui.Checkbox key={billboard.id} checked={billboard.isLicensed} disabled />,
-      key: "isLicensed"
+      renderCell: (billboard) => (
+        <Mui.Checkbox
+          key={billboard.id}
+          checked={billboard.isLicensed}
+          disabled
+        />
+      ),
+      key: "isLicensed",
     },
     {
       title: "Apšvietimas",
-      renderCell: (billboard) => <Mui.Checkbox key={billboard.id} checked={billboard.isIlluminated} disabled />,
-      key: "isIlluminated"
-    }
+      renderCell: (billboard) => (
+        <Mui.Checkbox
+          key={billboard.id}
+          checked={billboard.isIlluminated}
+          disabled
+        />
+      ),
+      key: "isIlluminated",
+    },
   ];
 
   return (
     <Layout>
-      <div className="mt-4">
+      <div className="mt-12">
         {sideNamesQuery.data && (
-          <div className="flex justify-center">
+          <div className="flex justify-center pt-4">
             <BillboardFilters
               sideNames={sideNamesQuery.data}
               filters={filters}
