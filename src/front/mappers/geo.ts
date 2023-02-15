@@ -5,7 +5,7 @@ const getCornersfromArea = (area: Area) => {
   const southWestPoint = getPoint(area.southWestLat, area.southWestLong);
   const northEastPoint = getPoint(area.northEastLat, area.northEastLong);
 
-  return [southWestPoint, northEastPoint] as LatLngBoundsExpression; 
+  return [southWestPoint, northEastPoint] as LatLngBoundsExpression;
 };
 
 const getPointFromBillboard = (billboard: Billboard) => {
@@ -23,7 +23,7 @@ const getPoint = (latitude: number, longitude: number) => {
 const geoMapper = {
   getCornersfromArea,
   getPointFromBillboard,
-  getPoint
+  getPoint,
 };
 
 export default geoMapper;

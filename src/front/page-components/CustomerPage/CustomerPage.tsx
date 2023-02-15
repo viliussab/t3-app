@@ -10,7 +10,6 @@ import Icons from "../../components/Icons";
 import CustomerUpdateDialog from "../../multi-page-components/customer/CustomerUpdateDialog";
 
 const CustomerPage: NextPage = () => {
-
   const [openCreate, setOpenCreate] = React.useState(false);
 
   const customersQuery = trpc.useQuery(["customer.getAll"]);
@@ -23,57 +22,64 @@ const CustomerPage: NextPage = () => {
     {
       title: "Pavadinimas",
       renderCell: (c) => <>{c.name}</>,
-      key: "Title"
+      key: "Title",
     },
     {
       title: "Adresas",
       renderCell: (c) => <>{c.address}</>,
-      key: "address"
+      key: "address",
     },
     {
       title: "Telefonas",
       renderCell: (c) => <>{c.phone}</>,
-      key: "phone"
+      key: "phone",
     },
     {
       title: "Kontaktinis asmuo",
       renderCell: (c) => <>{c.contactPerson}</>,
-      key: "contactPerson"
-    }, 
+      key: "contactPerson",
+    },
     {
       title: "Paštas",
       renderCell: (c) => <>{c.email}</>,
-      key: "email"
+      key: "email",
     },
     {
       title: "Atnaujinti",
       renderCell: (c) => {
         const [open, setOpen] = React.useState(false);
 
-        return <div className="flex justify-center align-center">
-          <Icons.Edit
-            size={22}
-            className="hover:cursor-pointer"
-            onClick={() => setOpen((prev) => !prev)}/>
-          <CustomerUpdateDialog
-            customer={c}
-            open={open}
-            onClose={() => setOpen(false)}
-          />
-        </div>;
+        return (
+          <div className="align-center flex justify-center">
+            <Icons.Edit
+              size={22}
+              className="hover:cursor-pointer"
+              onClick={() => setOpen((prev) => !prev)}
+            />
+            <CustomerUpdateDialog
+              customer={c}
+              open={open}
+              onClose={() => setOpen(false)}
+            />
+          </div>
+        );
       },
-      key: "update"
-    }
+      key: "update",
+    },
   ];
 
   return (
     <>
       <Components.Layout>
-        <div className="flex justify-center m-4">
-          <div className="flex flex-col align-center w-auto">
+        <div className="m-4 flex justify-center">
+          <div className="align-center flex w-auto flex-col">
             <div className="flex justify-center">
-              <ActionButton onClick={() => {setOpenCreate(true);}}>
-              Sukurti naują klientą
+              <ActionButton
+                onClick={() => {
+                  setOpenCreate(true);
+                }}
+              >
+                Sukurti naują klientą
               </ActionButton>
             </div>
             <CustomerCreateDialog
@@ -81,7 +87,7 @@ const CustomerPage: NextPage = () => {
               onClose={() => setOpenCreate(false)}
             />
             {customersQuery.data && (
-              <div className="mt-4 overflow-x-auto relative shadow-md sm:rounded-lg">
+              <div className="relative mt-4 overflow-x-auto shadow-md sm:rounded-lg">
                 <Table
                   columns={columns}
                   keySelector={(c) => c.id}

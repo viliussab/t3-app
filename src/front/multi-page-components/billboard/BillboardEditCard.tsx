@@ -5,33 +5,34 @@ import ActionButton from "../../components/ActionButton";
 import GoogleSideImage from "./../../components/GoogleSideImage";
 
 type BillboardCardProps = {
-    billboard: BillboardDto,
-}
+  billboard: BillboardDto;
+};
 
-const BillboardEditCard = (props : BillboardCardProps) => {
+const BillboardEditCard = (props: BillboardCardProps) => {
   const { billboard } = props;
 
   return (
     <div className="mb-2">
-      <div className="m-2 text-xl text-center">
+      <div className="m-2 text-center text-xl">
         {`${billboard.serialCode}. ${billboard.address}`}
       </div>
-      <div className="flex justify-end mb-2">
-        <ActionButton onClick={() => {}}>
-                    Redaguoti objektą
-        </ActionButton>
-      </div> 
-      {billboard.sides.map(side => (
+      <div className="mb-2 flex justify-end">
+        <ActionButton onClick={() => {}}>Redaguoti objektą</ActionButton>
+      </div>
+      {billboard.sides.map((side) => (
         <>
           <div key={side.id} className="flex gap-2">
-            <div className="p-4 pt-1 flex justify-between flex-col" style={{width: "300px"}}>
+            <div
+              className="flex flex-col justify-between p-4 pt-1"
+              style={{ width: "300px" }}
+            >
               <div>
                 <div className="text-lg">{`${side.title}`}</div>
-                <div className="text-base text-gray-600 text-bold">{`${side.sideType} pusė`}</div>
+                <div className="text-bold text-base text-gray-600">{`${side.sideType} pusė`}</div>
               </div>
               <div>
                 <ActionButton onClick={() => {}}>
-                    Redaguoti stotelę
+                  Redaguoti stotelę
                 </ActionButton>
               </div>
             </div>
@@ -45,7 +46,6 @@ const BillboardEditCard = (props : BillboardCardProps) => {
         </>
       ))}
     </div>
-
   );
 };
 

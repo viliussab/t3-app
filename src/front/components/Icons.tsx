@@ -1,4 +1,4 @@
-import { 
+import {
   MdHome,
   MdMap,
   MdAdd,
@@ -9,7 +9,7 @@ import {
   MdPhotoCamera,
   MdEdit,
   MdDescription,
-  MdDelete
+  MdDelete,
 } from "react-icons/md";
 
 const Icons = {
@@ -23,7 +23,7 @@ const Icons = {
   PhotoCamera: MdPhotoCamera,
   Edit: MdEdit,
   Pdf: MdDescription,
-  Delete: MdDelete
+  Delete: MdDelete,
 };
 
 export default Icons;

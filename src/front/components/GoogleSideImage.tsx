@@ -2,17 +2,13 @@ import React from "react";
 import Image from "next/image";
 
 type ComponentProps = {
-    width: number,
-    height: number,
-    googleDriveUrl: string | null,
-}
+  width: number;
+  height: number;
+  googleDriveUrl: string | null;
+};
 
-const GoogleSideImage = (props : ComponentProps) => {
-  const { 
-    width,
-    height,
-    googleDriveUrl
-  } = props;
+const GoogleSideImage = (props: ComponentProps) => {
+  const { width, height, googleDriveUrl } = props;
 
   const getImageIdWithNoise = (value: string) => {
     const driveOpenLink = /^https:\/\/drive.google.com\/open\?id=(.*)$/;
@@ -49,23 +45,29 @@ const GoogleSideImage = (props : ComponentProps) => {
   };
 
   const toGoogleDriveToImageSource = (value: string) => {
-    const url = `https://drive.google.com/uc?export=view&id=${getImageId(value)}`;
+    const url = `https://drive.google.com/uc?export=view&id=${getImageId(
+      value
+    )}`;
     return url;
   };
 
-  return <>{googleDriveUrl && (
-    <a href={googleDriveUrl}>
-      <div style={{width: `${width}px`, height: `${height}px`}}>
-        <Image 
-          src={toGoogleDriveToImageSource(googleDriveUrl)}
-          alt="Neveikianti plokštumos nuotrauka"
-          width={width}
-          height={height}
-          style={{objectFit: "cover"}} />
-      </div>
-    </a>
-  )}
-  </>;
+  return (
+    <>
+      {googleDriveUrl && (
+        <a href={googleDriveUrl}>
+          <div style={{ width: `${width}px`, height: `${height}px` }}>
+            <Image
+              src={toGoogleDriveToImageSource(googleDriveUrl)}
+              alt="Neveikianti plokštumos nuotrauka"
+              width={width}
+              height={height}
+              style={{ objectFit: "cover" }}
+            />
+          </div>
+        </a>
+      )}
+    </>
+  );
 };
 
 export default GoogleSideImage;

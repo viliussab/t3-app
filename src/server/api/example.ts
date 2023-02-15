@@ -5,17 +5,17 @@ export const exampleRouter = createRouter()
   .query("hello", {
     input: z
       .object({
-        text: z.string().nullish()
+        text: z.string().nullish(),
       })
       .nullish(),
     resolve({ input }) {
       return {
-        greeting: `Hello ${input?.text ?? "world"}`
+        greeting: `Hello ${input?.text ?? "world"}`,
       };
-    }
+    },
   })
   .query("getBySideIds", {
     async resolve({ ctx }) {
       return await ctx.prisma.example.findMany();
-    }
+    },
   });

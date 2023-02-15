@@ -1,33 +1,23 @@
-import { Marker, useMapEvents } from "react-leaflet";  
+import { Marker, useMapEvents } from "react-leaflet";
 import { LatLngTuple, Marker as MarkerType } from "leaflet";
 import React, { useRef, useMemo } from "react";
 import MapBoundsUpdater from "../operators/MapBoundsUpdater";
 import MapFrame from "./MapFrame";
 
 type Props = {
-  mapSW: LatLngTuple,
-  mapNE: LatLngTuple,
+  mapSW: LatLngTuple;
+  mapNE: LatLngTuple;
+  marker: LatLngTuple;
+  onMarkerChange: (marker: LatLngTuple) => void;
+  draggable: boolean;
+};
 
-  marker: LatLngTuple,
-  onMarkerChange: (marker: LatLngTuple) => void,
-
-  draggable: boolean,
-}
-
-const MarkerCreateMap = (props : Props) => {
-  const {
-    mapSW,
-    mapNE
-  } = props;
+const MarkerCreateMap = (props: Props) => {
+  const { mapSW, mapNE } = props;
 
   return (
-    <MapFrame
-      bounds={[mapSW, mapNE]}
-    >
-      <MapBoundsUpdater
-        mapSW={mapSW}
-        mapNE={mapNE}
-      />
+    <MapFrame bounds={[mapSW, mapNE]}>
+      <MapBoundsUpdater mapSW={mapSW} mapNE={mapNE} />
       <DraggableMarker
         coordinates={props.marker}
         onCoordinateChange={props.onMarkerChange}
@@ -40,19 +30,19 @@ const MarkerCreateMap = (props : Props) => {
 export default MarkerCreateMap;
 
 type MarkerProps = {
-    coordinates: LatLngTuple,
-    onCoordinateChange: (coordinates: LatLngTuple) => void,
-  
-    draggable: boolean,
-  }
+  coordinates: LatLngTuple;
+  onCoordinateChange: (coordinates: LatLngTuple) => void;
+
+  draggable: boolean;
+};
 
 const DraggableMarker = (props: MarkerProps) => {
-  const {coordinates, onCoordinateChange, draggable} = props;
+  const { coordinates, onCoordinateChange, draggable } = props;
 
   useMapEvents({
-    click (e) {
+    click(e) {
       onCoordinateChange([e.latlng.lat, e.latlng.lng]);
-    }
+    },
   });
 
   const markerRef = useRef<MarkerType>(null);
@@ -65,9 +55,9 @@ const DraggableMarker = (props: MarkerProps) => {
           const coords = marker.getLatLng();
           onCoordinateChange([coords.lat, coords.lng]);
         }
-      }
+      },
     }),
-    [onCoordinateChange],
+    [onCoordinateChange]
   );
 
   if (!coordinates[0] || !coordinates[1]) {
@@ -79,8 +69,7 @@ const DraggableMarker = (props: MarkerProps) => {
       draggable={draggable}
       eventHandlers={eventHandlers}
       position={coordinates}
-      ref={markerRef}>
-    </Marker>
+      ref={markerRef}
+    ></Marker>
   );
 };
-

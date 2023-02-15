@@ -5,7 +5,7 @@ export const billboardFilterObjSchema = z.object({
   search: z.string(),
   allowedSides: z.array(z.string()),
   illumination: booleanFilterSchema,
-  license: booleanFilterSchema
+  license: booleanFilterSchema,
 });
-  
-export type BillboardFilterObj = z.TypeOf<typeof billboardFilterObjSchema>
+
+export type BillboardFilterObj = z.TypeOf<typeof billboardFilterObjSchema>;

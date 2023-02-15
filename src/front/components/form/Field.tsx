@@ -3,15 +3,15 @@ import * as RHC from "react-hook-form";
 import * as Mui from "@mui/material";
 
 type FieldProps<T extends RHC.FieldValues> = {
-    fieldName: RHC.Path<T>,
-    form: RHC.UseFormReturn<T>,
-    label: string,
-    muiProps: Mui.TextFieldProps | undefined,
-    valueAsNumber?: boolean,
-}
+  fieldName: RHC.Path<T>;
+  form: RHC.UseFormReturn<T>;
+  label: string;
+  muiProps: Mui.TextFieldProps | undefined;
+  valueAsNumber?: boolean;
+};
 
-const Field = <T extends RHC.FieldValues, > (props: FieldProps<T>) => {
-  const {fieldName, form, label, muiProps, valueAsNumber} = props; 
+const Field = <T extends RHC.FieldValues>(props: FieldProps<T>) => {
+  const { fieldName, form, label, muiProps, valueAsNumber } = props;
   const error = form.formState.errors[fieldName];
 
   return (
@@ -22,7 +22,7 @@ const Field = <T extends RHC.FieldValues, > (props: FieldProps<T>) => {
       error={!!error}
       helperText={error ? error.message?.toString() : ""}
       {...form.register(fieldName, {
-        valueAsNumber
+        valueAsNumber,
       })}
       {...muiProps}
     />

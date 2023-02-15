@@ -5,7 +5,7 @@ import Paper from "./Paper";
 const Components = {
   Header,
   Layout,
-  Paper
+  Paper,
 };
 
 export default Components;

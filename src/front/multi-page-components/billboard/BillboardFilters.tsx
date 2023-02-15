@@ -5,13 +5,16 @@ import optionsService from "../../../services/options";
 import { BooleanFilters } from "../../../types/filters/booleanFilter.schema";
 
 type BillboardFiltersProps = {
-    sideNames: Array<string>
-    filters: BillboardFilterObj,
-    onFilterChange: (fieldName: keyof BillboardFilterObj, value: BillboardFilterObj[keyof BillboardFilterObj]) => void
-}
+  sideNames: Array<string>;
+  filters: BillboardFilterObj;
+  onFilterChange: (
+    fieldName: keyof BillboardFilterObj,
+    value: BillboardFilterObj[keyof BillboardFilterObj]
+  ) => void;
+};
 
-const BillboardFilters = (props : BillboardFiltersProps) => {
-  const {sideNames, filters, onFilterChange} = props;
+const BillboardFilters = (props: BillboardFiltersProps) => {
+  const { sideNames, filters, onFilterChange } = props;
 
   return (
     <div className="flex gap-2">
@@ -23,13 +26,13 @@ const BillboardFilters = (props : BillboardFiltersProps) => {
         />
       </div>
       <div className="w-64">
-        <Filters.MultiSelect 
+        <Filters.MultiSelect
           label="Pusė"
           onChange={(values) => onFilterChange("allowedSides", values)}
           options={optionsService.convert({
             values: sideNames,
             extractKey: (value) => value,
-            extractDisplayValue: (value) => value
+            extractDisplayValue: (value) => value,
           })}
           selectedKeys={filters.allowedSides}
         />
@@ -39,12 +42,11 @@ const BillboardFilters = (props : BillboardFiltersProps) => {
           label="Licenzija"
           onChange={(value) => onFilterChange("license", value.key)}
           value={filters.license}
-          options={
-            optionsService.convert({
-              values: Object.values(BooleanFilters),
-              extractKey: (value) => value,
-              extractDisplayValue: (value) => value
-            })}
+          options={optionsService.convert({
+            values: Object.values(BooleanFilters),
+            extractKey: (value) => value,
+            extractDisplayValue: (value) => value,
+          })}
         />
       </div>
       <div className="w-64">
@@ -52,12 +54,11 @@ const BillboardFilters = (props : BillboardFiltersProps) => {
           label="Apšvietimas"
           onChange={(value) => onFilterChange("illumination", value.key)}
           value={filters.illumination}
-          options={
-            optionsService.convert({
-              values: Object.values(BooleanFilters),
-              extractKey: (value) => value,
-              extractDisplayValue: (value) => value
-            })}
+          options={optionsService.convert({
+            values: Object.values(BooleanFilters),
+            extractKey: (value) => value,
+            extractDisplayValue: (value) => value,
+          })}
         />
       </div>
     </div>

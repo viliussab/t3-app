@@ -7,7 +7,7 @@ export const areaCreateSchema = z.object({
   northEastLong: z.number().gte(-180).lte(180),
 
   southWestLat: z.number().gte(-90).lte(90),
-  southWestLong: z.number().gte(-180).lte(180)
+  southWestLong: z.number().gte(-180).lte(180),
 });
 
-export type AreaCreate = z.TypeOf<typeof areaCreateSchema>
+export type AreaCreate = z.TypeOf<typeof areaCreateSchema>;

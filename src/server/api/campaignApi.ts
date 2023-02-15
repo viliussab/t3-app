@@ -5,51 +5,58 @@ import { campaignSelectBillboardsSchema } from "../../types/command/campaignSele
 import dateService from "../../services/dateService";
 
 export const campaignRouter = createRouter()
-
   .mutation("create", {
     input: campaignCreateSchema,
     async resolve({ ctx, input }) {
       const campaign = await ctx.prisma.campaign.create({
         data: {
-          ...input
-        }
+          ...input,
+        },
       });
-  
+
       return { campaign };
-    }
+    },
   })
   .mutation("updateBillboards", {
     input: campaignSelectBillboardsSchema,
-    async resolve({ctx, input}) {
-
-      console.log('input', input);
-      const campaign = await ctx.prisma.campaign.findFirst({ where: {id: input.id}})
+    async resolve({ ctx, input }) {
+      console.log("input", input);
+      const campaign = await ctx.prisma.campaign.findFirst({
+        where: { id: input.id },
+      });
 
       if (input.sideIds.length !== campaign?.sideAmount) {
-        throw new Error("Selected side amount does not match side amount of campaign")
+        throw new Error(
+          "Selected side amount does not match side amount of campaign"
+        );
       }
 
-      await ctx.prisma.billboardSideInCampaign.deleteMany({where: {campaignId: input.id}});
+      await ctx.prisma.billboardSideInCampaign.deleteMany({
+        where: { campaignId: input.id },
+      });
 
-      const newBillboardCampaignSides = input.sideIds.map(id => ({
+      const newBillboardCampaignSides = input.sideIds.map((id) => ({
         campaignId: input.id,
-        billboardSideId: id, 
-      }))
+        billboardSideId: id,
+      }));
 
-      await ctx.prisma.billboardSideInCampaign.createMany({data: newBillboardCampaignSides});
-    }
+      await ctx.prisma.billboardSideInCampaign.createMany({
+        data: newBillboardCampaignSides,
+      });
+    },
   })
   .query("getAll", {
-    async resolve({ctx}) {
+    async resolve({ ctx }) {
       const campaigns = await ctx.prisma.campaign.findMany({
         include: {
-          customer: true
-      }});
+          customer: true,
+        },
+      });
       return campaigns;
-    }
+    },
   })
   .query("getAllByCustomer", {
-    async resolve({ctx}) {
+    async resolve({ ctx }) {
       const campaignDate = new Date();
 
       const customerCampaigns = await ctx.prisma.customer.findMany({
@@ -57,30 +64,36 @@ export const campaignRouter = createRouter()
           campaigns: {
             where: {
               periodEnd: {
-                gte: campaignDate
-              }
+                gte: campaignDate,
+              },
             },
             include: {
               billboardSideInCampaigns: {
                 include: {
-                  billboardSide: true
-            }}},
-      }}});
+                  billboardSide: true,
+                },
+              },
+            },
+          },
+        },
+      });
 
-      const customersWithCampaigns = customerCampaigns.filter(customer => customer.campaigns.length > 0);
+      const customersWithCampaigns = customerCampaigns.filter(
+        (customer) => customer.campaigns.length > 0
+      );
 
       return customersWithCampaigns;
-    }
+    },
   })
   .query("getById", {
     input: getByIdSchema,
-    async resolve({ctx, input}) {
+    async resolve({ ctx, input }) {
       const campaign = await ctx.prisma.campaign.findFirst({
         where: {
-          id: input.id
-        }
+          id: input.id,
+        },
       });
 
       return campaign;
-    }
+    },
   });

@@ -7,7 +7,7 @@ export const customerCreateSchema = z.object({
   address: z.string(),
   phone: z.string(),
   contactPerson: z.string(),
-  email: z.string().email()
+  email: z.string().email(),
 });
 
-export type CustomerCreate = z.TypeOf<typeof customerCreateSchema>
+export type CustomerCreate = z.TypeOf<typeof customerCreateSchema>;

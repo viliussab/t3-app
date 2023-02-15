@@ -9,42 +9,42 @@ export const customerRouter = createRouter()
       const customers = await ctx.prisma.customer.findMany();
 
       return customers;
-    }
+    },
   })
   .query("getById", {
     input: getByIdSchema,
     async resolve({ ctx, input }) {
       const customer = await ctx.prisma.customer.findFirst({
-        where: { id: input.id }
+        where: { id: input.id },
       });
 
       return customer;
-    }
+    },
   })
   .mutation("create", {
     input: customerCreateSchema,
     async resolve({ ctx, input }) {
       const customer = await ctx.prisma.customer.create({
         data: {
-          ...input
-        }
+          ...input,
+        },
       });
 
       return customer;
-    }
+    },
   })
   .mutation("update", {
     input: customerUpdateSchema,
     async resolve({ ctx, input }) {
       const customer = await ctx.prisma.customer.update({
         where: {
-          id: input.id
+          id: input.id,
         },
         data: {
-          ...input
-        }
+          ...input,
+        },
       });
 
       return customer;
-    }
+    },
   });

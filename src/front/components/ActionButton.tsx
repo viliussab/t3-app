@@ -1,14 +1,13 @@
 import React from "react";
 
 type ActionButtonProps = {
-    children: React.ReactNode,
-    onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
-    color?: "default" | "pdf" | "altAction" | "danger" | "positive"
-}
+  children: React.ReactNode;
+  onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  color?: "default" | "pdf" | "altAction" | "danger" | "positive";
+};
 
-const ActionButton = (props : ActionButtonProps) => {
-
-  const {onClick, color, children} = props;
+const ActionButton = (props: ActionButtonProps) => {
+  const { onClick, color, children } = props;
 
   const getColorClasses = () => {
     if (color === "pdf") {
@@ -36,7 +35,8 @@ const ActionButton = (props : ActionButtonProps) => {
     <>
       <button
         onClick={onClick}
-        className={`${getColorClasses()} font-semibold py-2 px-4 border rounded shadow`}>
+        className={`${getColorClasses()} rounded border py-2 px-4 font-semibold shadow`}
+      >
         {children}
       </button>
     </>

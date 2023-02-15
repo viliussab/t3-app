@@ -10,38 +10,38 @@ import Icons from "./../../components/Icons";
 import Link from "next/link";
 import CampaignStatusChip from "../../multi-page-components/campaign/CampaignStatusChip";
 
-const CampaignPage : NextPage = () => {
-
+const CampaignPage: NextPage = () => {
   const campaignsQuery = trpc.useQuery(["campaign.getAll"]);
 
   const columns: ColumnConfig<CampaignListDto>[] = [
     {
       title: "Kampanijos pavadinimas",
       renderCell: (campaign) => <>{campaign.name}</>,
-      key: "campaignName"
+      key: "campaignName",
     },
     {
       title: "Klientas",
       renderCell: (campaign) => <>{campaign.customer.name}</>,
-      key: "clientName"
+      key: "clientName",
     },
     {
       title: "Laiko periodas",
-      renderCell: (campaign) => <>{
-        `${dateService.formatToYearWeek(campaign.periodStart)}
+      renderCell: (campaign) => (
+        <>{`${dateService.formatToYearWeek(campaign.periodStart)}
                  - 
-                 ${dateService.formatToYearWeek(campaign.periodEnd)}`}</>,
-      key: "period"
+                 ${dateService.formatToYearWeek(campaign.periodEnd)}`}</>
+      ),
+      key: "period",
     },
     {
       title: "Plokštumų kiekis",
       renderCell: (campaign) => <>{campaign.sideAmount}</>,
-      key: "orderedAmount"
+      key: "orderedAmount",
     },
     {
       title: "Būsėna",
       renderCell: (campaign) => <CampaignStatusChip status={campaign.status} />,
-      key: "status"
+      key: "status",
     },
     {
       title: "Veiksmai",
@@ -49,24 +49,22 @@ const CampaignPage : NextPage = () => {
         <div className="flex gap-2">
           <Link href={`/campaigns/select/${campaign.id}`}>
             <ActionButton onClick={() => {}} color="altAction">
-          Išrinkti stoteles
+              Išrinkti stoteles
             </ActionButton>
           </Link>
           <ActionButton onClick={() => {}} color="pdf">
             <div className="flex gap-2">
-            Gauti sąskaitos faktūrą
-              <Icons.Pdf size={20}/>
+              Gauti sąskaitos faktūrą
+              <Icons.Pdf size={20} />
             </div>
           </ActionButton>
-
-
           <ActionButton onClick={() => {}} color="danger">
-          Atšaukti užsakymą
+            Atšaukti užsakymą
           </ActionButton>
         </div>
       ),
-      key: "actions"
-    }
+      key: "actions",
+    },
   ];
 
   return (

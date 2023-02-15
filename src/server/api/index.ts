@@ -13,5 +13,5 @@ export const appRouter = createRouter()
   .merge("billboardType.", billboardTypesRouter)
   .merge("customer.", customerRouter)
   .merge("campaign.", campaignRouter);
-  
+
 export type AppRouter = typeof appRouter;

@@ -1,9 +1,9 @@
-const isUnique = <T>(value: T, index: number, self: T[]) => { 
+const isUnique = <T>(value: T, index: number, self: T[]) => {
   return self.indexOf(value) === index;
 };
 
 const arrayService = {
-  isUnique
+  isUnique,
 };
 
 export default arrayService;
