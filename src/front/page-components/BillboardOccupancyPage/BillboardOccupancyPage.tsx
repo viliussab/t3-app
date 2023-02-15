@@ -50,8 +50,6 @@ export default function BillboardOccupancyPage() {
   const difference = dateFns.differenceInWeeks(endDate, startDate);
   const differenceEnumerable = Array.from(new Array(difference), (_, i) => i);
 
-  console.log("query", sidesQuery);
-
   return (
     <Layout>
       <div className="mt-4 p-4">

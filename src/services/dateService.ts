@@ -8,9 +8,9 @@ const isNotCampaignDay = (date: Date) => {
 
 const getCurrentCampaignDay = () => {
   const lastDayOfWeek = dateFns.lastDayOfWeek(new Date(), {
-    weekStartsOn: campaignStartWeekDay
+    weekStartsOn: campaignStartWeekDay,
   });
-    
+
   const campaignDayOfWeek = dateFns.addDays(lastDayOfWeek, -6);
 
   return campaignDayOfWeek;
@@ -19,42 +19,45 @@ const getCurrentCampaignDay = () => {
 const formatRangeMonthly = (dateFrom: Date, dateTo: Date) => {
   const MONTH_DAY_FORMAT = "MM-dd";
 
-  const formattedString = `nuo ${dateFns.format(dateFrom, MONTH_DAY_FORMAT)} iki ${dateFns.format(dateTo, MONTH_DAY_FORMAT)}`;
+  const formattedString = `nuo ${dateFns.format(
+    dateFrom,
+    MONTH_DAY_FORMAT
+  )} iki ${dateFns.format(dateTo, MONTH_DAY_FORMAT)}`;
 
   return formattedString;
-}
+};
 
 const formatPeriodShort = (dateFrom: Date, dateTo: Date) => {
   const weekFrom = dateFns.getWeek(dateFrom, {
-    weekStartsOn: campaignStartWeekDay
+    weekStartsOn: campaignStartWeekDay,
   });
 
   const weekTo = dateFns.getWeek(dateTo, {
-    weekStartsOn: campaignStartWeekDay
+    weekStartsOn: campaignStartWeekDay,
   });
 
   return `w${weekFrom}-${weekTo}`;
 };
-  
+
 const formatToYearWeek = (date: Date) => {
   if (!date) {
     return undefined;
   }
-  
+
   const week = dateFns.getWeek(date, {
-    weekStartsOn: campaignStartWeekDay
+    weekStartsOn: campaignStartWeekDay,
   });
-  
+
   const year = dateFns.getWeekYear(date, {
-    weekStartsOn: campaignStartWeekDay
+    weekStartsOn: campaignStartWeekDay,
   });
-  
+
   return `${year} m. ${week} sav.`;
 };
 
 const isCampaignWeekday = (date: Date) => {
   const dayofWeek = date.getDay();
-  
+
   return dayofWeek === campaignStartWeekDay;
 };
 
@@ -64,7 +67,7 @@ const dateService = {
   formatToYearWeek,
   formatPeriodShort,
   formatRangeMonthly,
-  isCampaignWeekday
+  isCampaignWeekday,
 };
 
 export default dateService;

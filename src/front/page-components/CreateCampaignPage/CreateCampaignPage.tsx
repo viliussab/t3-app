@@ -1,12 +1,12 @@
 import { NextPage } from "next";
 import Layout from "../../components/Layout";
 import { trpc } from "../../../utils/trpc";
-import { CampaignCreate, campaignCreateSchema } from "../../../types/command/campaignCreate.schema";
-import { useForm, UseFormReturn } from "react-hook-form";
+import {
+  CampaignCreate,
+  campaignCreateSchema,
+} from "../../../types/command/campaignCreate.schema";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import AdapterDateFns from "@date-io/date-fns";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import * as Mui from "@mui/material";
 import * as dateFns from "date-fns";
 import Form from "../../components/form";
@@ -18,26 +18,30 @@ import SubmitButton from "../../components/form/SubmitButton";
 import { useRouter } from "next/router";
 import campaignMapper from "../../mappers/campaignMapper";
 
-const CreateCampaignPage : NextPage = () => {
+const CreateCampaignPage: NextPage = () => {
   const router = useRouter();
-  const nextWeekStart = dateFns.addWeeks(dateService.getCurrentCampaignDay(), 1);
+  const nextWeekStart = dateFns.addWeeks(
+    dateService.getCurrentCampaignDay(),
+    1
+  );
 
   const form = useForm<CampaignCreate>({
     resolver: zodResolver(campaignCreateSchema),
     defaultValues: {
       periodStart: nextWeekStart,
-      periodEnd: nextWeekStart
-    }
+      periodEnd: nextWeekStart,
+    },
   });
+
+  const [periodStart, periodEnd] = form.watch(["periodStart", "periodEnd"]);
 
   const calculated = campaignMapper.calculateDerivatives(form.watch());
 
-  const campaignCreateCommand = trpc.useMutation(
-    ["campaign.create"], {
-      onSuccess: () => {
-        router.push("/campaigns"); 
-      }
-    });
+  const campaignCreateCommand = trpc.useMutation(["campaign.create"], {
+    onSuccess: () => {
+      router.push("/campaigns");
+    },
+  });
 
   const onSubmit = (values: CampaignCreate) => {
     campaignCreateCommand.mutateAsync(values);
@@ -51,104 +55,144 @@ const CreateCampaignPage : NextPage = () => {
 
   return (
     <Layout>
-      <div className="flex justify-center m-4">
-        <Paper className="m-4 p-4 bg-gray-50">
+      <div className="m-4 flex justify-center">
+        <Paper className="m-4 bg-gray-50 p-4">
           <div className="flex gap-4">
             <div>
               <div className="text-center text-xl font-semibold">
-              Kurti kampaniją
+                Kurti kampaniją
               </div>
-              <form onSubmit={(e) => { 
-                form.handleSubmit(onSubmit)(e);
-              }}>
+              <form
+                onSubmit={(e) => {
+                  form.handleSubmit(onSubmit)(e);
+                }}
+              >
                 <div className="flex justify-center">
-                  <div className="w-64 pt-0 m-4 space-y-3">
+                  <div className="m-4 w-64 space-y-3 pt-0">
                     <Form.Field
                       label="Kampanijos pavadinimas"
                       form={form}
                       fieldName="name"
                       muiProps={{
-                        required: true
+                        required: true,
                       }}
                     />
-                    <Form.Select 
+                    <Form.Select
                       label="Klientas"
                       form={form}
                       fieldName="customerId"
-                      options={optionsService.convertByFields(customersQuery.data, "id", "name")}
+                      options={optionsService.convertByFields(
+                        customersQuery.data,
+                        "id",
+                        "name"
+                      )}
                     />
-                    <DateFrom form={form} />
-                    <DateTo form={form} />
-                    <Form.Field 
+                    <Form.DatePicker
+                      form={form}
+                      label="Data nuo"
+                      fieldName="periodStart"
+                      onChangeSuccess={(value) =>
+                        form.setValue("periodEnd", value)
+                      }
+                    />
+                    <Form.DatePicker
+                      form={form}
+                      label="Data iki"
+                      fieldName="periodEnd"
+                      datePickerProps={{
+                        shouldDisableDate: (date) =>
+                          periodStart.getDay() !== date.getDay(),
+                      }}
+                    />
+                    {/* <DateFrom form={form} />
+                    <DateTo form={form} /> */}
+                    <Form.Field
                       label="Plokštumų kiekis"
                       form={form}
                       fieldName="sideAmount"
                       muiProps={{
                         required: true,
-                        type: "number"
-
+                        type: "number",
                       }}
                       valueAsNumber
                     />
-                    <Form.Field 
+                    <Form.Field
                       label="Taikoma nuolaida"
                       form={form}
                       fieldName="discountPercent"
                       muiProps={{
                         required: true,
                         type: "number",
-                        InputProps: { endAdornment: (
-                          <Mui.InputAdornment position="end">%</Mui.InputAdornment>
-                        )
-                        }
+                        InputProps: {
+                          endAdornment: (
+                            <Mui.InputAdornment position="end">
+                              %
+                            </Mui.InputAdornment>
+                          ),
+                        },
                       }}
                       valueAsNumber
                     />
                     <Mui.FormControlLabel
                       control={
-                        <Mui.Checkbox defaultChecked 
-                          {...form.register("requiresPrinting")}/>
+                        <Mui.Checkbox
+                          defaultChecked
+                          {...form.register("requiresPrinting")}
+                        />
                       }
-                      label="Reikia spausdinti" />
-                    <SubmitButton isSubmitting={campaignCreateCommand.isLoading}>Kurti naują</SubmitButton>
+                      label="Reikia spausdinti"
+                    />
+                    <SubmitButton
+                      isSubmitting={campaignCreateCommand.isLoading}
+                    >
+                      Kurti naują
+                    </SubmitButton>
                   </div>
                 </div>
-            
               </form>
             </div>
             <div>
-              <div className="text-center text-xl font-semibold mb-4">
+              <div className="mb-4 text-center text-xl font-semibold">
                 Apskaičiuota sąmata
               </div>
               <div className="flex flex-col justify-end gap-1">
                 <EstimatePart
                   title="Spaudos kiekis"
-                  value={`${calculated.pressUnits} vnt.`}/>
+                  value={`${calculated.pressUnits} vnt.`}
+                />
                 <EstimatePart
                   title="Savaičių kiekis"
-                  value={`${calculated.weekCount}`}/>
+                  value={`${calculated.weekCount}`}
+                />
                 <EstimatePart
                   title="Periodas (savaitėms)"
-                  value={calculated.weekPeriod}/>
+                  value={calculated.weekPeriod}
+                />
                 <EstimatePart
                   title="Plokštumos kaina su nuolaida"
-                  value={`${calculated.stopPriceDiscounted} €`}/>
+                  value={`${calculated.stopPriceDiscounted} €`}
+                />
                 <EstimatePart
                   title="Reklamos paslaugos"
-                  value={`${calculated.sideTotalPrice} €`}/>
+                  value={`${calculated.sideTotalPrice} €`}
+                />
                 <EstimatePart
                   title="Spaudos kaina"
-                  value={`${calculated.pressUnitsPrice} €`}/>
+                  value={`${calculated.pressUnitsPrice} €`}
+                />
                 <EstimatePart
                   title="Neplaninio nukabinimo kaina"
-                  value={`${calculated.unplannedPrice} €`}/>
+                  value={`${calculated.unplannedPrice} €`}
+                />
                 <EstimatePart
                   title="Suma"
-                  value={`${calculated.totalPriceNoVat} €`}/>
+                  value={`${calculated.totalPriceNoVat} €`}
+                />
                 <div className="font-bold">
                   <EstimatePart
                     title="Suma su PVM"
-                    value={`${calculated.totalPriceVat} €`}/>
+                    value={`${calculated.totalPriceVat} €`}
+                  />
                 </div>
               </div>
             </div>
@@ -160,101 +204,20 @@ const CreateCampaignPage : NextPage = () => {
 };
 
 type EstimatePartProps = {
-  title: string,
-  value: string,
-}
+  title: string;
+  value: string;
+};
 
-const EstimatePart = ({title, value}: EstimatePartProps) => (
-  <div className="flex justify-between" >
-    <div className="text-left" style={{width: "60%"}}>
+const EstimatePart = ({ title, value }: EstimatePartProps) => (
+  <div className="flex justify-between">
+    <div className="text-left" style={{ width: "60%" }}>
       {title}
     </div>
-    <div style={{width: "5%"}}/>
-    <div className="text-right" style={{width: "35%"}}>
+    <div style={{ width: "5%" }} />
+    <div className="text-right" style={{ width: "35%" }}>
       {value}
     </div>
   </div>
 );
-
-type DatePickerProps = {
-  form: UseFormReturn<CampaignCreate>
-}
-
-const DateFrom = (props : DatePickerProps) => {
-  const { form } = props;
-
-  const [periodStart, periodEnd] = form.watch(["periodStart", "periodEnd"]);
-
-  const onChange = (newPeriodStart: Date | null) => {
-    if (!newPeriodStart) {
-      return;
-    }
-
-    if (!periodEnd || newPeriodStart > periodEnd) {
-      form.setValue("periodEnd", newPeriodStart);
-    }
-
-    form.setValue("periodStart", newPeriodStart);
-  };
-
-  return <LocalizationProvider dateAdapter={AdapterDateFns}>
-    <DesktopDatePicker
-      label="Data nuo"
-      shouldDisableDate={dateService.isNotCampaignDay}
-      minDate={new Date()}
-      value={periodStart}
-      onChange={onChange}
-      renderInput={(props: Mui.TextFieldProps) => {
-        return (
-          <Mui.TextField 
-            {...props}
-            inputProps={{
-              value: dateService.formatToYearWeek(periodStart),
-              placeholder: undefined
-            }}
-            variant="filled"
-            required
-            fullWidth
-            InputLabelProps={{ shrink: !!periodStart }}
-          />);
-      }}
-    />
-  </LocalizationProvider>;
-};
-
-const DateTo = (props : DatePickerProps) => {
-  const { form } = props;
-
-  const [periodStart, periodEnd] = form.watch(["periodStart", "periodEnd"]);
-
-  const onChange = (newPeriodEnd: Date | null) => {
-    if (!newPeriodEnd) {
-      return;
-    }
-
-    form.setValue("periodEnd", newPeriodEnd);
-  };
-
-  return <LocalizationProvider dateAdapter={AdapterDateFns}>
-    <DesktopDatePicker
-      label="Iki"
-      shouldDisableDate={dateService.isNotCampaignDay}
-      minDate={periodStart}
-      value={periodEnd}
-      onChange={onChange}
-      renderInput={(props: Mui.TextFieldProps) => {
-        return (
-          <Mui.TextField 
-            {...props}
-            inputProps={{value: dateService.formatToYearWeek(periodEnd)}}
-            variant="filled"
-            required
-            fullWidth
-            InputLabelProps={{ shrink: !!periodEnd }}
-          />);
-      }}
-    />
-  </LocalizationProvider>;
-};
 
 export default CreateCampaignPage;

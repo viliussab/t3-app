@@ -1,7 +1,11 @@
 import { Campaign } from "@prisma/client";
 import campaignDomain from "../../../domain/campaignDomain";
 import dateService from "../../../services/dateService";
-import { CustomerCampaignDto } from "../../../types/dto/campaignDtos";
+import {
+  CampaignDto,
+  CustomerCampaignDto,
+} from "../../../types/dto/campaignDtos";
+import lodash from "lodash";
 import { trpc } from "../../../utils/trpc";
 import Layout from "../../components/Layout";
 import dateFns from "../../imports/dateFns";
@@ -9,118 +13,175 @@ import campaignMapper from "../../mappers/campaignMapper";
 import CampaignStatusChip from "../../multi-page-components/campaign/CampaignStatusChip";
 
 const CampaignsSummaryPage = () => {
-
   const customerCampaignsQuery = trpc.useQuery(["campaign.getAllByCustomer"]);
 
   if (customerCampaignsQuery.isLoading) {
     return <>Loading</>;
   }
 
-  const customerCampaigns = campaignMapper.customerFlattenSides(customerCampaignsQuery.data!);
+  const customerCampaigns = campaignMapper.customerFlattenSides(
+    customerCampaignsQuery.data!
+  );
 
-  const allCampaigns = customerCampaigns.flatMap(cust => cust.campaigns);
+  const allCampaigns = customerCampaigns.flatMap((cust) => cust.campaigns);
 
   const startDate = dateService.getCurrentCampaignDay();
-  const endDate = dateFns.max(allCampaigns?.map((campaign) => campaign.periodEnd) ?? []);
+  const endDate = dateFns.max(
+    allCampaigns?.map((campaign) => campaign.periodEnd) ?? []
+  );
 
   const difference = dateFns.differenceInWeeks(endDate, startDate);
-  const differenceEnumerable = Array.from(new Array(difference), (_, i) => i);
+  const weekColumns = Array.from(new Array(difference), (_, i) => i);
 
-  console.log('diff', differenceEnumerable);
+  const getEligibleCampaignForEachPeriod = () => {
+    const campaignsOfMatrix = weekColumns.map((diff) => {
+      const from = dateFns.addWeeks(startDate, diff);
+      const to = dateFns.addDays(from, 6);
+
+      const campaignsOfRow = allCampaigns.filter((campaign) =>
+        campaignDomain.isCampaignInPeriod(campaign, from, to)
+      );
+
+      return campaignsOfRow;
+    });
+
+    return campaignsOfMatrix;
+  };
+
+  const campaignsEachWeek = getEligibleCampaignForEachPeriod();
+  const campaignsEachRow = lodash.unzip(campaignsEachWeek);
+  const maxRowCount = Math.max(...campaignsEachWeek.map((x) => x.length));
+  const rows = Array.from(new Array(maxRowCount), (_, i) => i);
+
+  console.log("maxrow", maxRowCount);
+
+  console.log("diff", weekColumns);
+
+  const getCampaignFromMatrix = (column: number, row: number) => {
+    const campaignsColumn = campaignsEachWeek[column];
+
+    if (!campaignsColumn) {
+      return undefined;
+    }
+
+    return campaignsColumn[row];
+  };
+
+  const getCellColor = (campaign: CampaignDto) => {
+    if (campaign.status === "FULLFILED") {
+      return "green";
+    }
+
+    return "gray";
+  };
+
+  console.log("rows", rows);
 
   return (
     <Layout>
-    <div className="p-4 mt-4">
+      <div className="mt-4 p-4">
         <table className="border-collapse">
           <thead>
             <tr>
               <th />
-            {differenceEnumerable.map(offset => (
-              <th className="" style={{minWidth: "200px"}}>
-                <DateRangeCell startDate={startDate} offset={offset} />
-              </th>
-            ))}
+              {weekColumns.map((offset) => (
+                <th className="" style={{ minWidth: "200px" }}>
+                  <DateRangeCell startDate={startDate} offset={offset} />
+                </th>
+              ))}
             </tr>
-
           </thead>
           <tbody>
-              {customerCampaigns.map((customer) => (
-                <tr className="">
-                  <th className="pl-2 pr-2 text-xs border-2 border-collapse text-gray-700 uppercase bg-gray-100">
-                    {`${customer.name}`}
-                  </th>
-                  {differenceEnumerable.map(offset => (
-                    <td className="border-collapse bg-gray-200" style={{verticalAlign: "top"}}>
-                      <CampaignCell startDate={startDate} offset={offset} customer={customer} />
-                    </td>
-                  ))}
-                </tr>
-                ))}
+            {rows.map((rowIndex) => (
+              <>
+                <CampaignRow
+                  campaignColumns={campaignsEachRow[rowIndex]!}
+                  weekColumns={weekColumns}
+                />
+              </>
+            ))}
           </tbody>
         </table>
-    </div>
+      </div>
     </Layout>
   );
 };
 
-type CampaignCellProps = {
-  startDate: Date, offset: number, customer: CustomerCampaignDto
-}
+type CampaignRowProps = {
+  weekColumns: number[];
+  campaignColumns: CampaignDto[];
+};
 
-const CampaignCell = ({startDate, offset, customer} : CampaignCellProps) => {
+const CampaignRow = ({ weekColumns, campaignColumns }: CampaignRowProps) => {
+  const getCellColor = (campaign: CampaignDto | undefined) => {
+    if (!campaign) {
+      return "slate";
+    }
 
-  const from = dateFns.addWeeks(startDate, offset);
-  const to = dateFns.addDays(from, 6);
+    if (campaign?.status === "FULLFILED") {
+      return "green";
+    }
 
-  const eligibleCampaigns = customer.campaigns.filter(cmpgn => campaignDomain.isCampaignInPeriod(cmpgn, from, to));
-
-  if (eligibleCampaigns.length === 0) {
-    return null;
-  }
+    return "gray";
+  };
 
   return (
-  <div className="bg-blue-200 pt-1 pb-1 mt-1 mb-1 flex justify-between">
-    <div className="flex-grow">
-    {eligibleCampaigns.map(campaign => (
-    <div className=" even:bg-blue-100 odd:bg-blue-50 p-2 flex gap-4 justify-between">
-      <div className="flex-grow flex flex-col gap-2 justify-center">
-        <div className="whitespace-nowrap text-center uppercase text-blue-700 text-sm font-bold">{campaign.name}</div>
-        <div className="flex justify-center opacity-80">
-            <CampaignStatusChip status={campaign.status}/>
-          </div>
+    <>
+      <tr className="  ">
+        <th className="border-collapse border-2 bg-orange-100 pl-2 pr-2 text-xs uppercase text-orange-700">
+          Kampanija
+        </th>
 
-        </div>
-        <div className="flex justify-center align-middle text-2xl  m-auto">
-          <div>
-            {campaign.sideAmount}
-            </div>
-          </div>
-          </div>
-    ))}
-    </div>
-    <div>
+        {weekColumns.map((columnIndex) => (
+          <td
+            className={`border-collapse border-2 border-b-0 bg-${getCellColor(
+              campaignColumns[columnIndex]
+            )}-100 text-${getCellColor(campaignColumns[columnIndex])}-700 `}
+          >
+            {campaignColumns[columnIndex] && (
+              <div>{campaignColumns[columnIndex]?.name}</div>
+            )}
+          </td>
+        ))}
+      </tr>
+      <tr className="">
+        <th className="border-collapse border-2 bg-gray-100 pl-2  pr-2 text-xs uppercase text-gray-700">
+          Plokštumos
+        </th>
+        {weekColumns.map((columnIndex) => (
+          <td
+            className={`border-2 border-t-0 bg-${getCellColor(
+              campaignColumns[columnIndex]
+            )}-100 text-${getCellColor(
+              campaignColumns[columnIndex]
+            )}-700  text-right`}
+          >
+            {campaignColumns[columnIndex] && (
+              <div>{campaignColumns[columnIndex]?.sideAmount}</div>
+            )}
+          </td>
+        ))}
+      </tr>
+    </>
+  );
+};
 
-    </div>
-    <div className="w-12 mr-1 ml-1 flex justify-center align-middle text-4xl m-auto">
-          <div>
-            {eligibleCampaigns.reduce((sum, campaign) => sum + campaign.sideAmount, 0)}
-            </div>
-          </div>
-    </div>)
-}
+type CampaignCellProps = {
+  startDate: Date;
+  offset: number;
+  customer: CustomerCampaignDto;
+};
 
 type DateRangeCellProps = {
-  startDate: Date, offset: number
-}
+  startDate: Date;
+  offset: number;
+};
 
-const DateRangeCell = ({startDate, offset} : DateRangeCellProps) => {
-
+const DateRangeCell = ({ startDate, offset }: DateRangeCellProps) => {
   const cellStart = dateFns.addWeeks(startDate, offset);
   const cellEnd = dateFns.addDays(cellStart, 6);
 
-  return <>
-    {dateService.formatRangeMonthly(cellStart, cellEnd)}
-  </>
-}
+  return <>{dateService.formatRangeMonthly(cellStart, cellEnd)}</>;
+};
 
 export default CampaignsSummaryPage;

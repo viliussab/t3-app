@@ -34,6 +34,7 @@
     "leaflet": "^1.9.2",
     "leaflet-defaulticon-compatibility": "^0.1.1",
     "leaflet-geosearch": "^3.7.0",
+    "lodash": "^4.17.21",
     "next": "12.3.1",
     "next-auth": "~4.10.3",
     "react": "18.2.0",
@@ -49,6 +50,7 @@
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
     "@types/leaflet": "^1.9.0",
+    "@types/lodash": "^4.14.191",
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
