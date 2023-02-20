@@ -3,9 +3,9 @@ import type { NextPage } from "next";
 import { trpc } from "../../../utils/trpc";
 import * as RHF from "react-hook-form";
 import {
-  BillboardCreate,
-  billboardCreateSchema,
-} from "../../../types/command/billboardCreate.schema";
+  BillboardCU,
+  billboardSchema,
+} from "../../../types/command/billboard.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as NextRouter from "next/router";
 import Components from "../../components";
@@ -26,14 +26,14 @@ const CreateBillboardPage: NextPage = () => {
     },
   });
 
-  const form = RHF.useForm<BillboardCreate>({
-    resolver: zodResolver(billboardCreateSchema),
+  const form = RHF.useForm<BillboardCU>({
+    resolver: zodResolver(billboardSchema),
     defaultValues: {
       areaId: "",
     },
   });
 
-  const submitBillboard = (values: BillboardCreate) => {
+  const submitBillboard = (values: BillboardCU) => {
     billboardCreate.mutate(values);
   };
 
@@ -132,7 +132,7 @@ const CreateBillboardPage: NextPage = () => {
 };
 
 type FullNameFieldProps = {
-  control: RHF.Control<BillboardCreate>;
+  control: RHF.Control<BillboardCU>;
 };
 
 const FullNameField = (props: FullNameFieldProps) => {

@@ -1,9 +1,11 @@
 import z from "zod";
 
-import { customerCreateSchema } from "./customerCreate.schema";
+import { CustomerCreate, customerCreateSchema } from "./customerCreate.schema";
 
 export const customerUpdateSchema = customerCreateSchema.extend({
   id: z.string(),
 });
 
-export type CustomerUpdate = z.TypeOf<typeof customerUpdateSchema>;
+export type CustomerUpdate = CustomerCreate & {
+  id: string;
+};

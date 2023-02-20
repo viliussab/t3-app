@@ -1,5 +1,5 @@
 import { Area, Billboard, BillboardSide, BillboardType } from "@prisma/client";
-import { billboardCreateSchema } from "../command/billboardCreate.schema";
+import { billboardSchema } from "../command/billboard.schema";
 
 export type BillboardDto = Billboard & {
   type: BillboardType;

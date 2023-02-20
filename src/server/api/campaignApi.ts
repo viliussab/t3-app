@@ -1,12 +1,12 @@
 import { createRouter } from "./context";
-import { campaignCreateSchema } from "../../types/command/campaignCreate.schema";
+import { campaignSchema } from "../../types/command/campaign.schema";
 import { getByIdSchema } from "../../types/filters/getById.schema";
-import { campaignSelectBillboardsSchema } from "../../types/command/campaignSelectBillboards.schema";
+import { campaignBillboardsUpdate } from "../../types/command/campaignBillboardsUpdate";
 import dateService from "../../services/dateService";
 
 export const campaignRouter = createRouter()
   .mutation("create", {
-    input: campaignCreateSchema,
+    input: campaignSchema,
     async resolve({ ctx, input }) {
       const campaign = await ctx.prisma.campaign.create({
         data: {
@@ -18,7 +18,7 @@ export const campaignRouter = createRouter()
     },
   })
   .mutation("updateBillboards", {
-    input: campaignSelectBillboardsSchema,
+    input: campaignBillboardsUpdate,
     async resolve({ ctx, input }) {
       console.log("input", input);
       const campaign = await ctx.prisma.campaign.findFirst({

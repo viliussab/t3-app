@@ -6,10 +6,8 @@ import {
   CustomerUpdate,
   customerUpdateSchema,
 } from "../../../types/command/customerUpdate.schema";
-import Form from "../../components/form";
 import { Customer } from "@prisma/client";
-import { Dialog } from "@mui/material";
-import SubmitButton from "../../components/form/SubmitButton";
+import CustomerCUDialog from "./CustomerCUDialog";
 
 type CustomerUpdateDialogProps = {
   customer: Customer;
@@ -24,7 +22,7 @@ const CustomerUpdateDialog = ({
 }: CustomerUpdateDialogProps) => {
   const router = NextRouter.useRouter();
 
-  const customerCreate = trpc.useMutation(["customer.update"], {
+  const customerUpdateCommand = trpc.useMutation(["customer.update"], {
     onSuccess: () => {
       router.reload();
     },
@@ -38,78 +36,20 @@ const CustomerUpdateDialog = ({
   });
 
   const submitBillboard = (values: CustomerUpdate) => {
-    customerCreate.mutate(values);
+    customerUpdateCommand.mutate(values);
+    onClose();
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
-      <div className="flex justify-center">
-        <div className="bg-gray-50 p-2 pb-4">
-          <div className="text-center text-xl font-semibold">
-            Keisti kliento duomenis
-          </div>
-          <form
-            onSubmit={(e) => {
-              form.handleSubmit(submitBillboard)(e);
-            }}
-          >
-            <div className="flex justify-center">
-              <div className="m-4 w-64 space-y-3 pt-0">
-                <Form.Field
-                  label="Kompanijos pavadinimas"
-                  form={form}
-                  fieldName="name"
-                  muiProps={{ required: true }}
-                />
-                <Form.Field
-                  label="Įmonės kodas"
-                  form={form}
-                  fieldName="companyCode"
-                  muiProps={{ required: true }}
-                />
-                <Form.Field
-                  label="PVM kodas"
-                  form={form}
-                  fieldName="VATCode"
-                  muiProps={{ required: true }}
-                />
-                <Form.Field
-                  label="Adresas"
-                  form={form}
-                  fieldName="address"
-                  muiProps={{ required: true }}
-                />
-              </div>
-              <div className="m-4 w-64 space-y-3 pt-0">
-                <Form.Field
-                  label="Telefonas"
-                  form={form}
-                  fieldName="phone"
-                  muiProps={{ required: true }}
-                />
-                <Form.Field
-                  label="Kontaktinis asmuo"
-                  form={form}
-                  fieldName="contactPerson"
-                  muiProps={{ required: true }}
-                />
-                <Form.Field
-                  label="El. paštas"
-                  form={form}
-                  fieldName="email"
-                  muiProps={{ required: true }}
-                />
-              </div>
-            </div>
-            <div className="flex justify-center">
-              <SubmitButton isSubmitting={customerCreate.isLoading}>
-                Atnaujinti
-              </SubmitButton>
-            </div>
-          </form>
-        </div>
-      </div>
-    </Dialog>
+    <CustomerCUDialog
+      open={open}
+      form={form}
+      isSubmitting={customerUpdateCommand.isLoading}
+      onSubmit={submitBillboard}
+      title="Keisti kliento duomenis"
+      onClose={onClose}
+      submitText="Atnaujinti"
+    />
   );
 };
 

@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const campaignCreateSchema = z.object({
+export const campaignSchema = z.object({
   customerId: z.string().min(1, "Pasirinkite užsakovą"),
   name: z.string().min(1, "Kampanijos pavadinimas yra būtinas"),
   periodStart: z.date(),
@@ -10,4 +10,4 @@ export const campaignCreateSchema = z.object({
   discountPercent: z.number().min(0).max(99),
 });
 
-export type CampaignCreate = z.TypeOf<typeof campaignCreateSchema>;
+export type CampaignCU = z.TypeOf<typeof campaignSchema>;

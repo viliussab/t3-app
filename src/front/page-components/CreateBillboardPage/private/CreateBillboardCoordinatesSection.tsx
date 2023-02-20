@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import { UseFormReturn, useWatch } from "react-hook-form";
 import { useEffect, useCallback } from "react";
 import { Area } from "@prisma/client";
-import { BillboardCreate } from "../../../../types/command/billboardCreate.schema";
+import { BillboardCU } from "../../../../types/command/billboard.schema";
 import Form from "../../../components/form";
 const CreateMarkerMap = dynamic(
   () => import("../../../multi-page-components/geo/maps/CreateMarkerMap"),
@@ -10,7 +10,7 @@ const CreateMarkerMap = dynamic(
 );
 
 type CoordinateFieldsProps = {
-  form: UseFormReturn<BillboardCreate>;
+  form: UseFormReturn<BillboardCU>;
   areas: Area[] | undefined;
 };
 
@@ -68,7 +68,6 @@ const CoordinatesSection = (props: CoordinateFieldsProps) => {
           />
         </div>
       </div>
-
       <div className="mt-4 h-96 w-96">
         {selectedArea ? (
           <CreateMarkerMap

@@ -2,9 +2,9 @@ import { NextPage } from "next";
 import Layout from "../../components/Layout";
 import { trpc } from "../../../utils/trpc";
 import {
-  CampaignCreate,
-  campaignCreateSchema,
-} from "../../../types/command/campaignCreate.schema";
+  CampaignCU,
+  campaignSchema,
+} from "../../../types/command/campaign.schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Mui from "@mui/material";
@@ -25,8 +25,8 @@ const CreateCampaignPage: NextPage = () => {
     1
   );
 
-  const form = useForm<CampaignCreate>({
-    resolver: zodResolver(campaignCreateSchema),
+  const form = useForm<CampaignCU>({
+    resolver: zodResolver(campaignSchema),
     defaultValues: {
       periodStart: nextWeekStart,
       periodEnd: nextWeekStart,
@@ -43,7 +43,7 @@ const CreateCampaignPage: NextPage = () => {
     },
   });
 
-  const onSubmit = (values: CampaignCreate) => {
+  const onSubmit = (values: CampaignCU) => {
     campaignCreateCommand.mutateAsync(values);
   };
 

@@ -1,5 +1,5 @@
 import { createRouter } from "./context";
-import { billboardCreateSchema } from "../../types/command/billboardCreate.schema";
+import { billboardSchema } from "../../types/command/billboard.schema";
 import { billboardFilterObjSchema } from "../../types/filters/billboardFilter.schema";
 import prismaFactory from "../infrastructure/prismaFactory";
 import { billboardSideIds } from "../../types/filters/billboardSideIds.schema";
@@ -201,7 +201,7 @@ export const billboardRouter = createRouter()
     },
   })
   .mutation("create", {
-    input: billboardCreateSchema,
+    input: billboardSchema,
     async resolve({ ctx, input }) {
       const billboard = await ctx.prisma.billboard.create({
         data: {

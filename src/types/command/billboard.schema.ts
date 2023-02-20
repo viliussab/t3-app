@@ -1,7 +1,7 @@
 import z from "zod";
 import messages from "../../services/validateMessage";
 
-export const billboardCreateSchema = z.object({
+export const billboardSchema = z.object({
   areaId: z.string().min(1, "Pasirinkite miestą"),
   typeId: z.string().min(1, "Pasirinkite tipą"),
   serialCode: z.string().min(1, "Kodas yra būtinas"),
@@ -24,4 +24,4 @@ export const billboardCreateSchema = z.object({
   isLicensed: z.boolean(),
 });
 
-export type BillboardCreate = z.TypeOf<typeof billboardCreateSchema>;
+export type BillboardCU = z.TypeOf<typeof billboardSchema>;

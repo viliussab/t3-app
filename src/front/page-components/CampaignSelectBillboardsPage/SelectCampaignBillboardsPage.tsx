@@ -3,9 +3,9 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import {
-  CampaignBillboardSelect,
-  campaignSelectBillboardsSchema,
-} from "../../../types/command/campaignSelectBillboards.schema";
+  CampaignBillboardsUpdate,
+  campaignBillboardsUpdate,
+} from "../../../types/command/campaignBillboardsUpdate";
 import Layout from "../../components/Layout";
 import { trpc } from "../../../utils/trpc";
 import React from "react";
@@ -45,8 +45,8 @@ const CampaignSelectBillboardsPage: NextPage = () => {
     }
   );
 
-  const form = useForm<CampaignBillboardSelect>({
-    resolver: zodResolver(campaignSelectBillboardsSchema),
+  const form = useForm<CampaignBillboardsUpdate>({
+    resolver: zodResolver(campaignBillboardsUpdate),
     defaultValues: {
       sideIds: [],
       id: id as string,
