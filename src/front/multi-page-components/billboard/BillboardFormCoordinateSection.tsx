@@ -1,20 +1,21 @@
+import React from "react";
 import dynamic from "next/dynamic";
 import { UseFormReturn, useWatch } from "react-hook-form";
 import { useEffect, useCallback } from "react";
 import { Area } from "@prisma/client";
-import { BillboardCU } from "../../../../types/command/billboard.schema";
-import Form from "../../../components/form";
-const CreateMarkerMap = dynamic(
-  () => import("../../../multi-page-components/geo/maps/CreateMarkerMap"),
-  { ssr: false }
-);
+import { BillboardCU } from "../../../types/command/billboard.schema";
+import Form from "../../components/form";
 
-type CoordinateFieldsProps = {
+const CreateMarkerMap = dynamic(() => import("../geo/maps/CreateMarkerMap"), {
+  ssr: false,
+});
+
+type Props = {
   form: UseFormReturn<BillboardCU>;
   areas: Area[] | undefined;
 };
 
-const CoordinatesSection = (props: CoordinateFieldsProps) => {
+const BillboardFormCoordinateSection = (props: Props) => {
   const { form, areas } = props;
 
   const [areaId, latitude, longitude] = useWatch({
@@ -52,7 +53,6 @@ const CoordinatesSection = (props: CoordinateFieldsProps) => {
             fieldName="latitude"
             muiProps={{
               disabled: !selectedArea,
-              InputLabelProps: { shrink: !!(selectedArea || latitude) },
             }}
           />
         </div>
@@ -63,7 +63,6 @@ const CoordinatesSection = (props: CoordinateFieldsProps) => {
             fieldName="longitude"
             muiProps={{
               disabled: !selectedArea,
-              InputLabelProps: { shrink: !!(selectedArea || longitude) },
             }}
           />
         </div>
@@ -87,4 +86,4 @@ const CoordinatesSection = (props: CoordinateFieldsProps) => {
   );
 };
 
-export default CoordinatesSection;
+export default BillboardFormCoordinateSection;

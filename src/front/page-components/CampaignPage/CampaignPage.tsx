@@ -9,9 +9,17 @@ import ActionButton from "./../../components/ActionButton";
 import Icons from "./../../components/Icons";
 import Link from "next/link";
 import CampaignStatusChip from "../../multi-page-components/campaign/CampaignStatusChip";
+import { Campaign } from "@prisma/client";
+import { useRouter } from "next/router";
 
 const CampaignPage: NextPage = () => {
   const campaignsQuery = trpc.useQuery(["campaign.getAll"]);
+
+  const router = useRouter();
+
+  const redirectToUpdate = (campaign: Campaign) => {
+    router.push("/campaigns/" + campaign.id);
+  };
 
   const columns: ColumnConfig<CampaignListDto>[] = [
     {
@@ -73,7 +81,8 @@ const CampaignPage: NextPage = () => {
         <Table
           columns={columns}
           keySelector={(campaign) => campaign.id}
-          data={campaignsQuery.data ? campaignsQuery.data : []}
+          data={campaignsQuery.data || []}
+          onClick={redirectToUpdate}
         />
       </div>
     </Layout>

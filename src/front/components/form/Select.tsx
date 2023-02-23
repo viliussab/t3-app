@@ -13,16 +13,21 @@ type SelectProps<T extends RHC.FieldValues> = {
 const Select = <T extends RHC.FieldValues>(props: SelectProps<T>) => {
   const { fieldName, form, options, label } = props;
 
+  const value = form.watch(fieldName);
+
+  console.log("value", fieldName, value);
+
   return (
     <Mui.FormControl variant="filled" fullWidth>
       <Mui.InputLabel id="select-standard-label">{label}</Mui.InputLabel>
       <Mui.Select
         fullWidth
         required
-        defaultValue=""
         labelId="select-standard-label"
         id="select-standard"
-        {...form.register(fieldName)}
+        value={value}
+        // @ts-ignore
+        onChange={(e) => form.setValue(fieldName, e.target.value)}
       >
         <Mui.MenuItem value={""}>
           <em>Nepasirinkta</em>

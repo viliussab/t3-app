@@ -2,7 +2,6 @@ import { createRouter } from "./context";
 import { campaignSchema } from "../../types/command/campaign.schema";
 import { getByIdSchema } from "../../types/filters/getById.schema";
 import { campaignBillboardsUpdate } from "../../types/command/campaignBillboardsUpdate";
-import dateService from "../../services/dateService";
 
 export const campaignRouter = createRouter()
   .mutation("create", {

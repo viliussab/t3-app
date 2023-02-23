@@ -17,11 +17,17 @@ export const billboardSchema = z.object({
     .lte(180, messages.num.lte("Ilguma", 180)),
 
   address: z.string().min(1, "Adresas yra būtinas"),
-  name: z.string().min(1, "Pavadinimas yra būtinas"),
-  sideName: z.string().min(1, "Pusė yra būtina"),
+  // name: z.string().min(1, "Pavadinimas yra būtinas"),
+  // sideName: z.string().min(1, "Pusė yra būtina"),
 
   isIlluminated: z.boolean(),
   isLicensed: z.boolean(),
 });
 
+export const billboardUpdateSchema = billboardSchema.extend({
+  id: z.string(),
+});
+
 export type BillboardCU = z.TypeOf<typeof billboardSchema>;
+
+export type BillboardUpdate = z.TypeOf<typeof billboardUpdateSchema>;

@@ -6,9 +6,6 @@ import * as RHF from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as NextRouter from "next/router";
 import { trpc } from "../../../utils/trpc";
-import Form from "../../components/form";
-import { Dialog } from "@mui/material";
-import SubmitButton from "../../components/form/SubmitButton";
 import CustomerCUDialog from "./CustomerCUDialog";
 
 type CustomerCreateDialogProps = {

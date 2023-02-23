@@ -16,6 +16,15 @@
     "incremental": true,
     "noUncheckedIndexedAccess": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs", "src/cvendor/leaflet/index.jsx", "src/front/components/table"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.cjs",
+    "**/*.mjs",
+    "src/cvendor/leaflet/index.jsx",
+    "src/front/components/table",
+    "src/front/multi-page-components/billboard/BillboardFormCoordinateSection.tsx"
+  ],
   "exclude": ["node_modules"]
 }

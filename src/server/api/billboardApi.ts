@@ -1,10 +1,15 @@
 import { createRouter } from "./context";
-import { billboardSchema } from "../../types/command/billboard.schema";
+import {
+  billboardSchema,
+  billboardUpdateSchema,
+} from "../../types/command/billboard.schema";
 import { billboardFilterObjSchema } from "../../types/filters/billboardFilter.schema";
 import prismaFactory from "../infrastructure/prismaFactory";
 import { billboardSideIds } from "../../types/filters/billboardSideIds.schema";
 import billboardMapper from "../../front/mappers/billboard";
 import { BooleanFilters } from "../../types/filters/booleanFilter.schema";
+import { getByIdSchema } from "../../types/filters/getById.schema";
+import { billboardSideUpdateSchema } from "../../types/command/billboardSide.schema";
 
 const getCaseInvariantWords = (str: string) =>
   str
@@ -111,6 +116,33 @@ export const billboardRouter = createRouter()
       );
 
       return searchFilteredBillboards;
+    },
+  })
+  .query("getSideById", {
+    input: getByIdSchema,
+    async resolve({ ctx, input }) {
+      const billboardSide = await ctx.prisma.billboardSide.findFirstOrThrow({
+        where: {
+          id: input.id,
+        },
+        include: {
+          billboard: true,
+        },
+      });
+
+      return billboardSide;
+    },
+  })
+  .query("getById", {
+    input: getByIdSchema,
+    async resolve({ ctx, input }) {
+      const billboard = await ctx.prisma.billboard.findFirstOrThrow({
+        where: {
+          id: input.id,
+        },
+      });
+
+      return billboard;
     },
   })
   .query("getSideOccupancy", {
@@ -224,5 +256,31 @@ export const billboardRouter = createRouter()
       });
 
       return { billboard, side };
+    },
+  })
+  .mutation("update", {
+    input: billboardUpdateSchema,
+    async resolve({ ctx, input }) {
+      await ctx.prisma.billboard.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          ...input,
+        },
+      });
+    },
+  })
+  .mutation("updateSide", {
+    input: billboardSideUpdateSchema,
+    async resolve({ ctx, input }) {
+      await ctx.prisma.billboardSide.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          ...input,
+        },
+      });
     },
   });

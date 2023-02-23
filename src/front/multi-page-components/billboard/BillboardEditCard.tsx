@@ -3,13 +3,18 @@ import { BillboardDto } from "../../../types/dto/BillboardDtos";
 import { Divider } from "@mui/material";
 import ActionButton from "../../components/ActionButton";
 import GoogleSideImage from "./../../components/GoogleSideImage";
+import { useRouter } from "next/router";
 
 type BillboardCardProps = {
   billboard: BillboardDto;
 };
 
-const BillboardEditCard = (props: BillboardCardProps) => {
-  const { billboard } = props;
+const BillboardEditCard = ({ billboard }: BillboardCardProps) => {
+  const router = useRouter();
+
+  const redirectToBillboardEdit = () => {
+    router.push("/billboards/" + billboard.id);
+  };
 
   return (
     <div className="mb-2">
@@ -17,7 +22,9 @@ const BillboardEditCard = (props: BillboardCardProps) => {
         {`${billboard.serialCode}. ${billboard.address}`}
       </div>
       <div className="mb-2 flex justify-end">
-        <ActionButton onClick={() => {}}>Redaguoti objektą</ActionButton>
+        <ActionButton onClick={redirectToBillboardEdit}>
+          Redaguoti objektą
+        </ActionButton>
       </div>
       {billboard.sides.map((side) => (
         <>

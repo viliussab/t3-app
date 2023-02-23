@@ -3,7 +3,7 @@ import dateFns from "../imports/dateFns";
 import CONSTANTS from "../../constants";
 import { CampaignDto, CustomerCampaignDto } from "../../types/dto/campaignDtos";
 
-type DerivativeProps = {
+export type CampaignEsmitationProps = {
   periodStart: Date;
   periodEnd: Date;
   discountPercent: number;
@@ -27,7 +27,7 @@ const customerFlattenSides = (customers: CustomerCampaignDto[]) => {
   }));
 };
 
-const calculateDerivatives = (val: DerivativeProps) => {
+const calculateEstimate = (val: CampaignEsmitationProps) => {
   const weekPeriod =
     !!val.periodStart && !!val.periodEnd
       ? dateService.formatPeriodShort(val.periodStart, val.periodEnd)
@@ -76,7 +76,7 @@ const calculateDerivatives = (val: DerivativeProps) => {
 };
 
 const campaignMapper = {
-  calculateDerivatives,
+  calculateEstimate,
   customerFlattenSides,
 };
 
